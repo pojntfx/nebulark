@@ -1,6 +1,7 @@
 package components
 
 import (
+	"encoding/base64"
 	"log"
 	"strconv"
 	"syscall/js"
@@ -11,9 +12,16 @@ import (
 type AppComponent struct {
 	app.Compo
 
-	tinyGoCalculatorInputFirstAddend  int
-	tinyGoCalculatorInputSecondAddend int
-	tinyGoCalculatorOutputValue       int
+	simpleTinyGoCalculatorInputFirstAddend  int
+	simplyTinyGoCalculatorInputSecondAddend int
+	simpleTinyGoCalculatorOutputSum         int
+
+	simpleGoCalculatorInputFirstAddend  int
+	simplyGoCalculatorInputSecondAddend int
+	simpleGoCalculatorOutputSum         int
+
+	JSONGoCalculatorInput  string
+	jsonGoCalculatorOutput string
 }
 
 func (c *AppComponent) Render() app.UI {
@@ -24,7 +32,7 @@ func (c *AppComponent) Render() app.UI {
 				app.Tr().Body(
 					app.Th().Text("Name"),
 					app.Th().Text("Input"),
-					app.Th().Text("Actions"),
+					app.Th().Text("Igniters"),
 					app.Th().Text("Output"),
 				),
 			),
@@ -40,7 +48,7 @@ func (c *AppComponent) Render() app.UI {
 								return
 							}
 
-							c.tinyGoCalculatorInputFirstAddend = firstAddend
+							c.simpleTinyGoCalculatorInputFirstAddend = firstAddend
 						}),
 						app.Input().Class("pf-c-form-control").Type("number").Pattern(`\d`).Placeholder("Second Addend").OnInput(func(ctx app.Context, e app.Event) {
 							secondAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
@@ -50,7 +58,7 @@ func (c *AppComponent) Render() app.UI {
 								return
 							}
 
-							c.tinyGoCalculatorInputSecondAddend = secondAddend
+							c.simplyTinyGoCalculatorInputSecondAddend = secondAddend
 						}),
 					),
 					app.Button().
@@ -60,7 +68,58 @@ func (c *AppComponent) Render() app.UI {
 							c.runSimpleTinyGoCalculator()
 						}),
 					app.Div().Text(
-						c.tinyGoCalculatorOutputValue,
+						c.simpleTinyGoCalculatorOutputSum,
+					),
+				),
+				c.getExample(
+					"Simple Go Calculator",
+					app.Div().Body(
+						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
+							firstAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse first addend: %v\n", err)
+
+								return
+							}
+
+							c.simpleGoCalculatorInputFirstAddend = firstAddend
+						}),
+						app.Input().Class("pf-c-form-control").Type("number").Pattern(`\d`).Placeholder("Second Addend").OnInput(func(ctx app.Context, e app.Event) {
+							secondAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse second addend: %v\n", err)
+
+								return
+							}
+
+							c.simplyGoCalculatorInputSecondAddend = secondAddend
+						}),
+					),
+					app.Button().
+						Class("pf-c-button pf-m-control").
+						Text("Add").
+						OnClick(func(ctx app.Context, e app.Event) {
+							c.runSimpleGoCalculator()
+						}),
+					app.Div().Text(
+						c.simpleGoCalculatorOutputSum,
+					),
+				),
+				c.getExample(
+					"JSON Go Calculator",
+					app.Div().Body(
+						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("text").Placeholder("JSON Input").Value(c.JSONGoCalculatorInput).OnInput(func(ctx app.Context, e app.Event) {
+							c.JSONGoCalculatorInput = e.Get("target").Get("value").String()
+						}),
+					),
+					app.Button().
+						Class("pf-c-button pf-m-control").
+						Text("Add").
+						OnClick(func(ctx app.Context, e app.Event) {
+							c.runJSONGoCalculator()
+						}),
+					app.Div().Text(
+						c.jsonGoCalculatorOutput,
 					),
 				),
 			),
@@ -77,7 +136,7 @@ func (c *AppComponent) getExample(
 	return app.Tr().Body(
 		app.Td().DataSet("label", "Name").Text(title),
 		app.Td().DataSet("label", "Input").Body(input),
-		app.Td().DataSet("label", "Actions").Body(action),
+		app.Td().DataSet("label", "Igniters").Body(action),
 		app.Td().DataSet("label", "Output").Body(output),
 	)
 }
@@ -85,9 +144,48 @@ func (c *AppComponent) getExample(
 func (c *AppComponent) runSimpleTinyGoCalculator() {
 	js.Global().Call("import", "/web/glue/tinygo/wasm_exec.js").Call("then", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 		js.Global().Call("openTinyGoWASMModule", "/web/sparkexamples/tinygo/simple_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
-			log.Println("running TinyGo Calculator")
+			log.Println("running Simple TinyGo Calculator")
 
-			c.tinyGoCalculatorOutputValue = module[0].Get("exports").Call("add", c.tinyGoCalculatorInputFirstAddend, c.tinyGoCalculatorInputSecondAddend).Int()
+			c.simpleTinyGoCalculatorOutputSum = module[0].Get("exports").Call("ignite", c.simpleTinyGoCalculatorInputFirstAddend, c.simplyTinyGoCalculatorInputSecondAddend).Int()
+
+			c.Update()
+
+			return nil
+		}))
+
+		return nil
+	}))
+}
+
+func (c *AppComponent) runSimpleGoCalculator() {
+	js.Global().Call("import", "/web/glue/go/wasm_exec.js").Call("then", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		js.Global().Call("openGoWASMModule", "/web/sparkexamples/go/simple_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
+			log.Println("running Simple Go Calculator")
+
+			c.simpleGoCalculatorOutputSum = js.Global().Call("ignite", c.simpleGoCalculatorInputFirstAddend, c.simplyGoCalculatorInputSecondAddend).Int()
+
+			c.Update()
+
+			return nil
+		}))
+
+		return nil
+	}))
+}
+
+func (c *AppComponent) runJSONGoCalculator() {
+	js.Global().Call("import", "/web/glue/go/wasm_exec.js").Call("then", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		js.Global().Call("openGoWASMModule", "/web/sparkexamples/go/json_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
+			log.Println("running JSON Go Calculator")
+
+			encodedOutput := js.Global().Call("ignite", base64.RawStdEncoding.EncodeToString([]byte(c.JSONGoCalculatorInput))).String()
+
+			decodedOutput, err := base64.RawStdEncoding.DecodeString(encodedOutput)
+			if err != nil {
+				log.Printf("could not decode spark output: %v\n", err)
+			}
+
+			c.jsonGoCalculatorOutput = string(decodedOutput)
 
 			c.Update()
 

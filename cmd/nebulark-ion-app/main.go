@@ -6,7 +6,9 @@ import (
 )
 
 func main() {
-	app.Route("/", &components.AppComponent{})
+	app.Route("/", &components.AppComponent{
+		JSONGoCalculatorInput: `{"firstAddend": 1, "secondAddend": 2}`,
+	})
 
 	app.Run()
 }
