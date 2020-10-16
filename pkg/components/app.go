@@ -16,6 +16,9 @@ type AppComponent struct {
 	simplyTinyGoCalculatorInputSecondAddend int
 	simpleTinyGoCalculatorOutputSum         int
 
+	JSONTinyGoCalculatorInput  string
+	jsonTinyGoCalculatorOutput string
+
 	simpleGoCalculatorInputFirstAddend  int
 	simplyGoCalculatorInputSecondAddend int
 	simpleGoCalculatorOutputSum         int
@@ -69,6 +72,23 @@ func (c *AppComponent) Render() app.UI {
 						}),
 					app.Div().Text(
 						c.simpleTinyGoCalculatorOutputSum,
+					),
+				),
+				c.getExample(
+					"JSON TinyGo Calculator",
+					app.Div().Body(
+						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("text").Placeholder("JSON Input").Value(c.JSONTinyGoCalculatorInput).OnInput(func(ctx app.Context, e app.Event) {
+							c.JSONTinyGoCalculatorInput = e.Get("target").Get("value").String()
+						}),
+					),
+					app.Button().
+						Class("pf-c-button pf-m-control").
+						Text("Add").
+						OnClick(func(ctx app.Context, e app.Event) {
+							c.runJSONTinyGoCalculator()
+						}),
+					app.Div().Text(
+						c.jsonTinyGoCalculatorOutput,
 					),
 				),
 				c.getExample(
@@ -157,6 +177,42 @@ func (c *AppComponent) runSimpleTinyGoCalculator() {
 	}))
 }
 
+func (c *AppComponent) runJSONTinyGoCalculator() {
+	js.Global().Call("import", "/web/glue/tinygo/wasm_exec.js").Call("then", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		js.Global().Call("openTinyGoWASMModule", "/web/sparkexamples/tinygo/json_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
+			log.Println("running JSON TinyGo Calculator")
+
+			encodedInput := base64.RawStdEncoding.EncodeToString([]byte(c.JSONTinyGoCalculatorInput))
+
+			for _, character := range []byte(encodedInput) {
+				module[0].Get("exports").Call("append_to_encoded_input", character)
+			}
+
+			outputLength := module[0].Get("exports").Call("ignite").Int()
+
+			encodedOutput := []uint8{}
+			for i := 0; i < outputLength; i++ {
+				encodedOutput = append(encodedOutput, uint8(module[0].Get("exports").Call("get_from_encoded_input", i).Int()))
+			}
+
+			decodedInput, err := base64.RawStdEncoding.DecodeString(string(encodedOutput))
+			if err != nil {
+				log.Fatal("could not decode spark output", err)
+
+				return nil
+			}
+
+			c.jsonTinyGoCalculatorOutput = string(decodedInput)
+
+			c.Update()
+
+			return nil
+		}))
+
+		return nil
+	}))
+}
+
 func (c *AppComponent) runSimpleGoCalculator() {
 	js.Global().Call("import", "/web/glue/go/wasm_exec.js").Call("then", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 		js.Global().Call("openGoWASMModule", "/web/sparkexamples/go/simple_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
@@ -183,6 +239,8 @@ func (c *AppComponent) runJSONGoCalculator() {
 			decodedOutput, err := base64.RawStdEncoding.DecodeString(encodedOutput)
 			if err != nil {
 				log.Printf("could not decode spark output: %v\n", err)
+
+				return nil
 			}
 
 			c.jsonGoCalculatorOutput = string(decodedOutput)
