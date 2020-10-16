@@ -203,7 +203,7 @@
   const decoder = new TextDecoder("utf-8");
   var logLine = [];
 
-  global.Go = class {
+  global.TinyGo = class { // Changed to allow use with Go
     constructor() {
       this._callbackTimeouts = new Map();
       this._nextCallbackTimeoutID = 1;
