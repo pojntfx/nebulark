@@ -29,9 +29,9 @@ func (c *AppComponent) Render() app.UI {
 				),
 			),
 			app.TBody().Body(
-				app.Tr().Body(
-					app.Td().DataSet("label", "Name").Text("TinyGo Calculator"),
-					app.Td().DataSet("label", "Input").Body(
+				c.getExample(
+					"Simple TinyGo Calculator",
+					app.Div().Body(
 						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
 							firstAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
 							if err != nil {
@@ -53,24 +53,38 @@ func (c *AppComponent) Render() app.UI {
 							c.tinyGoCalculatorInputSecondAddend = secondAddend
 						}),
 					),
-					app.Td().DataSet("label", "Actions").Body(
-						app.Button().
-							Class("pf-c-button pf-m-control").
-							Text("Add").
-							OnClick(func(ctx app.Context, e app.Event) {
-								c.runTinyGoCalculator()
-							}),
+					app.Button().
+						Class("pf-c-button pf-m-control").
+						Text("Add").
+						OnClick(func(ctx app.Context, e app.Event) {
+							c.runSimpleTinyGoCalculator()
+						}),
+					app.Div().Text(
+						c.tinyGoCalculatorOutputValue,
 					),
-					app.Td().DataSet("label", "Output").Text(c.tinyGoCalculatorOutputValue),
 				),
 			),
 		),
 	)
 }
 
-func (c *AppComponent) runTinyGoCalculator() {
+func (c *AppComponent) getExample(
+	title string,
+	input app.UI,
+	action app.UI,
+	output app.UI,
+) app.UI {
+	return app.Tr().Body(
+		app.Td().DataSet("label", "Name").Text(title),
+		app.Td().DataSet("label", "Input").Body(input),
+		app.Td().DataSet("label", "Actions").Body(action),
+		app.Td().DataSet("label", "Output").Body(output),
+	)
+}
+
+func (c *AppComponent) runSimpleTinyGoCalculator() {
 	js.Global().Call("import", "/web/glue/tinygo/wasm_exec.js").Call("then", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		js.Global().Call("openTinyGoWASMModule", "/web/sparkexamples/tinygo/calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
+		js.Global().Call("openTinyGoWASMModule", "/web/sparkexamples/tinygo/simple_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
 			log.Println("running TinyGo Calculator")
 
 			c.tinyGoCalculatorOutputValue = module[0].Get("exports").Call("add", c.tinyGoCalculatorInputFirstAddend, c.tinyGoCalculatorInputSecondAddend).Int()
