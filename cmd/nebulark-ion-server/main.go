@@ -21,19 +21,9 @@ func main() {
 			Default: "/web/icon.png",
 		},
 		Keywords: []string{
-			"network",
-			"network-scanner",
-			"port-scanner",
-			"ip-scanner",
-			"arp-scanner",
-			"arp",
-			"iana",
-			"ports2packets",
-			"nebulark",
-			"vendor2mac",
-			"wake-on-lan",
-			"wol",
-			"service-name",
+			"nebula",
+			"ion",
+			"spark",
 		},
 		LoadingLabel: "Distribute your workload to the edge.",
 		Name:         "nebulark",
@@ -50,6 +40,9 @@ func main() {
 		},
 		ThemeColor: "#151515",
 		Title:      "nebulark",
+		Scripts: []string{
+			"/web/glue/registerFunctions.js",
+		},
 	}
 
 	log.Println("Listening on", *listenAddress)
