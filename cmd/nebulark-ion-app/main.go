@@ -7,8 +7,8 @@ import (
 
 func main() {
 	app.Route("/", &components.AppComponent{
-		JSONTinyGoCalculatorInput: `{"firstAddend": 1, "secondAddend": 2}`,
-		JSONGoCalculatorInput:     `{"firstAddend": 1, "secondAddend": 2}`,
+		JSONTinyGoCalculatorTinyGoWasmExecInput: `{"firstAddend": 1, "secondAddend": 2}`,
+		JSONGoCalculatorGoWasmExecInput:         `{"firstAddend": 1, "secondAddend": 2}`,
 	})
 
 	app.Run()
