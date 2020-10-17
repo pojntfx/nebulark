@@ -45,16 +45,18 @@ global.openWASIWASMModule = (url, handler) =>
                 env: {},
                 bindings: {
                   ...wasiModule.WASI.defaultBindings,
-                  fs: wasmFs,
+                  fs: wasmFs.fs,
                 },
               });
 
               WebAssembly.instantiate(bytes, {
                 ...wasi.getImports(bytes),
-              }).then((obj) => {
+              }).then(async (obj) => {
                 wasi.start(obj);
 
                 handler(obj);
+
+                wasmFs.getStdOut().then((stdout) => console.log(stdout));
               });
             })
       )
