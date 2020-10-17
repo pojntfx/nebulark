@@ -261,7 +261,7 @@ func (c *AppComponent) Render() app.UI {
 					),
 				),
 				c.getExample(
-					`Simple Java Calculator (JWebAssembly wasm) (Only supported in Firefox and Safari. Chromium requires --js-flags="--experimental-wasm-reftypes")`,
+					`Simple Java Calculator (JWebAssembly wasm)`,
 					app.Div().Body(
 						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
 							firstAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
