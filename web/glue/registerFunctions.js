@@ -6,10 +6,10 @@ global.openTinyGoWASMModule = (url, handler) => {
   fetch(url)
     .then((resp) => resp.arrayBuffer())
     .then((bytes) =>
-      WebAssembly.instantiate(bytes, go.importObject).then((obj) => {
-        go.run(obj.instance);
+      WebAssembly.instantiate(bytes, go.importObject).then(({ instance }) => {
+        go.run(instance);
 
-        handler(obj.instance);
+        handler(instance);
       })
     );
 };
@@ -20,10 +20,42 @@ global.openGoWASMModule = (url, handler) => {
   fetch(url)
     .then((resp) => resp.arrayBuffer())
     .then((bytes) =>
-      WebAssembly.instantiate(bytes, go.importObject).then((obj) => {
-        go.run(obj.instance);
+      WebAssembly.instantiate(bytes, go.importObject).then(({ instance }) => {
+        go.run(instance);
 
-        handler(obj.instance);
+        handler(instance);
       })
     );
 };
+
+global.openWASIWASMModule = (url, handler) =>
+  import("https://unpkg.com/@wasmer/wasi@0.12.0/lib/index.esm.js").then(
+    (wasiModule) =>
+      import("https://unpkg.com/@wasmer/wasmfs@0.12.0/lib/index.esm.js").then(
+        (wasmFsModule) =>
+          fetch(url)
+            .then((resp) => resp.arrayBuffer())
+            .then((res) => new Uint8Array(res).buffer)
+            .then(WebAssembly.compile)
+            .then((bytes) => {
+              const wasmFs = new wasmFsModule.WasmFs();
+
+              const wasi = new wasiModule.WASI({
+                args: [],
+                env: {},
+                bindings: {
+                  ...wasiModule.WASI.defaultBindings,
+                  fs: wasmFs,
+                },
+              });
+
+              WebAssembly.instantiate(bytes, {
+                ...wasi.getImports(bytes),
+              }).then((obj) => {
+                wasi.start(obj);
+
+                handler(obj);
+              });
+            })
+      )
+  );

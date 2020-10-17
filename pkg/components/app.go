@@ -13,18 +13,22 @@ type AppComponent struct {
 	app.Compo
 
 	simpleTinyGoCalculatorInputFirstAddend  int
-	simplyTinyGoCalculatorInputSecondAddend int
+	simpleTinyGoCalculatorInputSecondAddend int
 	simpleTinyGoCalculatorOutputSum         int
 
 	JSONTinyGoCalculatorInput  string
 	jsonTinyGoCalculatorOutput string
 
 	simpleGoCalculatorInputFirstAddend  int
-	simplyGoCalculatorInputSecondAddend int
+	simpleGoCalculatorInputSecondAddend int
 	simpleGoCalculatorOutputSum         int
 
 	JSONGoCalculatorInput  string
 	jsonGoCalculatorOutput string
+
+	simpleCCalculatorInputFirstAddend  int
+	simpleCCalculatorInputSecondAddend int
+	simpleCCalculatorOutputSum         int
 }
 
 func (c *AppComponent) Render() app.UI {
@@ -61,7 +65,7 @@ func (c *AppComponent) Render() app.UI {
 								return
 							}
 
-							c.simplyTinyGoCalculatorInputSecondAddend = secondAddend
+							c.simpleTinyGoCalculatorInputSecondAddend = secondAddend
 						}),
 					),
 					app.Button().
@@ -112,7 +116,7 @@ func (c *AppComponent) Render() app.UI {
 								return
 							}
 
-							c.simplyGoCalculatorInputSecondAddend = secondAddend
+							c.simpleGoCalculatorInputSecondAddend = secondAddend
 						}),
 					),
 					app.Button().
@@ -142,6 +146,40 @@ func (c *AppComponent) Render() app.UI {
 						c.jsonGoCalculatorOutput,
 					),
 				),
+				c.getExample(
+					"Simple C Calculator",
+					app.Div().Body(
+						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
+							firstAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse first addend: %v\n", err)
+
+								return
+							}
+
+							c.simpleCCalculatorInputFirstAddend = firstAddend
+						}),
+						app.Input().Class("pf-c-form-control").Type("number").Pattern(`\d`).Placeholder("Second Addend").OnInput(func(ctx app.Context, e app.Event) {
+							secondAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse second addend: %v\n", err)
+
+								return
+							}
+
+							c.simpleCCalculatorInputSecondAddend = secondAddend
+						}),
+					),
+					app.Button().
+						Class("pf-c-button pf-m-control").
+						Text("Add").
+						OnClick(func(ctx app.Context, e app.Event) {
+							c.runSimpleCCalculator()
+						}),
+					app.Div().Text(
+						c.simpleCCalculatorOutputSum,
+					),
+				),
 			),
 		),
 	)
@@ -166,7 +204,7 @@ func (c *AppComponent) runSimpleTinyGoCalculator() {
 		js.Global().Call("openTinyGoWASMModule", "/web/sparkexamples/tinygo/simple_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
 			log.Println("running Simple TinyGo Calculator")
 
-			c.simpleTinyGoCalculatorOutputSum = module[0].Get("exports").Call("ignite", c.simpleTinyGoCalculatorInputFirstAddend, c.simplyTinyGoCalculatorInputSecondAddend).Int()
+			c.simpleTinyGoCalculatorOutputSum = module[0].Get("exports").Call("ignite", c.simpleTinyGoCalculatorInputFirstAddend, c.simpleTinyGoCalculatorInputSecondAddend).Int()
 
 			c.Update()
 
@@ -218,7 +256,7 @@ func (c *AppComponent) runSimpleGoCalculator() {
 		js.Global().Call("openGoWASMModule", "/web/sparkexamples/go/simple_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
 			log.Println("running Simple Go Calculator")
 
-			c.simpleGoCalculatorOutputSum = js.Global().Call("ignite", c.simpleGoCalculatorInputFirstAddend, c.simplyGoCalculatorInputSecondAddend).Int()
+			c.simpleGoCalculatorOutputSum = js.Global().Call("ignite", c.simpleGoCalculatorInputFirstAddend, c.simpleGoCalculatorInputSecondAddend).Int()
 
 			c.Update()
 
@@ -249,6 +287,18 @@ func (c *AppComponent) runJSONGoCalculator() {
 
 			return nil
 		}))
+
+		return nil
+	}))
+}
+
+func (c *AppComponent) runSimpleCCalculator() {
+	js.Global().Call("openWASIWASMModule", "/web/sparkexamples/c/simple_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
+		log.Println("running Simple C Calculator")
+
+		c.simpleCCalculatorOutputSum = module[0].Get("exports").Call("ignite", c.simpleCCalculatorInputFirstAddend, c.simpleCCalculatorInputSecondAddend).Int()
+
+		c.Update()
 
 		return nil
 	}))
