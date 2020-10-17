@@ -2,5 +2,6 @@
   "go.toolsEnvVars": {
     "GOARCH": "wasm",
     "GOOS": "js"
-  }
+  },
+  "java.configuration.updateBuildConfiguration": "automatic"
 }
