@@ -33,6 +33,10 @@ type AppComponent struct {
 	simpleCCalculatorWASIInputFirstAddend  int
 	simpleCCalculatorWASIInputSecondAddend int
 	simpleCCalculatorWASIOutputSum         int
+
+	simpleCppCalculatorWASIInputFirstAddend  int
+	simpleCppCalculatorWASIInputSecondAddend int
+	simpleCppCalculatorWASIOutputSum         int
 }
 
 func (c *AppComponent) Render() app.UI {
@@ -218,6 +222,40 @@ func (c *AppComponent) Render() app.UI {
 						c.simpleCCalculatorWASIOutputSum,
 					),
 				),
+				c.getExample(
+					"Simple C++ Calculator (WASI)",
+					app.Div().Body(
+						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
+							firstAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse first addend: %v\n", err)
+
+								return
+							}
+
+							c.simpleCppCalculatorWASIInputFirstAddend = firstAddend
+						}),
+						app.Input().Class("pf-c-form-control").Type("number").Pattern(`\d`).Placeholder("Second Addend").OnInput(func(ctx app.Context, e app.Event) {
+							secondAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse second addend: %v\n", err)
+
+								return
+							}
+
+							c.simpleCppCalculatorWASIInputSecondAddend = secondAddend
+						}),
+					),
+					app.Button().
+						Class("pf-c-button pf-m-control").
+						Text("Add").
+						OnClick(func(ctx app.Context, e app.Event) {
+							c.runSimpleCppCalculatorWASI()
+						}),
+					app.Div().Text(
+						c.simpleCppCalculatorWASIOutputSum,
+					),
+				),
 			),
 		),
 	)
@@ -347,6 +385,18 @@ func (c *AppComponent) runSimpleCCalculatorWASI() {
 		log.Println("running Simple C Calculator (WASI)")
 
 		c.simpleCCalculatorWASIOutputSum = module[0].Get("exports").Call("ignite", c.simpleCCalculatorWASIInputFirstAddend, c.simpleCCalculatorWASIInputSecondAddend).Int()
+
+		c.Update()
+
+		return nil
+	}))
+}
+
+func (c *AppComponent) runSimpleCppCalculatorWASI() {
+	js.Global().Call("openWASIWASMModule", "/web/sparkexamples/cpp/simple_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
+		log.Println("running Simple C++ Calculator (WASI)")
+
+		c.simpleCppCalculatorWASIOutputSum = module[0].Get("exports").Call("ignite", c.simpleCppCalculatorWASIInputFirstAddend, c.simpleCppCalculatorWASIInputSecondAddend).Int()
 
 		c.Update()
 
