@@ -1,7 +1,7 @@
 # Aliases
 all: build
 
-build: build-ion build-sparkexamples-tinygo-simple_calculator build-sparkexamples-tinygo-json_calculator build-sparkexamples-go-simple_calculator build-sparkexamples-go-json_calculator build-sparkexamples-c-simple_calculator build-sparkexamples-cpp-simple_calculator
+build: build-ion build-sparkexamples-tinygo-simple_calculator build-sparkexamples-tinygo-json_calculator build-sparkexamples-go-simple_calculator build-sparkexamples-go-json_calculator build-sparkexamples-c-simple_calculator build-sparkexamples-cpp-simple_calculator build-sparkexamples-java-simple_calculator
 
 # Builders
 build-ion:
@@ -28,6 +28,9 @@ build-sparkexamples-c-simple_calculator: build-clang-wasm32-wasi-container
 
 build-sparkexamples-cpp-simple_calculator: build-clang-wasm32-wasi-container
 	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/sparkexamples/cpp/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/sparkexamples/cpp/simple_calculator/ pojntfx/clang-wasm32-wasi sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && clang --sysroot=/wasi/wasi-sysroot --target=wasm32-wasi -Wl,--no-entry -fno-exceptions -o $$OUTDIR/main.wasm main.cc'
+
+build-sparkexamples-java-simple_calculator:
+	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/sparkexamples/java/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/sparkexamples/java/simple_calculator/ gradle sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && ./gradlew build && cp build/distributions/* $$OUTDIR'
 
 # Runners
 run-ion: build-ion

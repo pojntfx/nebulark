@@ -37,6 +37,10 @@ type AppComponent struct {
 	simpleCppCalculatorWASIInputFirstAddend  int
 	simpleCppCalculatorWASIInputSecondAddend int
 	simpleCppCalculatorWASIOutputSum         int
+
+	simpleJavaCalculatorJWebAssemblyWASMInputFirstAddend  int
+	simpleJavaCalculatorJWebAssemblyWASMInputSecondAddend int
+	simpleJavaCalculatorJWebAssemblyWASMOutputSum         int
 }
 
 func (c *AppComponent) Render() app.UI {
@@ -256,6 +260,40 @@ func (c *AppComponent) Render() app.UI {
 						c.simpleCppCalculatorWASIOutputSum,
 					),
 				),
+				c.getExample(
+					`Simple Java Calculator (JWebAssembly wasm) (Only supported in Firefox & Chromium with --js-flags="--experimental-wasm-reftypes")`,
+					app.Div().Body(
+						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
+							firstAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse first addend: %v\n", err)
+
+								return
+							}
+
+							c.simpleJavaCalculatorJWebAssemblyWASMInputFirstAddend = firstAddend
+						}),
+						app.Input().Class("pf-c-form-control").Type("number").Pattern(`\d`).Placeholder("Second Addend").OnInput(func(ctx app.Context, e app.Event) {
+							secondAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse second addend: %v\n", err)
+
+								return
+							}
+
+							c.simpleJavaCalculatorJWebAssemblyWASMInputSecondAddend = secondAddend
+						}),
+					),
+					app.Button().
+						Class("pf-c-button pf-m-control").
+						Text("Add").
+						OnClick(func(ctx app.Context, e app.Event) {
+							c.runSimpleJavaCalculatorJWebAssemblyWASM()
+						}),
+					app.Div().Text(
+						c.simpleJavaCalculatorJWebAssemblyWASMOutputSum,
+					),
+				),
 			),
 		),
 	)
@@ -402,4 +440,20 @@ func (c *AppComponent) runSimpleCppCalculatorWASI() {
 
 		return nil
 	}))
+}
+
+func (c *AppComponent) runSimpleJavaCalculatorJWebAssemblyWASM() {
+	js.Global().Call(
+		"openJavaWASMModule",
+		"/web/sparkexamples/java/simple_calculator/simple_calculator.wasm",
+		"/web/sparkexamples/java/simple_calculator/simple_calculator.wasm.js",
+		js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
+			log.Println("running Simple Java Calculator (JWebAssembly wasm)")
+
+			c.simpleJavaCalculatorJWebAssemblyWASMOutputSum = module[0].Get("exports").Call("ignite", c.simpleJavaCalculatorJWebAssemblyWASMInputFirstAddend, c.simpleJavaCalculatorJWebAssemblyWASMInputSecondAddend).Int()
+
+			c.Update()
+
+			return nil
+		}))
 }
