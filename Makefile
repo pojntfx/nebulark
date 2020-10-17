@@ -30,7 +30,7 @@ build-sparkexamples-cpp-simple_calculator: build-clang-wasm32-wasi-container
 	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/sparkexamples/cpp/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/sparkexamples/cpp/simple_calculator/ pojntfx/clang-wasm32-wasi sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && clang --sysroot=/wasi/wasi-sysroot --target=wasm32-wasi -Wl,--no-entry -fno-exceptions -o $$OUTDIR/main.wasm main.cc'
 
 build-sparkexamples-java-simple_calculator:
-	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/sparkexamples/java/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/sparkexamples/java/simple_calculator/ gradle sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && ./gradlew build && cp build/distributions/* $$OUTDIR'
+	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/sparkexamples/java/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/sparkexamples/java/simple_calculator/ gradle sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && ./gradlew build && cp build/distributions/* $$OUTDIR && echo "export default wasmImports;" >> $$OUTDIR/$$(ls $$OUTDIR | grep .wasm.js)'
 
 # Runners
 run-ion: build-ion
