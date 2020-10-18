@@ -3,8 +3,8 @@
 #include <string.h>
 
 #include "_deps/base64/base64.h"
-#include "build/jansson-prefix/include/jansson.h"
-// #include "jansson.h"
+// #include "build/jansson-prefix/include/jansson.h"
+#include "jansson.h"
 
 static unsigned char *decode(char *decode, unsigned int decodelen) {
   unsigned char *decode_out;
@@ -13,8 +13,6 @@ static unsigned char *decode(char *decode, unsigned int decodelen) {
   decode_out = malloc(BASE64_DECODE_OUT_SIZE(decodelen));
 
   encodelen = base64_decode(decode, decodelen, decode_out);
-
-  free(decode_out);
 
   return decode_out;
 }
@@ -26,8 +24,6 @@ static char *encode(unsigned char *encode, unsigned int encodelen) {
   encode_out = malloc(BASE64_ENCODE_OUT_SIZE(encodelen));
 
   base64_encode(encode, encodelen, encode_out);
-
-  free(encode_out);
 
   return encode_out;
 }
@@ -49,6 +45,8 @@ static int spark_input_umarshal(spark_input_t *spark_input, char *data) {
   json_unpack(root, "{s:i, s:i}", "firstAddend", &first_addend, "secondAddend",
               &second_addend);
   if (!root) {
+    printf("%s: %s\n", data, json_error.text);
+
     return 1;
   }
 
@@ -74,13 +72,24 @@ static int spark_output_marshal(spark_output_t spark_output, char **data) {
 }
 
 int main(void) {
-  printf("Decoded: %s\n", decode("Zm9vYmFy", 8));
+  // Raw spark inut
+  char *raw_spark_input = "{\"firstAddend\": 5, \"secondAddend\": 2}";
 
-  // Unmarshal spark input
-  char *spark_input_decoded = "{\"firstAddend\": 5, \"secondAddend\": 2}";
+  printf("raw spark input: %s\n", raw_spark_input);
+
+  // Encode spark input
+  char *spark_input_encoded =
+      encode((void *)raw_spark_input, strlen(raw_spark_input));
+
+  printf("encoded spark input: %s\n", spark_input_encoded);
+
+  // Decode spark input
+  char *spark_input_decoded =
+      (char *)decode(spark_input_encoded, strlen(spark_input_encoded));
 
   printf("decoded spark input: %s\n", spark_input_decoded);
 
+  // Unmarshal spark input
   spark_input_t spark_input = {1, 1};
 
   int err = spark_input_umarshal(&spark_input, spark_input_decoded);
@@ -90,12 +99,13 @@ int main(void) {
     return 1;
   }
 
-  printf("firstAddend: %d, secondAddend: %d\n", spark_input.first_addend,
-         spark_input.second_addend);
+  // Process spark input
+  int sum = spark_input.first_addend + spark_input.second_addend;
+
+  printf("sum: %d\n", sum);
 
   // Marshal spark output
-  spark_output_t spark_output = {spark_input.first_addend +
-                                 spark_input.second_addend};
+  spark_output_t spark_output = {sum};
 
   char *spark_output_decoded = "";
   err = spark_output_marshal(spark_output, &spark_output_decoded);
