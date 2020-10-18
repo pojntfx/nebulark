@@ -86,8 +86,8 @@ func (s *WASISpark) OutputGetLength() int {
 	return s.wasmExports.Call("nebulark_ion_spark_output_get_length").Int()
 }
 
-func (s *WASISpark) OutputGet(index int) int {
-	return s.wasmExports.Call("nebulark_ion_spark_output_get", index).Int()
+func (s *WASISpark) OutputGet(index int) uint8 {
+	return uint8(s.wasmExports.Call("nebulark_ion_spark_output_get", index).Int())
 }
 
 func (s *WASISpark) Deconstruct() error {
