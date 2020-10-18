@@ -45,8 +45,6 @@ static int spark_input_umarshal(spark_input_t *spark_input, char *data) {
   json_unpack(root, "{s:i, s:i}", "firstAddend", &first_addend, "secondAddend",
               &second_addend);
   if (!root) {
-    printf("%s: %s\n", data, json_error.text);
-
     return 1;
   }
 
