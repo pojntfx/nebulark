@@ -3,8 +3,8 @@
 #include <string.h>
 
 #include "_deps/base64/base64.h"
-// #include "build/jansson-prefix/include/jansson.h"
-#include "jansson.h"
+#include "build/jansson-prefix/include/jansson.h"
+// #include "jansson.h"
 
 static unsigned char *decode(char *decode, unsigned int decodelen) {
   unsigned char *decode_out;
@@ -69,6 +69,16 @@ static int spark_output_marshal(spark_output_t spark_output, char **data) {
   return 0;
 }
 
+char *spark_input_encoded;
+
+static void spark_input_init(int length) {
+  spark_input_encoded = malloc(length * sizeof(int));
+}
+
+static void spark_input_encoded_append(int index, char input) {
+  spark_input_encoded[index] = input;
+}
+
 int main(void) {
   // Raw spark inut
   char *raw_spark_input = "{\"firstAddend\": 5, \"secondAddend\": 2}";
@@ -76,10 +86,16 @@ int main(void) {
   printf("raw spark input: %s\n", raw_spark_input);
 
   // Encode spark input
-  char *spark_input_encoded =
+  char *spark_input_encoded_internal =
       encode((void *)raw_spark_input, strlen(raw_spark_input));
 
-  printf("encoded spark input: %s\n", spark_input_encoded);
+  printf("encoded spark input: %s\n", spark_input_encoded_internal);
+
+  // Read encoded spark input into memory
+  spark_input_init(strlen(spark_input_encoded_internal));
+  for (int i = 0; i < strlen(spark_input_encoded_internal); i++) {
+    spark_input_encoded_append(i, spark_input_encoded_internal[i]);
+  }
 
   // Decode spark input
   char *spark_input_decoded =
