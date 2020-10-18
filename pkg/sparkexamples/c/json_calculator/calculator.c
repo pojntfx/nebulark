@@ -13,7 +13,7 @@ unsigned char *calculator_base64_decode(char *decode, unsigned int decodelen) {
   unsigned char *decode_out;
   unsigned int encodelen;
 
-  decode_out = malloc(BASE64_DECODE_OUT_SIZE(decodelen));
+  decode_out = calloc(1, BASE64_DECODE_OUT_SIZE(decodelen));
 
   encodelen = base64_decode(decode, decodelen, decode_out);
 
@@ -24,7 +24,7 @@ char *calculator_base64_encode(unsigned char *encode, unsigned int encodelen) {
   char *encode_out;
   unsigned char *decode_out;
 
-  encode_out = malloc(BASE64_ENCODE_OUT_SIZE(encodelen));
+  encode_out = calloc(1, BASE64_ENCODE_OUT_SIZE(encodelen));
 
   base64_encode(encode, encodelen, encode_out);
 
@@ -78,21 +78,27 @@ nebulark_ion_spark_construct() {
   return 0;
 }
 
-int nebulark_ion_spark_input_set_length(int length) {
-  calculator_input_encoded = malloc(length * sizeof(char));
+__attribute__((export_name("nebulark_ion_spark_input_set_length"))) int
+nebulark_ion_spark_input_set_length(int length) {
+  calculator_input_encoded = calloc(length, sizeof(char));
 
   return 0;
 }
 
-int nebulark_ion_spark_input_set(int index, char input) {
+__attribute__((export_name("nebulark_ion_spark_input_set"))) int
+nebulark_ion_spark_input_set(int index, char input) {
   calculator_input_encoded[index] = input;
 
   return 0;
 }
 
-int nebulark_ion_spark_open() { return 0; }
+__attribute__((export_name("nebulark_ion_spark_open"))) int
+nebulark_ion_spark_open() {
+  return 0;
+}
 
-int nebulark_ion_spark_ignite() {
+__attribute__((export_name("nebulark_ion_spark_ignite"))) int
+nebulark_ion_spark_ignite() {
   // Decode spark input
   char *calculator_input_decoded = (char *)calculator_base64_decode(
       calculator_input_encoded, strlen(calculator_input_encoded));
@@ -125,73 +131,83 @@ int nebulark_ion_spark_ignite() {
   return 0;
 }
 
-int nebulark_ion_spark_close() { return 0; }
+__attribute__((export_name("nebulark_ion_spark_close"))) int
+nebulark_ion_spark_close() {
+  return 0;
+}
 
-int nebulark_ion_spark_output_get_length() {
+__attribute__((export_name("nebulark_ion_spark_output_get_length"))) int
+nebulark_ion_spark_output_get_length() {
   return strlen(calculator_output_encoded);
 };
 
-char nebulark_ion_spark_output_get(int index) {
+__attribute__((export_name("nebulark_ion_spark_output_get"))) char
+nebulark_ion_spark_output_get(int index) {
   return calculator_output_encoded[index];
 }
 
-int nebulark_ion_spark_deconstruct() { return 0; }
+__attribute__((export_name("nebulark_ion_spark_deconstruct"))) int
+nebulark_ion_spark_deconstruct() {
+  return 0;
+}
 
 // Testing
 int main(void) {
-  if (nebulark_ion_spark_construct() != 0) {
-    return 1;
-  }
+  //   if (nebulark_ion_spark_construct() != 0) {
+  //     return 1;
+  //   }
 
-  // Raw spark input
-  char *raw_calculator_input = "{\"firstAddend\": 5, \"secondAddend\": 2}";
-  printf("raw spark input: %s\n", raw_calculator_input);
+  //   // Raw spark input
+  //   char *raw_calculator_input = "{\"firstAddend\": 5, \"secondAddend\": 2}";
+  //   printf("raw spark input: %s\n", raw_calculator_input);
 
-  // Encode spark input
-  char *calculator_input_encoded_internal = calculator_base64_encode(
-      (void *)raw_calculator_input, strlen(raw_calculator_input));
+  //   // Encode spark input
+  //   char *calculator_input_encoded_internal = calculator_base64_encode(
+  //       (void *)raw_calculator_input, strlen(raw_calculator_input));
 
-  printf("encoded spark input: %s\n", calculator_input_encoded_internal);
+  //   printf("encoded spark input: %s\n", calculator_input_encoded_internal);
 
-  // Write encoded spark input into memory
-  if (nebulark_ion_spark_input_set_length(
-          strlen(calculator_input_encoded_internal)) != 0) {
-    return 1;
-  }
-  for (int i = 0; i < strlen(calculator_input_encoded_internal); i++) {
-    if (nebulark_ion_spark_input_set(i, calculator_input_encoded_internal[i]) !=
-        0) {
-      return 1;
-    };
-  }
+  //   // Write encoded spark input into memory
+  //   if (nebulark_ion_spark_input_set_length(
+  //           strlen(calculator_input_encoded_internal)) != 0) {
+  //     return 1;
+  //   }
+  //   for (int i = 0; i < strlen(calculator_input_encoded_internal); i++) {
+  //     if (nebulark_ion_spark_input_set(i,
+  //     calculator_input_encoded_internal[i]) !=
+  //         0) {
+  //       return 1;
+  //     };
+  //   }
 
-  if (nebulark_ion_spark_open() != 0) {
-    return 1;
-  };
+  //   if (nebulark_ion_spark_open() != 0) {
+  //     return 1;
+  //   };
 
-  // Ignite
-  if (nebulark_ion_spark_ignite() != 0) {
-    return 1;
-  }
+  //   // Ignite
+  //   if (nebulark_ion_spark_ignite() != 0) {
+  //     return 1;
+  //   }
 
-  if (nebulark_ion_spark_close() != 0) {
-    return 1;
-  };
+  //   if (nebulark_ion_spark_close() != 0) {
+  //     return 1;
+  //   };
 
-  // Read encoded spark input from memory
-  int calculator_output_length = nebulark_ion_spark_output_get_length();
-  char *name = NULL;
-  char *calculator_output_encoded_internal =
-      calloc(calculator_output_length, sizeof(name));
-  for (int i = 0; i < calculator_output_length; i++) {
-    calculator_output_encoded_internal[i] = nebulark_ion_spark_output_get(i);
-  }
+  //   // Read encoded spark input from memory
+  //   int calculator_output_length = nebulark_ion_spark_output_get_length();
+  //   char *name = NULL;
+  //   char *calculator_output_encoded_internal =
+  //       calloc(calculator_output_length, sizeof(name));
+  //   for (int i = 0; i < calculator_output_length; i++) {
+  //     calculator_output_encoded_internal[i] =
+  //     nebulark_ion_spark_output_get(i);
+  //   }
 
-  printf("encoded spark output: %s\n", calculator_output_encoded_internal);
+  //   printf("encoded spark output: %s\n", calculator_output_encoded_internal);
 
-  if (nebulark_ion_spark_deconstruct() != 0) {
-    return 1;
-  };
+  //   if (nebulark_ion_spark_deconstruct() != 0) {
+  //     return 1;
+  //   };
 
   return 0;
 }

@@ -465,16 +465,38 @@ func (c *AppComponent) runJSONCCalculatorWASI() {
 		return
 	}
 
+	encodedInput := base64.StdEncoding.EncodeToString([]byte(c.JSONCCalculatorWASIInput))
+
+	if err := c.JSONCCalculatorWASISpark.InputSetLength(len(encodedInput)); err != nil {
+		log.Printf("could not set spark input length: %v\n", err)
+
+		return
+	}
+
+	for i, character := range []uint8(encodedInput) {
+		if err := c.JSONCCalculatorWASISpark.InputSet(i, uint8(character)); err != nil {
+			log.Printf("could not set spark input: %v\n", err)
+
+			return
+		}
+	}
+
+	if err := c.JSONCCalculatorWASISpark.Open(); err != nil {
+		log.Printf("could not open spark: %v\n", err)
+
+		return
+	}
+
+	if err := c.JSONCCalculatorWASISpark.Ignite(); err != nil {
+		log.Printf("could not ignite spark: %v\n", err)
+
+		return
+	}
+
 	// js.Global().Call("openWASIWASMModule", "/web/sparkexamples/c/json_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
 	// 	log.Println("running JSON C Calculator (WASI)")
 
-	// 	encodedInput := base64.RawStdEncoding.EncodeToString([]byte(c.JSONCCalculatorWASIInput))
-
 	// 	module[0].Get("exports").Call("spark_init", len(encodedInput))
-
-	// 	for i, character := range []byte(encodedInput) {
-	// 		module[0].Get("exports").Call("spark_append_to_encoded_input", character, i)
-	// 	}
 
 	// 	outputLength := module[0].Get("exports").Call("spark_ignite").Int()
 
