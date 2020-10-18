@@ -41,7 +41,11 @@ set_target_properties(jansson_pkg PROPERTIES
 add_dependencies(jansson_pkg jansson)
 
 # Linking and building
-add_executable(calculator.wasm calculator.c)
+add_executable(calculator.wasm
+    nebulark_ion_spark.h
+    calculator.h
+    calculator.c
+)
 
 target_link_libraries(calculator.wasm
     base64
