@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "deps/base64/base64.h"
+#include "_deps/base64/base64.h"
+#include "build/include/jansson.h"
 
 static unsigned char *decode(char *decode, unsigned int decodelen) {
   unsigned char *decode_out;
