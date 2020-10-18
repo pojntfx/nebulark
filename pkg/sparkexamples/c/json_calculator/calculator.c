@@ -80,7 +80,7 @@ static void spark_input_encoded_append(int index, char input) {
   spark_input_encoded[index] = input;
 }
 
-static unsigned long spark_output_encoded_get_length() {
+static int spark_output_encoded_get_length() {
   return strlen(spark_output_encoded);
 }
 
