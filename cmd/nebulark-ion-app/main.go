@@ -9,6 +9,7 @@ func main() {
 	app.Route("/", &components.AppComponent{
 		JSONTinyGoCalculatorTinyGoWasmExecInput: `{"firstAddend": 1, "secondAddend": 2}`,
 		JSONGoCalculatorGoWasmExecInput:         `{"firstAddend": 1, "secondAddend": 2}`,
+		JSONCCalculatorWASIInput:                `{"firstAddend": 1, "secondAddend": 2}`,
 	})
 
 	app.Run()
