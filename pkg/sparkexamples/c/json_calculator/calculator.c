@@ -3,8 +3,8 @@
 #include <string.h>
 
 #include "_deps/base64/base64.h"
-// #include "build/jansson-prefix/include/jansson.h"
-#include "jansson.h"
+#include "build/jansson-prefix/include/jansson.h"
+// #include "jansson.h"
 
 static unsigned char *decode(char *decode, unsigned int decodelen) {
   unsigned char *decode_out;
@@ -76,8 +76,6 @@ static int spark_output_marshal(spark_output_t spark_output, char **data) {
 int main(void) {
   printf("Decoded: %s\n", decode("Zm9vYmFy", 8));
 
-  printf("Encoded: %s\n", encode((void *)"foobar", 6));
-
   // Unmarshal spark input
   char *spark_input_decoded = "{\"firstAddend\": 5, \"secondAddend\": 2}";
 
@@ -95,7 +93,7 @@ int main(void) {
   printf("firstAddend: %d, secondAddend: %d\n", spark_input.first_addend,
          spark_input.second_addend);
 
-  // Marshal spark input
+  // Marshal spark output
   spark_output_t spark_output = {spark_input.first_addend +
                                  spark_input.second_addend};
 
@@ -108,6 +106,12 @@ int main(void) {
   }
 
   printf("decoded spark output: %s\n", spark_output_decoded);
+
+  // Encode spark output
+  char *spark_output_encoded =
+      encode((void *)spark_output_decoded, strlen(spark_output_decoded));
+
+  printf("encoded spark output: %s\n", spark_output_encoded);
 
   return 0;
 }
