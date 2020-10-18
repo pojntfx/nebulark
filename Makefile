@@ -1,7 +1,7 @@
 # Aliases
 all: build
 
-build: build-ion build-sparkexamples-tinygo-simple_calculator build-sparkexamples-tinygo-json_calculator build-sparkexamples-go-simple_calculator build-sparkexamples-go-json_calculator build-sparkexamples-c-simple_calculator build-sparkexamples-cpp-simple_calculator build-sparkexamples-java-simple_calculator
+build: build-ion build-sparkexamples-tinygo-simple_calculator build-sparkexamples-tinygo-json_calculator build-sparkexamples-go-simple_calculator build-sparkexamples-go-json_calculator build-sparkexamples-c-simple_calculator build-sparkexamples-c-json_calculator build-sparkexamples-cpp-simple_calculator build-sparkexamples-java-simple_calculator
 
 # Builders
 build-ion:
@@ -20,14 +20,17 @@ build-sparkexamples-go-simple_calculator:
 build-sparkexamples-go-json_calculator:
 	@GOARCH=wasm GOOS=js go build -o web/sparkexamples/go/json_calculator/main.wasm ./pkg/sparkexamples/go/json_calculator/main.go
 
-build-clang-wasm32-wasi-container:
-	@docker build -t pojntfx/clang-wasm32-wasi pkg/sparkexamples/c/simple_calculator
+build-wasi-sdk-container:
+	@docker build -t pojntfx/wasi-sdk pkg/sparkexamples/c/json_calculator
 
-build-sparkexamples-c-simple_calculator: build-clang-wasm32-wasi-container
-	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/sparkexamples/c/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/sparkexamples/c/simple_calculator/ pojntfx/clang-wasm32-wasi sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && clang --sysroot=/wasi/wasi-sysroot --target=wasm32-wasi -Wl,--no-entry -o $$OUTDIR/main.wasm main.c'
+build-sparkexamples-c-simple_calculator: build-wasi-sdk-container
+	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/sparkexamples/c/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/sparkexamples/c/simple_calculator/ pojntfx/wasi-sdk sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && cmake . && make && cp calculator.wasm $$OUTDIR/main.wasm'
 
-build-sparkexamples-cpp-simple_calculator: build-clang-wasm32-wasi-container
-	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/sparkexamples/cpp/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/sparkexamples/cpp/simple_calculator/ pojntfx/clang-wasm32-wasi sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && clang --sysroot=/wasi/wasi-sysroot --target=wasm32-wasi -Wl,--no-entry -fno-exceptions -o $$OUTDIR/main.wasm main.cc'
+build-sparkexamples-c-json_calculator: build-wasi-sdk-container
+	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/sparkexamples/c/json_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/sparkexamples/c/json_calculator/ pojntfx/wasi-sdk sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && rm -rf deps && mkdir -p deps && git clone https://github.com/zhicheng/base64.git deps/base64 && cmake . && make && cp calculator.wasm $$OUTDIR/main.wasm'
+
+build-sparkexamples-cpp-simple_calculator: build-wasi-sdk-container
+	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/sparkexamples/cpp/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/sparkexamples/cpp/simple_calculator/ pojntfx/wasi-sdk sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && cmake . && make && cp calculator.wasm $$OUTDIR/main.wasm'
 
 build-sparkexamples-java-simple_calculator:
 	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/sparkexamples/java/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/sparkexamples/java/simple_calculator/ gradle sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && ./gradlew build && cp build/distributions/* $$OUTDIR && echo "export default wasmImports;" >> $$OUTDIR/$$(ls $$OUTDIR | grep .wasm.js)'

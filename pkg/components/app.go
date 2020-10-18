@@ -2,6 +2,7 @@ package components
 
 import (
 	"encoding/base64"
+	"fmt"
 	"log"
 	"strconv"
 	"syscall/js"
@@ -33,6 +34,9 @@ type AppComponent struct {
 	simpleCCalculatorWASIInputFirstAddend  int
 	simpleCCalculatorWASIInputSecondAddend int
 	simpleCCalculatorWASIOutputSum         int
+
+	JSONCCalculatorWASIInput  string
+	jsonCCalculatorWASIOutput string
 
 	simpleCppCalculatorWASIInputFirstAddend  int
 	simpleCppCalculatorWASIInputSecondAddend int
@@ -224,6 +228,23 @@ func (c *AppComponent) Render() app.UI {
 						}),
 					app.Div().Text(
 						c.simpleCCalculatorWASIOutputSum,
+					),
+				),
+				c.getExample(
+					"JSON C Calculator (WASI)",
+					app.Div().Body(
+						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("text").Placeholder("JSON Input").Value(c.JSONCCalculatorWASIInput).OnInput(func(ctx app.Context, e app.Event) {
+							c.JSONCCalculatorWASIInput = e.Get("target").Get("value").String()
+						}),
+					),
+					app.Button().
+						Class("pf-c-button pf-m-control").
+						Text("Add").
+						OnClick(func(ctx app.Context, e app.Event) {
+							c.runJSONCCalculatorWASI()
+						}),
+					app.Div().Text(
+						c.jsonCCalculatorWASIOutput,
 					),
 				),
 				c.getExample(
@@ -428,6 +449,43 @@ func (c *AppComponent) runSimpleCCalculatorWASI() {
 
 		return nil
 	}))
+}
+
+func (c *AppComponent) runJSONCCalculatorWASI() {
+	js.Global().Call("openWASIWASMModule", "/web/sparkexamples/c/json_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
+		log.Println("running JSON C Calculator (WASI)")
+
+		encodedInput := base64.RawStdEncoding.EncodeToString([]byte(c.JSONCCalculatorWASIInput))
+
+		module[0].Get("exports").Call("spark_init", len(encodedInput))
+
+		for i, character := range []byte(encodedInput) {
+			module[0].Get("exports").Call("spark_append_to_encoded_input", character, i)
+		}
+
+		outputLength := module[0].Get("exports").Call("spark_ignite").Int()
+
+		encodedOutput := []uint8{}
+		for i := 0; i < outputLength; i++ {
+			encodedOutput = append(encodedOutput, uint8(module[0].Get("exports").Call("spark_get_from_encoded_input", i).Int()))
+		}
+
+		fmt.Println(outputLength, encodedInput)
+
+		decodedInput, err := base64.RawStdEncoding.DecodeString(string(encodedOutput))
+		if err != nil {
+			log.Fatal("could not decode spark output", err)
+
+			return nil
+		}
+
+		c.jsonCCalculatorWASIOutput = string(decodedInput)
+
+		c.Update()
+
+		return nil
+	}))
+
 }
 
 func (c *AppComponent) runSimpleCppCalculatorWASI() {
