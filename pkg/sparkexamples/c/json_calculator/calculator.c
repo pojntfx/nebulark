@@ -96,23 +96,17 @@ static int nebulark_ion_spark_ignite() {
   char *calculator_input_decoded = (char *)calculator_base64_decode(
       calculator_input_encoded, strlen(calculator_input_encoded));
 
-  printf("decoded spark input: %s\n", calculator_input_decoded);
-
   // Unmarshal spark input
   calculator_input_t calculator_input = {1, 1};
 
   int err =
       calculator_input_unmarshal(&calculator_input, calculator_input_decoded);
   if (err != 0) {
-    printf("could not unmarshal spark input\n");
-
     return 1;
   }
 
   // Process spark input
   int sum = calculator_input.first_addend + calculator_input.second_addend;
-
-  printf("sum: %d\n", sum);
 
   // Marshal spark output
   calculator_output_t calculator_output = {sum};
@@ -121,18 +115,11 @@ static int nebulark_ion_spark_ignite() {
   err =
       calculator_output_marshal(calculator_output, &calculator_output_decoded);
   if (err != 0) {
-    printf("could not marshal spark output\n");
-
     return 1;
   }
 
-  printf("decoded spark output: %s\n", calculator_output_decoded);
-
-  // Encode spark output
   calculator_output_encoded = calculator_base64_encode(
       (void *)calculator_output_decoded, strlen(calculator_output_decoded));
-
-  printf("encoded spark output in memory: %s\n", calculator_output_encoded);
 
   return 0;
 }
@@ -151,9 +138,12 @@ static int nebulark_ion_spark_deconstruct() { return 0; }
 
 // Testing
 int main(void) {
+  if (nebulark_ion_spark_construct() != 0) {
+    return 1;
+  }
+
   // Raw spark input
   char *raw_calculator_input = "{\"firstAddend\": 5, \"secondAddend\": 2}";
-
   printf("raw spark input: %s\n", raw_calculator_input);
 
   // Encode spark input
@@ -163,17 +153,29 @@ int main(void) {
   printf("encoded spark input: %s\n", calculator_input_encoded_internal);
 
   // Write encoded spark input into memory
-  nebulark_ion_spark_input_set_length(
-      strlen(calculator_input_encoded_internal));
+  if (nebulark_ion_spark_input_set_length(
+          strlen(calculator_input_encoded_internal)) != 0) {
+    return 1;
+  }
   for (int i = 0; i < strlen(calculator_input_encoded_internal); i++) {
-    nebulark_ion_spark_input_set(i, calculator_input_encoded_internal[i]);
+    if (nebulark_ion_spark_input_set(i, calculator_input_encoded_internal[i]) !=
+        0) {
+      return 1;
+    };
   }
 
+  if (nebulark_ion_spark_open() != 0) {
+    return 1;
+  };
+
   // Ignite
-  int err = nebulark_ion_spark_ignite();
-  if (err != 0) {
-    printf("spark ignition returned error code: %d\n", err);
+  if (nebulark_ion_spark_ignite() != 0) {
+    return 1;
   }
+
+  if (nebulark_ion_spark_close() != 0) {
+    return 1;
+  };
 
   // Read encoded spark input from memory
   int calculator_output_length = nebulark_ion_spark_output_get_length();
@@ -185,6 +187,10 @@ int main(void) {
   }
 
   printf("encoded spark output: %s\n", calculator_output_encoded_internal);
+
+  if (nebulark_ion_spark_deconstruct() != 0) {
+    return 1;
+  };
 
   return 0;
 }
