@@ -9,8 +9,7 @@
 #include "nebulark_ion_spark.h"
 
 // base64 utils
-static unsigned char *calculator_base64_decode(char *decode,
-                                               unsigned int decodelen) {
+unsigned char *calculator_base64_decode(char *decode, unsigned int decodelen) {
   unsigned char *decode_out;
   unsigned int encodelen;
 
@@ -21,8 +20,7 @@ static unsigned char *calculator_base64_decode(char *decode,
   return decode_out;
 }
 
-static char *calculator_base64_encode(unsigned char *encode,
-                                      unsigned int encodelen) {
+char *calculator_base64_encode(unsigned char *encode, unsigned int encodelen) {
   char *encode_out;
   unsigned char *decode_out;
 
@@ -34,8 +32,8 @@ static char *calculator_base64_encode(unsigned char *encode,
 }
 
 // IO utils
-static int calculator_input_unmarshal(calculator_input_t *calculator_input,
-                                      char *data) {
+int calculator_input_unmarshal(calculator_input_t *calculator_input,
+                               char *data) {
   json_t *root;
   json_error_t json_error;
 
@@ -56,8 +54,8 @@ static int calculator_input_unmarshal(calculator_input_t *calculator_input,
   return 0;
 }
 
-static int calculator_output_marshal(calculator_output_t calculator_output,
-                                     char **data) {
+int calculator_output_marshal(calculator_output_t calculator_output,
+                              char **data) {
   json_t *root = json_pack("{s:i}", "sum", calculator_output.sum);
 
   *data = json_dumps(root, 0);
@@ -75,23 +73,26 @@ char *calculator_input_encoded;
 char *calculator_output_encoded;
 
 // Functions
-static int nebulark_ion_spark_construct() { return 0; }
+__attribute__((export_name("nebulark_ion_spark_construct"))) int
+nebulark_ion_spark_construct() {
+  return 0;
+}
 
-static int nebulark_ion_spark_input_set_length(int length) {
+int nebulark_ion_spark_input_set_length(int length) {
   calculator_input_encoded = malloc(length * sizeof(char));
 
   return 0;
 }
 
-static int nebulark_ion_spark_input_set(int index, char input) {
+int nebulark_ion_spark_input_set(int index, char input) {
   calculator_input_encoded[index] = input;
 
   return 0;
 }
 
-static int nebulark_ion_spark_open() { return 0; }
+int nebulark_ion_spark_open() { return 0; }
 
-static int nebulark_ion_spark_ignite() {
+int nebulark_ion_spark_ignite() {
   // Decode spark input
   char *calculator_input_decoded = (char *)calculator_base64_decode(
       calculator_input_encoded, strlen(calculator_input_encoded));
@@ -124,17 +125,17 @@ static int nebulark_ion_spark_ignite() {
   return 0;
 }
 
-static int nebulark_ion_spark_close() { return 0; }
+int nebulark_ion_spark_close() { return 0; }
 
-static int nebulark_ion_spark_output_get_length() {
+int nebulark_ion_spark_output_get_length() {
   return strlen(calculator_output_encoded);
 };
 
-static char nebulark_ion_spark_output_get(int index) {
+char nebulark_ion_spark_output_get(int index) {
   return calculator_output_encoded[index];
 }
 
-static int nebulark_ion_spark_deconstruct() { return 0; }
+int nebulark_ion_spark_deconstruct() { return 0; }
 
 // Testing
 int main(void) {

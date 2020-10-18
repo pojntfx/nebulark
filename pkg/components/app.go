@@ -2,12 +2,12 @@ package components
 
 import (
 	"encoding/base64"
-	"fmt"
 	"log"
 	"strconv"
 	"syscall/js"
 
 	"github.com/maxence-charriere/go-app/v7/pkg/app"
+	"github.com/pojntfx/nebulark/pkg/sparks"
 )
 
 type AppComponent struct {
@@ -35,6 +35,7 @@ type AppComponent struct {
 	simpleCCalculatorWASIInputSecondAddend int
 	simpleCCalculatorWASIOutputSum         int
 
+	JSONCCalculatorWASISpark  *sparks.WASISpark
 	JSONCCalculatorWASIInput  string
 	jsonCCalculatorWASIOutput string
 
@@ -452,40 +453,51 @@ func (c *AppComponent) runSimpleCCalculatorWASI() {
 }
 
 func (c *AppComponent) runJSONCCalculatorWASI() {
-	js.Global().Call("openWASIWASMModule", "/web/sparkexamples/c/json_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
-		log.Println("running JSON C Calculator (WASI)")
+	if err := c.JSONCCalculatorWASISpark.LoadExports(); err != nil {
+		log.Printf("could not load spark exports: %v\n", err)
 
-		encodedInput := base64.RawStdEncoding.EncodeToString([]byte(c.JSONCCalculatorWASIInput))
+		return
+	}
 
-		module[0].Get("exports").Call("spark_init", len(encodedInput))
+	if err := c.JSONCCalculatorWASISpark.Construct(); err != nil {
+		log.Printf("could not construct spark: %v\n", err)
 
-		for i, character := range []byte(encodedInput) {
-			module[0].Get("exports").Call("spark_append_to_encoded_input", character, i)
-		}
+		return
+	}
 
-		outputLength := module[0].Get("exports").Call("spark_ignite").Int()
+	// js.Global().Call("openWASIWASMModule", "/web/sparkexamples/c/json_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
+	// 	log.Println("running JSON C Calculator (WASI)")
 
-		encodedOutput := []uint8{}
-		for i := 0; i < outputLength; i++ {
-			encodedOutput = append(encodedOutput, uint8(module[0].Get("exports").Call("spark_get_from_encoded_input", i).Int()))
-		}
+	// 	encodedInput := base64.RawStdEncoding.EncodeToString([]byte(c.JSONCCalculatorWASIInput))
 
-		fmt.Println(outputLength, encodedInput)
+	// 	module[0].Get("exports").Call("spark_init", len(encodedInput))
 
-		decodedInput, err := base64.RawStdEncoding.DecodeString(string(encodedOutput))
-		if err != nil {
-			log.Fatal("could not decode spark output", err)
+	// 	for i, character := range []byte(encodedInput) {
+	// 		module[0].Get("exports").Call("spark_append_to_encoded_input", character, i)
+	// 	}
 
-			return nil
-		}
+	// 	outputLength := module[0].Get("exports").Call("spark_ignite").Int()
 
-		c.jsonCCalculatorWASIOutput = string(decodedInput)
+	// 	encodedOutput := []uint8{}
+	// 	for i := 0; i < outputLength; i++ {
+	// 		encodedOutput = append(encodedOutput, uint8(module[0].Get("exports").Call("spark_get_from_encoded_input", i).Int()))
+	// 	}
 
-		c.Update()
+	// 	fmt.Println(outputLength, encodedInput)
 
-		return nil
-	}))
+	// 	decodedInput, err := base64.RawStdEncoding.DecodeString(string(encodedOutput))
+	// 	if err != nil {
+	// 		log.Fatal("could not decode spark output", err)
 
+	// 		return nil
+	// 	}
+
+	// 	c.jsonCCalculatorWASIOutput = string(decodedInput)
+
+	// 	c.Update()
+
+	// 	return nil
+	// }))
 }
 
 func (c *AppComponent) runSimpleCppCalculatorWASI() {
