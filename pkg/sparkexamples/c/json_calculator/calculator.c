@@ -70,6 +70,7 @@ static int spark_output_marshal(spark_output_t spark_output, char **data) {
 }
 
 char *spark_input_encoded;
+char *spark_output_encoded;
 
 static void spark_input_init(int length) {
   spark_input_encoded = malloc(length * sizeof(int));
@@ -77,6 +78,14 @@ static void spark_input_init(int length) {
 
 static void spark_input_encoded_append(int index, char input) {
   spark_input_encoded[index] = input;
+}
+
+static int spark_output_encoded_get_length() {
+  return strlen(spark_output_encoded);
+}
+
+static char spark_output_encoded_get(int index) {
+  return spark_output_encoded[index];
 }
 
 int main(void) {
@@ -96,6 +105,8 @@ int main(void) {
   for (int i = 0; i < strlen(spark_input_encoded_internal); i++) {
     spark_input_encoded_append(i, spark_input_encoded_internal[i]);
   }
+
+  printf("encoded spark input in memory: %s\n", spark_input_encoded);
 
   // Decode spark input
   char *spark_input_decoded =
@@ -132,10 +143,19 @@ int main(void) {
   printf("decoded spark output: %s\n", spark_output_decoded);
 
   // Encode spark output
-  char *spark_output_encoded =
-      encode((void *)spark_output_decoded, strlen(spark_output_decoded));
+  char *spark_output_encoded_internal = encode(
+      (void *)spark_output_decoded, strlen(spark_output_encoded_internal));
 
-  printf("encoded spark output: %s\n", spark_output_encoded);
+  printf("encoded spark output: %s\n", spark_output_encoded_internal);
+
+  // Write encoded spark output into memory
+  spark_output_encoded =
+      malloc(strlen(spark_output_encoded_internal) * sizeof(int));
+  for (int i = 0; i < strlen(spark_output_encoded_internal); i++) {
+    spark_output_encoded[i] = spark_output_encoded_internal[i];
+  }
+
+  printf("encoded spark output in memory: %s\n", spark_output_encoded);
 
   return 0;
 }
