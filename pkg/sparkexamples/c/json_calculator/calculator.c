@@ -3,8 +3,8 @@
 #include <string.h>
 
 #include "_deps/base64/base64.h"
-#include "build/jansson-prefix/include/jansson.h"
-// #include "jansson.h"
+// #include "build/jansson-prefix/include/jansson.h"
+#include "jansson.h"
 
 static unsigned char *decode(char *decode, unsigned int decodelen) {
   unsigned char *decode_out;
@@ -73,14 +73,14 @@ char *spark_input_encoded;
 char *spark_output_encoded;
 
 static void spark_input_init(int length) {
-  spark_input_encoded = malloc(length * sizeof(int));
+  spark_input_encoded = malloc(length * sizeof(char));
 }
 
 static void spark_input_encoded_append(int index, char input) {
   spark_input_encoded[index] = input;
 }
 
-static int spark_output_encoded_get_length() {
+static unsigned long spark_output_encoded_get_length() {
   return strlen(spark_output_encoded);
 }
 
@@ -88,26 +88,7 @@ static char spark_output_encoded_get(int index) {
   return spark_output_encoded[index];
 }
 
-int main(void) {
-  // Raw spark inut
-  char *raw_spark_input = "{\"firstAddend\": 5, \"secondAddend\": 2}";
-
-  printf("raw spark input: %s\n", raw_spark_input);
-
-  // Encode spark input
-  char *spark_input_encoded_internal =
-      encode((void *)raw_spark_input, strlen(raw_spark_input));
-
-  printf("encoded spark input: %s\n", spark_input_encoded_internal);
-
-  // Read encoded spark input into memory
-  spark_input_init(strlen(spark_input_encoded_internal));
-  for (int i = 0; i < strlen(spark_input_encoded_internal); i++) {
-    spark_input_encoded_append(i, spark_input_encoded_internal[i]);
-  }
-
-  printf("encoded spark input in memory: %s\n", spark_input_encoded);
-
+static int spark_ignite() {
   // Decode spark input
   char *spark_input_decoded =
       (char *)decode(spark_input_encoded, strlen(spark_input_encoded));
@@ -143,19 +124,48 @@ int main(void) {
   printf("decoded spark output: %s\n", spark_output_decoded);
 
   // Encode spark output
-  char *spark_output_encoded_internal = encode(
-      (void *)spark_output_decoded, strlen(spark_output_encoded_internal));
-
-  printf("encoded spark output: %s\n", spark_output_encoded_internal);
-
-  // Write encoded spark output into memory
   spark_output_encoded =
-      malloc(strlen(spark_output_encoded_internal) * sizeof(int));
-  for (int i = 0; i < strlen(spark_output_encoded_internal); i++) {
-    spark_output_encoded[i] = spark_output_encoded_internal[i];
-  }
+      encode((void *)spark_output_decoded, strlen(spark_output_decoded));
 
   printf("encoded spark output in memory: %s\n", spark_output_encoded);
+
+  return 0;
+}
+
+int main(void) {
+  // Raw spark input
+  char *raw_spark_input = "{\"firstAddend\": 5, \"secondAddend\": 2}";
+
+  printf("raw spark input: %s\n", raw_spark_input);
+
+  // Encode spark input
+  char *spark_input_encoded_internal =
+      encode((void *)raw_spark_input, strlen(raw_spark_input));
+
+  printf("encoded spark input: %s\n", spark_input_encoded_internal);
+
+  // Write encoded spark input into memory
+  spark_input_init(strlen(spark_input_encoded_internal));
+  for (int i = 0; i < strlen(spark_input_encoded_internal); i++) {
+    spark_input_encoded_append(i, spark_input_encoded_internal[i]);
+  }
+
+  // Ignite
+  int err = spark_ignite();
+  if (err != 0) {
+    printf("spark ignition returned error code: %d\n", err);
+  }
+
+  // Read encoded spark input from memory
+  int spark_output_length = spark_output_encoded_get_length();
+  char *name = NULL;
+  char *spark_output_encoded_internal =
+      calloc(spark_output_length, sizeof(name));
+  for (int i = 0; i < spark_output_length; i++) {
+    spark_output_encoded_internal[i] = spark_output_encoded_get(i);
+  }
+
+  printf("encoded spark output: %s\n", spark_output_encoded_internal);
 
   return 0;
 }
