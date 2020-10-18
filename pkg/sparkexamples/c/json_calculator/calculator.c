@@ -35,9 +35,9 @@ static char *encode(unsigned char *encode, unsigned int encodelen) {
 typedef struct {
   int first_addend;
   int second_addend;
-} addends_t;
+} spark_input_t;
 
-static int unmarshal_addends(addends_t *addends, char *data) {
+static int spark_input_umarshal(spark_input_t *spark_input, char *data) {
   json_t *root;
   json_error_t json_error;
 
@@ -52,8 +52,23 @@ static int unmarshal_addends(addends_t *addends, char *data) {
     return 1;
   }
 
-  addends->first_addend = first_addend;
-  addends->second_addend = second_addend;
+  spark_input->first_addend = first_addend;
+  spark_input->second_addend = second_addend;
+
+  return 0;
+}
+
+typedef struct {
+  int sum;
+} spark_output_t;
+
+static int spark_output_marshal(spark_output_t spark_output, char **data) {
+  json_t *root = json_pack("{s:i}", "sum", spark_output.sum);
+
+  *data = json_dumps(root, 0);
+  if (!data) {
+    return 1;
+  }
 
   return 0;
 }
@@ -63,16 +78,36 @@ int main(void) {
 
   printf("Encoded: %s\n", encode((void *)"foobar", 6));
 
-  addends_t addends = {1, 1};
+  // Unmarshal spark input
+  char *spark_input_decoded = "{\"firstAddend\": 5, \"secondAddend\": 2}";
 
-  int err =
-      unmarshal_addends(&addends, "{\"firstAddend\": 5, \"secondAddend\": 2}");
+  printf("decoded spark input: %s\n", spark_input_decoded);
+
+  spark_input_t spark_input = {1, 1};
+
+  int err = spark_input_umarshal(&spark_input, spark_input_decoded);
   if (err != 0) {
+    printf("could not unmarshal spark input\n");
+
     return 1;
   }
 
-  printf("firstAddend: %d, secondAddend: %d\n", addends.first_addend,
-         addends.second_addend);
+  printf("firstAddend: %d, secondAddend: %d\n", spark_input.first_addend,
+         spark_input.second_addend);
+
+  // Marshal spark input
+  spark_output_t spark_output = {spark_input.first_addend +
+                                 spark_input.second_addend};
+
+  char *spark_output_decoded = "";
+  err = spark_output_marshal(spark_output, &spark_output_decoded);
+  if (err != 0) {
+    printf("could not marshal spark output\n");
+
+    return 1;
+  }
+
+  printf("decoded spark output: %s\n", spark_output_decoded);
 
   return 0;
 }
