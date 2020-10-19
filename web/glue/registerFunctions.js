@@ -28,6 +28,18 @@ global.openGoWASMModule = (url, handler) => {
     );
 };
 
+global.openJWebAssemblyWASMModule = (url, wasmExecURL, handler) =>
+  import(wasmExecURL).then((wasmImports) =>
+    fetch(url)
+      .then((resp) => resp.arrayBuffer())
+      .then((bytes) =>
+        WebAssembly.instantiate(
+          bytes,
+          wasmImports.default
+        ).then(({ instance }) => handler(instance))
+      )
+  );
+
 global.openWASIWASMModule = (url, handler) =>
   import("https://unpkg.com/@wasmer/wasi@0.12.0/lib/index.esm.js").then(
     (wasiModule) =>
@@ -62,18 +74,6 @@ global.openWASIWASMModule = (url, handler) =>
       )
   );
 
-global.openJWebAssemblyWASMModule = (url, wasmExecURL, handler) =>
-  import(wasmExecURL).then((wasmImports) =>
-    fetch(url)
-      .then((resp) => resp.arrayBuffer())
-      .then((bytes) =>
-        WebAssembly.instantiate(
-          bytes,
-          wasmImports.default
-        ).then(({ instance }) => handler(instance))
-      )
-  );
-
 global.openTeaVMWASMModule = (url, wasmRuntimeURL, handler) =>
   import(wasmRuntimeURL).then((wasmImports) => {
     let options = {};
@@ -93,6 +93,21 @@ global.openTeaVMWASMModule = (url, wasmRuntimeURL, handler) =>
           vm.instance.exports.main();
 
           handler(vm.instance);
+        })
+      );
+  });
+
+global.openTinyGoWASMModule = (url, wasmRuntimeURL, handler) =>
+  import(wasmRuntimeURL).then((wasmImports) => {
+    const go = new wasmImports.default();
+
+    fetch(url)
+      .then((resp) => resp.arrayBuffer())
+      .then((bytes) =>
+        WebAssembly.instantiate(bytes, go.importObject).then(({ instance }) => {
+          go.run(instance);
+
+          handler(instance);
         })
       );
   });

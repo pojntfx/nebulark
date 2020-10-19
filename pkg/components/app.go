@@ -13,10 +13,12 @@ import (
 type AppComponent struct {
 	app.Compo
 
+	SimpleTinyGoCalculatorTinyGoWasmExecSpark             *sparks.TinyGoSpark
 	simpleTinyGoCalculatorTinyGoWasmExecInputFirstAddend  int
 	simpleTinyGoCalculatorTinyGoWasmExecInputSecondAddend int
 	simpleTinyGoCalculatorTinyGoWasmExecOutputSum         int
 
+	SimpleTinyGoCalculatorWASISpark             *sparks.WASISpark
 	simpleTinyGoCalculatorWASIInputFirstAddend  int
 	simpleTinyGoCalculatorWASIInputSecondAddend int
 	simpleTinyGoCalculatorWASIOutputSum         int
@@ -433,31 +435,27 @@ func (c *AppComponent) getExample(
 }
 
 func (c *AppComponent) runSimpleTinyGoCalculatorTinyGoWasmExec() {
-	js.Global().Call("import", "/web/glue/tinygo/wasm_exec.js").Call("then", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		js.Global().Call("openTinyGoWASMModule", "/web/sparkexamples/tinygo/simple_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
-			log.Println("running Simple TinyGo Calculator (TinyGo wasm_exec)")
+	log.Println("running Simple TinyGo Calculator (TinyGo wasm_exec)")
 
-			c.simpleTinyGoCalculatorTinyGoWasmExecOutputSum = module[0].Get("exports").Call("ignite", c.simpleTinyGoCalculatorTinyGoWasmExecInputFirstAddend, c.simpleTinyGoCalculatorTinyGoWasmExecInputSecondAddend).Int()
+	if err := c.SimpleTinyGoCalculatorTinyGoWasmExecSpark.LoadExports(); err != nil {
+		log.Printf("could not load spark exports: %v\n", err)
+	}
 
-			c.Update()
+	c.simpleTinyGoCalculatorTinyGoWasmExecOutputSum = c.SimpleTinyGoCalculatorTinyGoWasmExecSpark.Call("add", c.simpleTinyGoCalculatorTinyGoWasmExecInputFirstAddend, c.simpleTinyGoCalculatorTinyGoWasmExecInputSecondAddend).Int()
 
-			return nil
-		}))
-
-		return nil
-	}))
+	c.Update()
 }
 
 func (c *AppComponent) runSimpleTinyGoCalculatorWASI() {
-	js.Global().Call("openWASIWASMModule", "/web/sparkexamples/tinygo/simple_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
-		log.Println("running Simple TinyGo Calculator (WASI)")
+	log.Println("running Simple TinyGo Calculator (WASI)")
 
-		c.simpleTinyGoCalculatorWASIOutputSum = module[0].Get("exports").Call("ignite", c.simpleTinyGoCalculatorWASIInputFirstAddend, c.simpleTinyGoCalculatorWASIInputSecondAddend).Int()
+	if err := c.SimpleTinyGoCalculatorWASISpark.LoadExports(); err != nil {
+		log.Printf("could not load spark exports: %v\n", err)
+	}
 
-		c.Update()
+	c.simpleTinyGoCalculatorWASIOutputSum = c.SimpleTinyGoCalculatorWASISpark.Call("add", c.simpleTinyGoCalculatorWASIInputFirstAddend, c.simpleTinyGoCalculatorWASIInputSecondAddend).Int()
 
-		return nil
-	}))
+	c.Update()
 }
 
 func (c *AppComponent) runJSONTinyGoCalculatorTinyGoWasmExec() {
@@ -547,7 +545,6 @@ func (c *AppComponent) runSimpleCCalculatorWASI() {
 	c.simpleCCalculatorWASIOutputSum = c.SimpleCCalculatorWASISpark.Call("add", c.simpleCCalculatorWASIInputFirstAddend, c.simpleCCalculatorWASIInputSecondAddend).Int()
 
 	c.Update()
-
 }
 
 func (c *AppComponent) runJSONCCalculatorWASI() {
