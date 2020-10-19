@@ -1,12 +1,11 @@
-package com.pojtinger.felicitas;
+package space.nebulark.pkg.sparkexamples.teavm.json_calculator;
 
 import org.apache.commons.codec.binary.Base64;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.teavm.interop.Export;
 
-public class Client {
-
+public class Calculator {
     private static byte[] spark_input_encoded;
     private static byte[] spark_output_encoded;
 
@@ -122,5 +121,4 @@ public class Client {
     static int nebularkIonSparkDeconstruct() {
         return 0;
     }
-
 }

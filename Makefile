@@ -36,7 +36,7 @@ build-sparkexamples-jwebassembly-simple_calculator:
 	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/sparkexamples/jwebassembly/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/sparkexamples/jwebassembly/simple_calculator/ gradle sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && ./gradlew build && cp build/distributions/* $$OUTDIR && echo "export default wasmImports;" >> $$OUTDIR/$$(ls $$OUTDIR | grep .wasm.js)'
 
 build-sparkexamples-teavm-json_calculator:
-	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/sparkexamples/teavm/json_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/sparkexamples/teavm/json_calculator/ maven sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && mvn clean install && cp target/learningTeaVM-1.0-SNAPSHOT/teavm/classes.wasm $$OUTDIR/main.wasm'
+	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/sparkexamples/teavm/json_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/sparkexamples/teavm/json_calculator/ maven sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && mvn clean install && cp target/json_calculator-1.0-SNAPSHOT/teavm/classes.wasm $$OUTDIR/main.wasm'
 
 # Runners
 run-ion: build-ion
