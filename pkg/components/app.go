@@ -31,13 +31,15 @@ type AppComponent struct {
 	JSONGoCalculatorGoWasmExecInput  string
 	jsonGoCalculatorGoWasmExecOutput string
 
+	SimpleCCalculatorWASISpark             *sparks.WASISpark
 	simpleCCalculatorWASIInputFirstAddend  int
 	simpleCCalculatorWASIInputSecondAddend int
 	simpleCCalculatorWASIOutputSum         int
 
-	JSONCCalculatorWASISpark  *sparks.WASISpark
-	JSONCCalculatorWASIInput  string
-	jsonCCalculatorWASIOutput string
+	JSONCCalculatorWASISpark             *sparks.WASISpark
+	jsonCCalculatorWASIInputFirstAddend  int
+	jsonCCalculatorWASIInputSecondAddend int
+	jsonCCalculatorWASIOutputSum         int
 
 	simpleCppCalculatorWASIInputFirstAddend  int
 	simpleCppCalculatorWASIInputSecondAddend int
@@ -244,8 +246,25 @@ func (c *AppComponent) Render() app.UI {
 				c.getExample(
 					"JSON C Calculator (WASI)",
 					app.Div().Body(
-						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("text").Placeholder("JSON Input").Value(c.JSONCCalculatorWASIInput).OnInput(func(ctx app.Context, e app.Event) {
-							c.JSONCCalculatorWASIInput = e.Get("target").Get("value").String()
+						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
+							firstAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse first addend: %v\n", err)
+
+								return
+							}
+
+							c.jsonCCalculatorWASIInputFirstAddend = firstAddend
+						}),
+						app.Input().Class("pf-c-form-control").Type("number").Pattern(`\d`).Placeholder("Second Addend").OnInput(func(ctx app.Context, e app.Event) {
+							secondAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse second addend: %v\n", err)
+
+								return
+							}
+
+							c.jsonCCalculatorWASIInputSecondAddend = secondAddend
 						}),
 					),
 					app.Button().
@@ -255,7 +274,7 @@ func (c *AppComponent) Render() app.UI {
 							c.runJSONCCalculatorWASI()
 						}),
 					app.Div().Text(
-						c.jsonCCalculatorWASIOutput,
+						c.jsonCCalculatorWASIOutputSum,
 					),
 				),
 				c.getExample(
@@ -498,9 +517,9 @@ func (c *AppComponent) runJSONGoCalculatorGoWasmExec() {
 		js.Global().Call("openGoWASMModule", "/web/sparkexamples/go/json_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
 			log.Println("running JSON Go Calculator (Go wasm_exec)")
 
-			encodedOutput := js.Global().Call("ignite", base64.RawStdEncoding.EncodeToString([]byte(c.JSONGoCalculatorGoWasmExecInput))).String()
+			encodedOutput := js.Global().Call("ignite", base64.StdEncoding.EncodeToString([]byte(c.JSONGoCalculatorGoWasmExecInput))).String()
 
-			decodedOutput, err := base64.RawStdEncoding.DecodeString(encodedOutput)
+			decodedOutput, err := base64.StdEncoding.DecodeString(encodedOutput)
 			if err != nil {
 				log.Printf("could not decode spark output: %v\n", err)
 
@@ -519,86 +538,38 @@ func (c *AppComponent) runJSONGoCalculatorGoWasmExec() {
 }
 
 func (c *AppComponent) runSimpleCCalculatorWASI() {
-	js.Global().Call("openWASIWASMModule", "/web/sparkexamples/c/simple_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
-		log.Println("running Simple C Calculator (WASI)")
+	log.Println("running Simple C Calculator (WASI)")
 
-		c.simpleCCalculatorWASIOutputSum = module[0].Get("exports").Call("ignite", c.simpleCCalculatorWASIInputFirstAddend, c.simpleCCalculatorWASIInputSecondAddend).Int()
+	if err := c.SimpleCCalculatorWASISpark.LoadExports(); err != nil {
+		log.Printf("could not load spark exports: %v\n", err)
+	}
 
-		c.Update()
+	c.simpleCCalculatorWASIOutputSum = c.SimpleCCalculatorWASISpark.Call("add", c.simpleCCalculatorWASIInputFirstAddend, c.simpleCCalculatorWASIInputSecondAddend).Int()
 
-		return nil
-	}))
+	c.Update()
+
 }
 
 func (c *AppComponent) runJSONCCalculatorWASI() {
 	log.Println("running JSON C Calculator (WASI)")
 
-	if err := c.JSONCCalculatorWASISpark.LoadExports(); err != nil {
-		log.Printf("could not load spark exports: %v\n", err)
-
-		return
+	input := &struct {
+		FirstAddend  int `json:"firstAddend"`
+		SecondAddend int `json:"secondAddend"`
+	}{
+		FirstAddend:  c.jsonCCalculatorWASIInputFirstAddend,
+		SecondAddend: c.jsonCCalculatorWASIInputSecondAddend,
 	}
 
-	if err := c.JSONCCalculatorWASISpark.Construct(); err != nil {
-		log.Printf("could not construct spark: %v\n", err)
+	output := &struct {
+		Sum int `json:"sum"`
+	}{}
 
-		return
+	if err := c.JSONCCalculatorWASISpark.Run(input, output); err != nil {
+		log.Printf("could not run spark: %v\n", err)
 	}
 
-	encodedInput := base64.StdEncoding.EncodeToString([]byte(c.JSONCCalculatorWASIInput))
-
-	if err := c.JSONCCalculatorWASISpark.InputSetLength(len(encodedInput)); err != nil {
-		log.Printf("could not set spark input length: %v\n", err)
-
-		return
-	}
-
-	for i, character := range []uint8(encodedInput) {
-		if err := c.JSONCCalculatorWASISpark.InputSet(i, uint8(character)); err != nil {
-			log.Printf("could not set spark input: %v\n", err)
-
-			return
-		}
-	}
-
-	if err := c.JSONCCalculatorWASISpark.Open(); err != nil {
-		log.Printf("could not open spark: %v\n", err)
-
-		return
-	}
-
-	if err := c.JSONCCalculatorWASISpark.Ignite(); err != nil {
-		log.Printf("could not ignite spark: %v\n", err)
-
-		return
-	}
-
-	if err := c.JSONCCalculatorWASISpark.Close(); err != nil {
-		log.Printf("could not close spark: %v\n", err)
-
-		return
-	}
-
-	length := c.JSONCCalculatorWASISpark.OutputGetLength()
-	encodedOutput := []uint8{}
-	for i := 0; i < length; i++ {
-		encodedOutput = append(encodedOutput, c.JSONCCalculatorWASISpark.OutputGet(i))
-	}
-
-	decodedOutput, err := base64.StdEncoding.DecodeString(string(encodedOutput))
-	if err != nil {
-		log.Printf("could not decode output: %v\n", err)
-
-		return
-	}
-
-	c.jsonCCalculatorWASIOutput = string(decodedOutput)
-
-	if err := c.JSONCCalculatorWASISpark.Deconstruct(); err != nil {
-		log.Printf("could not deconstruct spark: %v\n", err)
-
-		return
-	}
+	c.jsonCCalculatorWASIOutputSum = output.Sum
 
 	c.Update()
 }
