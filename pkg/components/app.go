@@ -43,9 +43,9 @@ type AppComponent struct {
 	simpleCppCalculatorWASIInputSecondAddend int
 	simpleCppCalculatorWASIOutputSum         int
 
-	simpleJavaCalculatorJWebAssemblyWASMInputFirstAddend  int
-	simpleJavaCalculatorJWebAssemblyWASMInputSecondAddend int
-	simpleJavaCalculatorJWebAssemblyWASMOutputSum         int
+	simpleJWebAssemblyCalculatorJWebAssemblyWASMInputFirstAddend  int
+	simpleJWebAssemblyCalculatorJWebAssemblyWASMInputSecondAddend int
+	simpleJWebAssemblyCalculatorJWebAssemblyWASMOutputSum         int
 }
 
 func (c *AppComponent) Render() app.UI {
@@ -283,7 +283,7 @@ func (c *AppComponent) Render() app.UI {
 					),
 				),
 				c.getExample(
-					`Simple Java Calculator (JWebAssembly wasm)`,
+					`Simple JWebAssembly Calculator (JWebAssembly wasm)`,
 					app.Div().Body(
 						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
 							firstAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
@@ -293,7 +293,7 @@ func (c *AppComponent) Render() app.UI {
 								return
 							}
 
-							c.simpleJavaCalculatorJWebAssemblyWASMInputFirstAddend = firstAddend
+							c.simpleJWebAssemblyCalculatorJWebAssemblyWASMInputFirstAddend = firstAddend
 						}),
 						app.Input().Class("pf-c-form-control").Type("number").Pattern(`\d`).Placeholder("Second Addend").OnInput(func(ctx app.Context, e app.Event) {
 							secondAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
@@ -303,17 +303,17 @@ func (c *AppComponent) Render() app.UI {
 								return
 							}
 
-							c.simpleJavaCalculatorJWebAssemblyWASMInputSecondAddend = secondAddend
+							c.simpleJWebAssemblyCalculatorJWebAssemblyWASMInputSecondAddend = secondAddend
 						}),
 					),
 					app.Button().
 						Class("pf-c-button pf-m-control").
 						Text("Add").
 						OnClick(func(ctx app.Context, e app.Event) {
-							c.runSimpleJavaCalculatorJWebAssemblyWASM()
+							c.runSimpleJWebAssemblyCalculatorJWebAssemblyWASM()
 						}),
 					app.Div().Text(
-						c.simpleJavaCalculatorJWebAssemblyWASMOutputSum,
+						c.simpleJWebAssemblyCalculatorJWebAssemblyWASMOutputSum,
 					),
 				),
 			),
@@ -535,15 +535,15 @@ func (c *AppComponent) runSimpleCppCalculatorWASI() {
 	}))
 }
 
-func (c *AppComponent) runSimpleJavaCalculatorJWebAssemblyWASM() {
+func (c *AppComponent) runSimpleJWebAssemblyCalculatorJWebAssemblyWASM() {
 	js.Global().Call(
-		"openJavaWASMModule",
-		"/web/sparkexamples/java/simple_calculator/simple_calculator.wasm",
-		"/web/sparkexamples/java/simple_calculator/simple_calculator.wasm.js",
+		"openJWebAssemblyWASMModule",
+		"/web/sparkexamples/jwebassembly/simple_calculator/simple_calculator.wasm",
+		"/web/sparkexamples/jwebassembly/simple_calculator/simple_calculator.wasm.js",
 		js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
-			log.Println("running Simple Java Calculator (JWebAssembly wasm)")
+			log.Println("running Simple JWebAssembly Calculator (JWebAssembly wasm)")
 
-			c.simpleJavaCalculatorJWebAssemblyWASMOutputSum = module[0].Get("exports").Call("ignite", c.simpleJavaCalculatorJWebAssemblyWASMInputFirstAddend, c.simpleJavaCalculatorJWebAssemblyWASMInputSecondAddend).Int()
+			c.simpleJWebAssemblyCalculatorJWebAssemblyWASMOutputSum = module[0].Get("exports").Call("ignite", c.simpleJWebAssemblyCalculatorJWebAssemblyWASMInputFirstAddend, c.simpleJWebAssemblyCalculatorJWebAssemblyWASMInputSecondAddend).Int()
 
 			c.Update()
 
