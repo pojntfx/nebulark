@@ -12,6 +12,7 @@ func main() {
 		JSONGoCalculatorGoWasmExecInput:         `{"firstAddend": 1, "secondAddend": 2}`,
 		JSONCCalculatorWASISpark:                sparks.NewWASISpark("/web/sparkexamples/c/json_calculator/main.wasm"),
 		JSONCCalculatorWASIInput:                `{"firstAddend": 1, "secondAddend": 2}`,
+		SimpleAssemblyScriptCalculatorWASISpark: sparks.NewWASISpark("/web/sparkexamples/assemblyscript/simple_calculator/main.wasm"),
 	})
 
 	app.Run()
