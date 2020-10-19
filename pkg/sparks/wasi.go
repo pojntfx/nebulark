@@ -32,6 +32,7 @@ func (s *WASISpark) LoadExports() error {
 	return nil
 }
 
+// Call is a debug function used to call arbitrary exported functions
 func (s *WASISpark) Call(funcName string, args ...interface{}) js.Value {
 	return s.wasmExports.Call(funcName, args...)
 }
