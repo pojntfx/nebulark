@@ -51,10 +51,10 @@ global.openWASIWASMModule = (url, handler) =>
 
               WebAssembly.instantiate(bytes, {
                 ...wasi.getImports(bytes),
-              }).then(async (obj) => {
-                wasi.start(obj);
+              }).then(async (vm) => {
+                wasi.start(vm);
 
-                handler(obj);
+                handler(vm);
 
                 wasmFs.getStdOut().then((stdout) => console.log(stdout));
               });
@@ -63,7 +63,7 @@ global.openWASIWASMModule = (url, handler) =>
   );
 
 global.openJWebAssemblyWASMModule = (url, wasmExecURL, handler) =>
-  import(wasmExecURL).then((wasmImports) => {
+  import(wasmExecURL).then((wasmImports) =>
     fetch(url)
       .then((resp) => resp.arrayBuffer())
       .then((bytes) =>
@@ -71,5 +71,28 @@ global.openJWebAssemblyWASMModule = (url, wasmExecURL, handler) =>
           bytes,
           wasmImports.default
         ).then(({ instance }) => handler(instance))
+      )
+  );
+
+global.openTeaVMWASMModule = (url, wasmRuntimeURL, handler) =>
+  import(wasmRuntimeURL).then((wasmImports) => {
+    let options = {};
+    let importObj = {};
+
+    wasmImports.default.wasm.importDefaults(importObj);
+    if (typeof options.installImports !== "undefined") {
+      options.installImports(importObj);
+    }
+
+    fetch(url)
+      .then((resp) => resp.arrayBuffer())
+      .then((bytes) =>
+        WebAssembly.instantiate(bytes, importObj).then((vm) => {
+          importObj.teavm.logString.memory = vm.instance.exports.memory;
+
+          vm.instance.exports.main();
+
+          handler(vm.instance);
+        })
       );
   });
