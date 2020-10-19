@@ -2,45 +2,96 @@ package main
 
 import (
 	"encoding/base64"
-	"fmt"
-	"syscall/js"
+
+	"github.com/valyala/fastjson"
 )
 
 func main() {
-	keepAlive := make(chan struct{})
-
-	<-keepAlive
 }
 
 var (
-	encodedInput  []uint8
-	encodedOutput []uint8
+	InputEncoded  []uint8
+	OutputEncoded []uint8
+
+	JSONParser fastjson.Parser
+	JSONArena  fastjson.Arena
+
+	FirstAddend  int
+	SecondAddend int
+
+	Sum int
 )
 
-//export ignite
-func Ignite() int {
-	decodedInput, err := base64.RawStdEncoding.DecodeString(string(encodedInput))
+//export nebulark_ion_spark_construct
+func Construct() int {
+	return 0
+}
+
+//export nebulark_ion_spark_input_set_length
+func InputSetLength(length int) int {
+	InputEncoded = make([]uint8, length)
+
+	return 0
+}
+
+//export nebulark_ion_spark_input_set
+func InputSet(index int, input uint8) int {
+	InputEncoded[index] = input
+
+	return 0
+}
+
+//export nebulark_ion_spark_open
+func Open() int {
+	inputDecoded, err := base64.StdEncoding.DecodeString(string(InputEncoded))
 	if err != nil {
-		fmt.Printf("could not decode input: %v\n", decodedInput)
+		return 1
 	}
 
-	sparkInput := js.Global().Get("JSON").Call("parse", string(decodedInput))
-
-	decodedOutput := fmt.Sprintf(`{"sum": %v}`, sparkInput.Get("firstAddend").Int()+sparkInput.Get("secondAddend").Int())
-
-	for _, character := range []byte(base64.RawStdEncoding.EncodeToString([]byte(decodedOutput))) {
-		encodedOutput = append(encodedOutput, character)
+	input, err := JSONParser.Parse(string(inputDecoded))
+	if err != nil {
+		return 1
 	}
 
-	return len(encodedOutput)
+	FirstAddend = input.GetInt("firstAddend")
+	SecondAddend = input.GetInt("secondAddend")
+
+	return 0
 }
 
-//export append_to_encoded_input
-func AppendToEncodedInput(character uint8) {
-	encodedInput = append(encodedInput, character)
+//export nebulark_ion_spark_ignite
+func Ignite() int {
+	Sum = FirstAddend + SecondAddend
+
+	return 0
 }
 
-//export get_from_encoded_input
-func GetFromEncodedInput(index int) uint8 {
-	return encodedOutput[index]
+//export nebulark_ion_spark_close
+func Close() int {
+	output := JSONArena.NewObject()
+
+	sum := JSONArena.NewNumberInt(Sum)
+
+	output.Set("sum", sum)
+
+	outputDecoded := output.MarshalTo([]byte{})
+
+	OutputEncoded = []uint8(base64.StdEncoding.EncodeToString(outputDecoded))
+
+	return 0
+}
+
+//export nebulark_ion_spark_output_get_length
+func OutputGetLength() int {
+	return len(OutputEncoded)
+}
+
+//export nebulark_ion_spark_output_get
+func OutputGet(index int) uint8 {
+	return OutputEncoded[index]
+}
+
+//export nebulark_ion_spark_deconstruct
+func Deconstruct() int {
+	return 0
 }

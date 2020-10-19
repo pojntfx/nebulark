@@ -23,8 +23,10 @@ type AppComponent struct {
 	simpleTinyGoCalculatorWASIInputSecondAddend int
 	simpleTinyGoCalculatorWASIOutputSum         int
 
-	JSONTinyGoCalculatorTinyGoWasmExecInput  string
-	jsonTinyGoCalculatorTinyGoWasmExecOutput string
+	JSONTinyGoCalculatorTinyGoWasmExecSpark             *sparks.TinyGoSpark
+	jsonTinyGoCalculatorTinyGoWasmExecInputFirstAddend  int
+	jsonTinyGoCalculatorTinyGoWasmExecInputSecondAddend int
+	jsonTinyGoCalculatorTinyGoWasmExecOutputSum         int
 
 	simpleGoCalculatorGoWasmExecInputFirstAddend  int
 	simpleGoCalculatorGoWasmExecInputSecondAddend int
@@ -146,8 +148,25 @@ func (c *AppComponent) Render() app.UI {
 				c.getExample(
 					"JSON TinyGo Calculator (TinyGo wasm_exec)",
 					app.Div().Body(
-						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("text").Placeholder("JSON Input").Value(c.JSONTinyGoCalculatorTinyGoWasmExecInput).OnInput(func(ctx app.Context, e app.Event) {
-							c.JSONTinyGoCalculatorTinyGoWasmExecInput = e.Get("target").Get("value").String()
+						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
+							firstAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse first addend: %v\n", err)
+
+								return
+							}
+
+							c.jsonTinyGoCalculatorTinyGoWasmExecInputFirstAddend = firstAddend
+						}),
+						app.Input().Class("pf-c-form-control").Type("number").Pattern(`\d`).Placeholder("Second Addend").OnInput(func(ctx app.Context, e app.Event) {
+							secondAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse second addend: %v\n", err)
+
+								return
+							}
+
+							c.jsonTinyGoCalculatorTinyGoWasmExecInputSecondAddend = secondAddend
 						}),
 					),
 					app.Button().
@@ -157,7 +176,7 @@ func (c *AppComponent) Render() app.UI {
 							c.runJSONTinyGoCalculatorTinyGoWasmExec()
 						}),
 					app.Div().Text(
-						c.jsonTinyGoCalculatorTinyGoWasmExecOutput,
+						c.jsonTinyGoCalculatorTinyGoWasmExecOutputSum,
 					),
 				),
 				c.getExample(
@@ -459,39 +478,27 @@ func (c *AppComponent) runSimpleTinyGoCalculatorWASI() {
 }
 
 func (c *AppComponent) runJSONTinyGoCalculatorTinyGoWasmExec() {
-	js.Global().Call("import", "/web/glue/tinygo/wasm_exec.js").Call("then", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		js.Global().Call("openTinyGoWASMModule", "/web/sparkexamples/tinygo/json_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
-			log.Println("running JSON TinyGo Calculator (TinyGo wasm_exec)")
+	log.Println("running JSON TinyGo Calculator (wasm_exec)")
 
-			encodedInput := base64.RawStdEncoding.EncodeToString([]byte(c.JSONTinyGoCalculatorTinyGoWasmExecInput))
+	input := &struct {
+		FirstAddend  int `json:"firstAddend"`
+		SecondAddend int `json:"secondAddend"`
+	}{
+		FirstAddend:  c.jsonTinyGoCalculatorTinyGoWasmExecInputFirstAddend,
+		SecondAddend: c.jsonTinyGoCalculatorTinyGoWasmExecInputSecondAddend,
+	}
 
-			for _, character := range []byte(encodedInput) {
-				module[0].Get("exports").Call("append_to_encoded_input", character)
-			}
+	output := &struct {
+		Sum int `json:"sum"`
+	}{}
 
-			outputLength := module[0].Get("exports").Call("ignite").Int()
+	if err := c.JSONTinyGoCalculatorTinyGoWasmExecSpark.Run(input, output); err != nil {
+		log.Printf("could not run spark: %v\n", err)
+	}
 
-			encodedOutput := []uint8{}
-			for i := 0; i < outputLength; i++ {
-				encodedOutput = append(encodedOutput, uint8(module[0].Get("exports").Call("get_from_encoded_input", i).Int()))
-			}
+	c.jsonTinyGoCalculatorTinyGoWasmExecOutputSum = output.Sum
 
-			decodedInput, err := base64.RawStdEncoding.DecodeString(string(encodedOutput))
-			if err != nil {
-				log.Fatal("could not decode spark output", err)
-
-				return nil
-			}
-
-			c.jsonTinyGoCalculatorTinyGoWasmExecOutput = string(decodedInput)
-
-			c.Update()
-
-			return nil
-		}))
-
-		return nil
-	}))
+	c.Update()
 }
 
 func (c *AppComponent) runSimpleGoCalculatorGoWasmExec() {

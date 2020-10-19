@@ -102,9 +102,15 @@ func (s *WASISpark) Deconstruct() error {
 	return nil
 }
 
-func (s *WASISpark) Run(input interface{}, output interface{}) error {
-	if err := s.LoadExports(); err != nil {
-		return fmt.Errorf("could not load spark exports: %v", err)
+func (s *WASISpark) Run(input interface{}, output interface{}, exportsLoader ...func() error) error {
+	if exportsLoader == nil {
+		if err := s.LoadExports(); err != nil {
+			return fmt.Errorf("could not load spark exports: %v", err)
+		}
+	} else {
+		if err := exportsLoader[0](); err != nil {
+			return fmt.Errorf("could not load spark exports: %v", err)
+		}
 	}
 
 	if err := s.Construct(); err != nil {

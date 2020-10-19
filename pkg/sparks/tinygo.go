@@ -1,6 +1,8 @@
 package sparks
 
-import "syscall/js"
+import (
+	"syscall/js"
+)
 
 type TinyGoSpark struct {
 	wasmRuntimeURL string
@@ -30,4 +32,8 @@ func (s *TinyGoSpark) LoadExports() error {
 	<-done
 
 	return nil
+}
+
+func (s *TinyGoSpark) Run(input interface{}, output interface{}) error {
+	return s.WASISpark.Run(input, output, s.LoadExports)
 }
