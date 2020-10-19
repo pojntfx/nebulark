@@ -62,7 +62,7 @@ global.openWASIWASMModule = (url, handler) =>
       )
   );
 
-global.openJavaWASMModule = (url, wasmExecURL, handler) =>
+global.openJWebAssemblyWASMModule = (url, wasmExecURL, handler) =>
   import(wasmExecURL).then((wasmImports) => {
     fetch(url)
       .then((resp) => resp.arrayBuffer())
