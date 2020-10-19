@@ -1,19 +1,5 @@
 global.import = (...args) => import(args);
 
-global.openTinyGoWASMModule = (url, handler) => {
-  const go = new TinyGo();
-
-  fetch(url)
-    .then((resp) => resp.arrayBuffer())
-    .then((bytes) =>
-      WebAssembly.instantiate(bytes, go.importObject).then(({ instance }) => {
-        go.run(instance);
-
-        handler(instance);
-      })
-    );
-};
-
 global.openGoWASMModule = (url, handler) => {
   const go = new Go();
 
@@ -97,7 +83,7 @@ global.openTeaVMWASMModule = (url, wasmRuntimeURL, handler) =>
       );
   });
 
-global.openTinyGoWASMModule = (url, wasmRuntimeURL, handler) =>
+global.openTinyGoWASMModule = (url, wasmRuntimeURL, handler) => {
   import(wasmRuntimeURL).then((wasmImports) => {
     const go = new wasmImports.default();
 
@@ -111,3 +97,4 @@ global.openTinyGoWASMModule = (url, wasmRuntimeURL, handler) =>
         })
       );
   });
+};

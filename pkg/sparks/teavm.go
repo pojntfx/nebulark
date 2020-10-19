@@ -31,3 +31,7 @@ func (s *TeaVMSpark) LoadExports() error {
 
 	return nil
 }
+
+func (s *TeaVMSpark) Run(input interface{}, output interface{}) error {
+	return s.WASISpark.Run(input, output, s.LoadExports)
+}
