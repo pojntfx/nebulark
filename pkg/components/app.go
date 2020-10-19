@@ -46,6 +46,11 @@ type AppComponent struct {
 	simpleJWebAssemblyCalculatorJWebAssemblyWASMInputFirstAddend  int
 	simpleJWebAssemblyCalculatorJWebAssemblyWASMInputSecondAddend int
 	simpleJWebAssemblyCalculatorJWebAssemblyWASMOutputSum         int
+
+	SimpleAssemblyScriptCalculatorWASISpark             *sparks.WASISpark
+	simpleAssemblyScriptCalculatorWASIInputFirstAddend  int
+	simpleAssemblyScriptCalculatorWASIInputSecondAddend int
+	simpleAssemblyScriptCalculatorWASIOutputSum         int
 }
 
 func (c *AppComponent) Render() app.UI {
@@ -316,6 +321,40 @@ func (c *AppComponent) Render() app.UI {
 						c.simpleJWebAssemblyCalculatorJWebAssemblyWASMOutputSum,
 					),
 				),
+				c.getExample(
+					"Simple AssemblyScript Calculator (WASI)",
+					app.Div().Body(
+						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
+							firstAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse first addend: %v\n", err)
+
+								return
+							}
+
+							c.simpleAssemblyScriptCalculatorWASIInputFirstAddend = firstAddend
+						}),
+						app.Input().Class("pf-c-form-control").Type("number").Pattern(`\d`).Placeholder("Second Addend").OnInput(func(ctx app.Context, e app.Event) {
+							secondAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse second addend: %v\n", err)
+
+								return
+							}
+
+							c.simpleAssemblyScriptCalculatorWASIInputSecondAddend = secondAddend
+						}),
+					),
+					app.Button().
+						Class("pf-c-button pf-m-control").
+						Text("Add").
+						OnClick(func(ctx app.Context, e app.Event) {
+							c.runSimpleAssemblyScriptCalculatorWASI()
+						}),
+					app.Div().Text(
+						c.simpleAssemblyScriptCalculatorWASIOutputSum,
+					),
+				),
 			),
 		),
 	)
@@ -453,6 +492,8 @@ func (c *AppComponent) runSimpleCCalculatorWASI() {
 }
 
 func (c *AppComponent) runJSONCCalculatorWASI() {
+	log.Println("running JSON C Calculator (WASI)")
+
 	if err := c.JSONCCalculatorWASISpark.LoadExports(); err != nil {
 		log.Printf("could not load spark exports: %v\n", err)
 
@@ -549,4 +590,20 @@ func (c *AppComponent) runSimpleJWebAssemblyCalculatorJWebAssemblyWASM() {
 
 			return nil
 		}))
+}
+
+func (c *AppComponent) runSimpleAssemblyScriptCalculatorWASI() {
+	log.Println("running Simple AssemblyScript Calculator (WASI)")
+
+	if err := c.SimpleAssemblyScriptCalculatorWASISpark.LoadExports(); err != nil {
+		log.Printf("could not load spark exports: %v\n", err)
+
+		return
+	}
+
+	res := c.SimpleAssemblyScriptCalculatorWASISpark.Call("add", c.simpleAssemblyScriptCalculatorWASIInputFirstAddend, c.simpleAssemblyScriptCalculatorWASIInputSecondAddend)
+
+	c.simpleAssemblyScriptCalculatorWASIOutputSum = res.Int()
+
+	c.Update()
 }

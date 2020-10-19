@@ -32,6 +32,10 @@ func (s *WASISpark) LoadExports() error {
 	return nil
 }
 
+func (s *WASISpark) Call(funcName string, args ...interface{}) js.Value {
+	return s.wasmExports.Call(funcName, args...)
+}
+
 func (s *WASISpark) Construct() error {
 	if err := s.wasmExports.Call("nebulark_ion_spark_construct").Int(); err != 0 {
 		return fmt.Errorf("could not construct spark: %v", err)

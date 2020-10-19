@@ -1,7 +1,7 @@
 # Aliases
 all: build
 
-build: build-ion build-sparkexamples-tinygo-simple_calculator build-sparkexamples-tinygo-json_calculator build-sparkexamples-go-simple_calculator build-sparkexamples-go-json_calculator build-sparkexamples-c-simple_calculator build-sparkexamples-c-json_calculator build-sparkexamples-cpp-simple_calculator build-sparkexamples-jwebassembly-simple_calculator build-sparkexamples-teavm-json_calculator
+build: build-ion build-sparkexamples-tinygo-simple_calculator build-sparkexamples-tinygo-json_calculator build-sparkexamples-go-simple_calculator build-sparkexamples-go-json_calculator build-sparkexamples-c-simple_calculator build-sparkexamples-c-json_calculator build-sparkexamples-cpp-simple_calculator build-sparkexamples-jwebassembly-simple_calculator build-sparkexamples-teavm-json_calculator build-sparkexamples-assemblyscript-simple_calculator
 
 # Builders
 build-ion:
@@ -37,6 +37,9 @@ build-sparkexamples-jwebassembly-simple_calculator:
 
 build-sparkexamples-teavm-json_calculator:
 	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/sparkexamples/teavm/json_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/sparkexamples/teavm/json_calculator/ maven sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && mvn clean install && cp target/generated/wasm/teavm/classes.wasm $$OUTDIR/main.wasm'
+
+build-sparkexamples-assemblyscript-simple_calculator:
+	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/sparkexamples/assemblyscript/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/sparkexamples/assemblyscript/simple_calculator/ node sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && yarn && yarn asbuild && cp build/untouched.wasm $$OUTDIR/main.wasm'
 
 # Runners
 run-ion: build-ion
