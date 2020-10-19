@@ -47,6 +47,11 @@ type AppComponent struct {
 	simpleJWebAssemblyCalculatorJWebAssemblyWASMInputSecondAddend int
 	simpleJWebAssemblyCalculatorJWebAssemblyWASMOutputSum         int
 
+	SimpleTeaVMCalculatorTeaVMWASMSpark             *sparks.TeaVMSpark
+	simpleTeaVMCalculatorTeaVMWASMInputFirstAddend  int
+	simpleTeaVMCalculatorTeaVMWASMInputSecondAddend int
+	simpleTeaVMCalculatorTeaVMWASMOutputSum         int
+
 	SimpleAssemblyScriptCalculatorWASISpark             *sparks.WASISpark
 	simpleAssemblyScriptCalculatorWASIInputFirstAddend  int
 	simpleAssemblyScriptCalculatorWASIInputSecondAddend int
@@ -322,6 +327,40 @@ func (c *AppComponent) Render() app.UI {
 					),
 				),
 				c.getExample(
+					`Simple TeaVM Calculator (TeaVM wasm)`,
+					app.Div().Body(
+						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
+							firstAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse first addend: %v\n", err)
+
+								return
+							}
+
+							c.simpleTeaVMCalculatorTeaVMWASMInputFirstAddend = firstAddend
+						}),
+						app.Input().Class("pf-c-form-control").Type("number").Pattern(`\d`).Placeholder("Second Addend").OnInput(func(ctx app.Context, e app.Event) {
+							secondAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse second addend: %v\n", err)
+
+								return
+							}
+
+							c.simpleTeaVMCalculatorTeaVMWASMInputSecondAddend = secondAddend
+						}),
+					),
+					app.Button().
+						Class("pf-c-button pf-m-control").
+						Text("Add").
+						OnClick(func(ctx app.Context, e app.Event) {
+							c.runSimpleTeaVMCalculatorTeaVMWASM()
+						}),
+					app.Div().Text(
+						c.simpleTeaVMCalculatorTeaVMWASMOutputSum,
+					),
+				),
+				c.getExample(
 					"Simple AssemblyScript Calculator (WASI)",
 					app.Div().Body(
 						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
@@ -590,6 +629,22 @@ func (c *AppComponent) runSimpleJWebAssemblyCalculatorJWebAssemblyWASM() {
 
 			return nil
 		}))
+}
+
+func (c *AppComponent) runSimpleTeaVMCalculatorTeaVMWASM() {
+	log.Println("running Simple TeaVM Calculator (TeaVM wasm)")
+
+	if err := c.SimpleTeaVMCalculatorTeaVMWASMSpark.LoadExports(); err != nil {
+		log.Printf("could not load spark exports: %v\n", err)
+
+		return
+	}
+
+	res := c.SimpleTeaVMCalculatorTeaVMWASMSpark.Call("add", c.simpleTeaVMCalculatorTeaVMWASMInputFirstAddend, c.simpleTeaVMCalculatorTeaVMWASMInputSecondAddend)
+
+	c.simpleTeaVMCalculatorTeaVMWASMOutputSum = res.Int()
+
+	c.Update()
 }
 
 func (c *AppComponent) runSimpleAssemblyScriptCalculatorWASI() {
