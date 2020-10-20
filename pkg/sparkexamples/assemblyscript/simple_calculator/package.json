@@ -1,0 +1,20 @@
+{
+  "name": "@pojntfx/nebulark-pkg-sparkexamples-assemblyscript-simple_calculator",
+  "version": "0.0.1-alpha1",
+  "description": "AssemblyScript Simple Calculator Spark Example",
+  "main": "index.js",
+  "scripts": {
+    "test": "node tests",
+    "asbuild:untouched": "asc assembly/index.ts --target debug",
+    "asbuild:optimized": "asc assembly/index.ts --target release",
+    "asbuild": "yarn asbuild:untouched && yarn asbuild:optimized"
+  },
+  "author": "Felix Pojtinger <felix@pojtinger.com>",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "@assemblyscript/loader": "^0.16.1"
+  },
+  "devDependencies": {
+    "assemblyscript": "^0.16.1"
+  }
+}

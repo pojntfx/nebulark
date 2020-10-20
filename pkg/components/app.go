@@ -13,16 +13,20 @@ import (
 type AppComponent struct {
 	app.Compo
 
+	SimpleTinyGoCalculatorTinyGoWasmExecSpark             *sparks.TinyGoSpark
 	simpleTinyGoCalculatorTinyGoWasmExecInputFirstAddend  int
 	simpleTinyGoCalculatorTinyGoWasmExecInputSecondAddend int
 	simpleTinyGoCalculatorTinyGoWasmExecOutputSum         int
 
+	SimpleTinyGoCalculatorWASISpark             *sparks.WASISpark
 	simpleTinyGoCalculatorWASIInputFirstAddend  int
 	simpleTinyGoCalculatorWASIInputSecondAddend int
 	simpleTinyGoCalculatorWASIOutputSum         int
 
-	JSONTinyGoCalculatorTinyGoWasmExecInput  string
-	jsonTinyGoCalculatorTinyGoWasmExecOutput string
+	JSONTinyGoCalculatorTinyGoWasmExecSpark             *sparks.TinyGoSpark
+	jsonTinyGoCalculatorTinyGoWasmExecInputFirstAddend  int
+	jsonTinyGoCalculatorTinyGoWasmExecInputSecondAddend int
+	jsonTinyGoCalculatorTinyGoWasmExecOutputSum         int
 
 	simpleGoCalculatorGoWasmExecInputFirstAddend  int
 	simpleGoCalculatorGoWasmExecInputSecondAddend int
@@ -31,13 +35,15 @@ type AppComponent struct {
 	JSONGoCalculatorGoWasmExecInput  string
 	jsonGoCalculatorGoWasmExecOutput string
 
+	SimpleCCalculatorWASISpark             *sparks.WASISpark
 	simpleCCalculatorWASIInputFirstAddend  int
 	simpleCCalculatorWASIInputSecondAddend int
 	simpleCCalculatorWASIOutputSum         int
 
-	JSONCCalculatorWASISpark  *sparks.WASISpark
-	JSONCCalculatorWASIInput  string
-	jsonCCalculatorWASIOutput string
+	JSONCCalculatorWASISpark             *sparks.WASISpark
+	jsonCCalculatorWASIInputFirstAddend  int
+	jsonCCalculatorWASIInputSecondAddend int
+	jsonCCalculatorWASIOutputSum         int
 
 	simpleCppCalculatorWASIInputFirstAddend  int
 	simpleCppCalculatorWASIInputSecondAddend int
@@ -46,6 +52,21 @@ type AppComponent struct {
 	simpleJWebAssemblyCalculatorJWebAssemblyWASMInputFirstAddend  int
 	simpleJWebAssemblyCalculatorJWebAssemblyWASMInputSecondAddend int
 	simpleJWebAssemblyCalculatorJWebAssemblyWASMOutputSum         int
+
+	SimpleTeaVMCalculatorTeaVMWASMSpark             *sparks.TeaVMSpark
+	simpleTeaVMCalculatorTeaVMWASMInputFirstAddend  int
+	simpleTeaVMCalculatorTeaVMWASMInputSecondAddend int
+	simpleTeaVMCalculatorTeaVMWASMOutputSum         int
+
+	SimpleAssemblyScriptCalculatorWASISpark             *sparks.WASISpark
+	simpleAssemblyScriptCalculatorWASIInputFirstAddend  int
+	simpleAssemblyScriptCalculatorWASIInputSecondAddend int
+	simpleAssemblyScriptCalculatorWASIOutputSum         int
+
+	SimpleZigCalculatorWASISpark             *sparks.WASISpark
+	simpleZigCalculatorWASIInputFirstAddend  int
+	simpleZigCalculatorWASIInputSecondAddend int
+	simpleZigCalculatorWASIOutputSum         int
 }
 
 func (c *AppComponent) Render() app.UI {
@@ -132,8 +153,25 @@ func (c *AppComponent) Render() app.UI {
 				c.getExample(
 					"JSON TinyGo Calculator (TinyGo wasm_exec)",
 					app.Div().Body(
-						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("text").Placeholder("JSON Input").Value(c.JSONTinyGoCalculatorTinyGoWasmExecInput).OnInput(func(ctx app.Context, e app.Event) {
-							c.JSONTinyGoCalculatorTinyGoWasmExecInput = e.Get("target").Get("value").String()
+						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
+							firstAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse first addend: %v\n", err)
+
+								return
+							}
+
+							c.jsonTinyGoCalculatorTinyGoWasmExecInputFirstAddend = firstAddend
+						}),
+						app.Input().Class("pf-c-form-control").Type("number").Pattern(`\d`).Placeholder("Second Addend").OnInput(func(ctx app.Context, e app.Event) {
+							secondAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse second addend: %v\n", err)
+
+								return
+							}
+
+							c.jsonTinyGoCalculatorTinyGoWasmExecInputSecondAddend = secondAddend
 						}),
 					),
 					app.Button().
@@ -143,7 +181,7 @@ func (c *AppComponent) Render() app.UI {
 							c.runJSONTinyGoCalculatorTinyGoWasmExec()
 						}),
 					app.Div().Text(
-						c.jsonTinyGoCalculatorTinyGoWasmExecOutput,
+						c.jsonTinyGoCalculatorTinyGoWasmExecOutputSum,
 					),
 				),
 				c.getExample(
@@ -234,8 +272,25 @@ func (c *AppComponent) Render() app.UI {
 				c.getExample(
 					"JSON C Calculator (WASI)",
 					app.Div().Body(
-						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("text").Placeholder("JSON Input").Value(c.JSONCCalculatorWASIInput).OnInput(func(ctx app.Context, e app.Event) {
-							c.JSONCCalculatorWASIInput = e.Get("target").Get("value").String()
+						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
+							firstAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse first addend: %v\n", err)
+
+								return
+							}
+
+							c.jsonCCalculatorWASIInputFirstAddend = firstAddend
+						}),
+						app.Input().Class("pf-c-form-control").Type("number").Pattern(`\d`).Placeholder("Second Addend").OnInput(func(ctx app.Context, e app.Event) {
+							secondAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse second addend: %v\n", err)
+
+								return
+							}
+
+							c.jsonCCalculatorWASIInputSecondAddend = secondAddend
 						}),
 					),
 					app.Button().
@@ -245,7 +300,7 @@ func (c *AppComponent) Render() app.UI {
 							c.runJSONCCalculatorWASI()
 						}),
 					app.Div().Text(
-						c.jsonCCalculatorWASIOutput,
+						c.jsonCCalculatorWASIOutputSum,
 					),
 				),
 				c.getExample(
@@ -316,6 +371,108 @@ func (c *AppComponent) Render() app.UI {
 						c.simpleJWebAssemblyCalculatorJWebAssemblyWASMOutputSum,
 					),
 				),
+				c.getExample(
+					`Simple TeaVM Calculator (TeaVM wasm)`,
+					app.Div().Body(
+						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
+							firstAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse first addend: %v\n", err)
+
+								return
+							}
+
+							c.simpleTeaVMCalculatorTeaVMWASMInputFirstAddend = firstAddend
+						}),
+						app.Input().Class("pf-c-form-control").Type("number").Pattern(`\d`).Placeholder("Second Addend").OnInput(func(ctx app.Context, e app.Event) {
+							secondAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse second addend: %v\n", err)
+
+								return
+							}
+
+							c.simpleTeaVMCalculatorTeaVMWASMInputSecondAddend = secondAddend
+						}),
+					),
+					app.Button().
+						Class("pf-c-button pf-m-control").
+						Text("Add").
+						OnClick(func(ctx app.Context, e app.Event) {
+							c.runSimpleTeaVMCalculatorTeaVMWASM()
+						}),
+					app.Div().Text(
+						c.simpleTeaVMCalculatorTeaVMWASMOutputSum,
+					),
+				),
+				c.getExample(
+					"Simple AssemblyScript Calculator (WASI)",
+					app.Div().Body(
+						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
+							firstAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse first addend: %v\n", err)
+
+								return
+							}
+
+							c.simpleAssemblyScriptCalculatorWASIInputFirstAddend = firstAddend
+						}),
+						app.Input().Class("pf-c-form-control").Type("number").Pattern(`\d`).Placeholder("Second Addend").OnInput(func(ctx app.Context, e app.Event) {
+							secondAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse second addend: %v\n", err)
+
+								return
+							}
+
+							c.simpleAssemblyScriptCalculatorWASIInputSecondAddend = secondAddend
+						}),
+					),
+					app.Button().
+						Class("pf-c-button pf-m-control").
+						Text("Add").
+						OnClick(func(ctx app.Context, e app.Event) {
+							c.runSimpleAssemblyScriptCalculatorWASI()
+						}),
+					app.Div().Text(
+						c.simpleAssemblyScriptCalculatorWASIOutputSum,
+					),
+				),
+				c.getExample(
+					"Simple Zig Calculator (WASI)",
+					app.Div().Body(
+						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
+							firstAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse first addend: %v\n", err)
+
+								return
+							}
+
+							c.simpleZigCalculatorWASIInputFirstAddend = firstAddend
+						}),
+						app.Input().Class("pf-c-form-control").Type("number").Pattern(`\d`).Placeholder("Second Addend").OnInput(func(ctx app.Context, e app.Event) {
+							secondAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse second addend: %v\n", err)
+
+								return
+							}
+
+							c.simpleZigCalculatorWASIInputSecondAddend = secondAddend
+						}),
+					),
+					app.Button().
+						Class("pf-c-button pf-m-control").
+						Text("Add").
+						OnClick(func(ctx app.Context, e app.Event) {
+							c.runSimpleZigCalculatorWASI()
+						}),
+					app.Div().Text(
+						c.simpleZigCalculatorWASIOutputSum,
+					),
+				),
 			),
 		),
 	)
@@ -336,67 +493,51 @@ func (c *AppComponent) getExample(
 }
 
 func (c *AppComponent) runSimpleTinyGoCalculatorTinyGoWasmExec() {
-	js.Global().Call("import", "/web/glue/tinygo/wasm_exec.js").Call("then", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		js.Global().Call("openTinyGoWASMModule", "/web/sparkexamples/tinygo/simple_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
-			log.Println("running Simple TinyGo Calculator (TinyGo wasm_exec)")
+	log.Println("running Simple TinyGo Calculator (TinyGo wasm_exec)")
 
-			c.simpleTinyGoCalculatorTinyGoWasmExecOutputSum = module[0].Get("exports").Call("ignite", c.simpleTinyGoCalculatorTinyGoWasmExecInputFirstAddend, c.simpleTinyGoCalculatorTinyGoWasmExecInputSecondAddend).Int()
+	if err := c.SimpleTinyGoCalculatorTinyGoWasmExecSpark.LoadExports(); err != nil {
+		log.Printf("could not load spark exports: %v\n", err)
+	}
 
-			c.Update()
+	c.simpleTinyGoCalculatorTinyGoWasmExecOutputSum = c.SimpleTinyGoCalculatorTinyGoWasmExecSpark.Call("add", c.simpleTinyGoCalculatorTinyGoWasmExecInputFirstAddend, c.simpleTinyGoCalculatorTinyGoWasmExecInputSecondAddend).Int()
 
-			return nil
-		}))
-
-		return nil
-	}))
+	c.Update()
 }
 
 func (c *AppComponent) runSimpleTinyGoCalculatorWASI() {
-	js.Global().Call("openWASIWASMModule", "/web/sparkexamples/tinygo/simple_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
-		log.Println("running Simple TinyGo Calculator (WASI)")
+	log.Println("running Simple TinyGo Calculator (WASI)")
 
-		c.simpleTinyGoCalculatorWASIOutputSum = module[0].Get("exports").Call("ignite", c.simpleTinyGoCalculatorWASIInputFirstAddend, c.simpleTinyGoCalculatorWASIInputSecondAddend).Int()
+	if err := c.SimpleTinyGoCalculatorWASISpark.LoadExports(); err != nil {
+		log.Printf("could not load spark exports: %v\n", err)
+	}
 
-		c.Update()
+	c.simpleTinyGoCalculatorWASIOutputSum = c.SimpleTinyGoCalculatorWASISpark.Call("add", c.simpleTinyGoCalculatorWASIInputFirstAddend, c.simpleTinyGoCalculatorWASIInputSecondAddend).Int()
 
-		return nil
-	}))
+	c.Update()
 }
 
 func (c *AppComponent) runJSONTinyGoCalculatorTinyGoWasmExec() {
-	js.Global().Call("import", "/web/glue/tinygo/wasm_exec.js").Call("then", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		js.Global().Call("openTinyGoWASMModule", "/web/sparkexamples/tinygo/json_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
-			log.Println("running JSON TinyGo Calculator (TinyGo wasm_exec)")
+	log.Println("running JSON TinyGo Calculator (wasm_exec)")
 
-			encodedInput := base64.RawStdEncoding.EncodeToString([]byte(c.JSONTinyGoCalculatorTinyGoWasmExecInput))
+	input := &struct {
+		FirstAddend  int `json:"firstAddend"`
+		SecondAddend int `json:"secondAddend"`
+	}{
+		FirstAddend:  c.jsonTinyGoCalculatorTinyGoWasmExecInputFirstAddend,
+		SecondAddend: c.jsonTinyGoCalculatorTinyGoWasmExecInputSecondAddend,
+	}
 
-			for _, character := range []byte(encodedInput) {
-				module[0].Get("exports").Call("append_to_encoded_input", character)
-			}
+	output := &struct {
+		Sum int `json:"sum"`
+	}{}
 
-			outputLength := module[0].Get("exports").Call("ignite").Int()
+	if err := c.JSONTinyGoCalculatorTinyGoWasmExecSpark.Run(input, output); err != nil {
+		log.Printf("could not run spark: %v\n", err)
+	}
 
-			encodedOutput := []uint8{}
-			for i := 0; i < outputLength; i++ {
-				encodedOutput = append(encodedOutput, uint8(module[0].Get("exports").Call("get_from_encoded_input", i).Int()))
-			}
+	c.jsonTinyGoCalculatorTinyGoWasmExecOutputSum = output.Sum
 
-			decodedInput, err := base64.RawStdEncoding.DecodeString(string(encodedOutput))
-			if err != nil {
-				log.Fatal("could not decode spark output", err)
-
-				return nil
-			}
-
-			c.jsonTinyGoCalculatorTinyGoWasmExecOutput = string(decodedInput)
-
-			c.Update()
-
-			return nil
-		}))
-
-		return nil
-	}))
+	c.Update()
 }
 
 func (c *AppComponent) runSimpleGoCalculatorGoWasmExec() {
@@ -420,9 +561,9 @@ func (c *AppComponent) runJSONGoCalculatorGoWasmExec() {
 		js.Global().Call("openGoWASMModule", "/web/sparkexamples/go/json_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
 			log.Println("running JSON Go Calculator (Go wasm_exec)")
 
-			encodedOutput := js.Global().Call("ignite", base64.RawStdEncoding.EncodeToString([]byte(c.JSONGoCalculatorGoWasmExecInput))).String()
+			encodedOutput := js.Global().Call("ignite", base64.StdEncoding.EncodeToString([]byte(c.JSONGoCalculatorGoWasmExecInput))).String()
 
-			decodedOutput, err := base64.RawStdEncoding.DecodeString(encodedOutput)
+			decodedOutput, err := base64.StdEncoding.DecodeString(encodedOutput)
 			if err != nil {
 				log.Printf("could not decode spark output: %v\n", err)
 
@@ -441,84 +582,37 @@ func (c *AppComponent) runJSONGoCalculatorGoWasmExec() {
 }
 
 func (c *AppComponent) runSimpleCCalculatorWASI() {
-	js.Global().Call("openWASIWASMModule", "/web/sparkexamples/c/simple_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
-		log.Println("running Simple C Calculator (WASI)")
+	log.Println("running Simple C Calculator (WASI)")
 
-		c.simpleCCalculatorWASIOutputSum = module[0].Get("exports").Call("ignite", c.simpleCCalculatorWASIInputFirstAddend, c.simpleCCalculatorWASIInputSecondAddend).Int()
+	if err := c.SimpleCCalculatorWASISpark.LoadExports(); err != nil {
+		log.Printf("could not load spark exports: %v\n", err)
+	}
 
-		c.Update()
+	c.simpleCCalculatorWASIOutputSum = c.SimpleCCalculatorWASISpark.Call("add", c.simpleCCalculatorWASIInputFirstAddend, c.simpleCCalculatorWASIInputSecondAddend).Int()
 
-		return nil
-	}))
+	c.Update()
 }
 
 func (c *AppComponent) runJSONCCalculatorWASI() {
-	if err := c.JSONCCalculatorWASISpark.LoadExports(); err != nil {
-		log.Printf("could not load spark exports: %v\n", err)
+	log.Println("running JSON C Calculator (WASI)")
 
-		return
+	input := &struct {
+		FirstAddend  int `json:"firstAddend"`
+		SecondAddend int `json:"secondAddend"`
+	}{
+		FirstAddend:  c.jsonCCalculatorWASIInputFirstAddend,
+		SecondAddend: c.jsonCCalculatorWASIInputSecondAddend,
 	}
 
-	if err := c.JSONCCalculatorWASISpark.Construct(); err != nil {
-		log.Printf("could not construct spark: %v\n", err)
+	output := &struct {
+		Sum int `json:"sum"`
+	}{}
 
-		return
+	if err := c.JSONCCalculatorWASISpark.Run(input, output); err != nil {
+		log.Printf("could not run spark: %v\n", err)
 	}
 
-	encodedInput := base64.StdEncoding.EncodeToString([]byte(c.JSONCCalculatorWASIInput))
-
-	if err := c.JSONCCalculatorWASISpark.InputSetLength(len(encodedInput)); err != nil {
-		log.Printf("could not set spark input length: %v\n", err)
-
-		return
-	}
-
-	for i, character := range []uint8(encodedInput) {
-		if err := c.JSONCCalculatorWASISpark.InputSet(i, uint8(character)); err != nil {
-			log.Printf("could not set spark input: %v\n", err)
-
-			return
-		}
-	}
-
-	if err := c.JSONCCalculatorWASISpark.Open(); err != nil {
-		log.Printf("could not open spark: %v\n", err)
-
-		return
-	}
-
-	if err := c.JSONCCalculatorWASISpark.Ignite(); err != nil {
-		log.Printf("could not ignite spark: %v\n", err)
-
-		return
-	}
-
-	if err := c.JSONCCalculatorWASISpark.Close(); err != nil {
-		log.Printf("could not close spark: %v\n", err)
-
-		return
-	}
-
-	length := c.JSONCCalculatorWASISpark.OutputGetLength()
-	encodedOutput := []uint8{}
-	for i := 0; i < length; i++ {
-		encodedOutput = append(encodedOutput, c.JSONCCalculatorWASISpark.OutputGet(i))
-	}
-
-	decodedOutput, err := base64.StdEncoding.DecodeString(string(encodedOutput))
-	if err != nil {
-		log.Printf("could not decode output: %v\n", err)
-
-		return
-	}
-
-	c.jsonCCalculatorWASIOutput = string(decodedOutput)
-
-	if err := c.JSONCCalculatorWASISpark.Deconstruct(); err != nil {
-		log.Printf("could not deconstruct spark: %v\n", err)
-
-		return
-	}
+	c.jsonCCalculatorWASIOutputSum = output.Sum
 
 	c.Update()
 }
@@ -549,4 +643,52 @@ func (c *AppComponent) runSimpleJWebAssemblyCalculatorJWebAssemblyWASM() {
 
 			return nil
 		}))
+}
+
+func (c *AppComponent) runSimpleTeaVMCalculatorTeaVMWASM() {
+	log.Println("running Simple TeaVM Calculator (TeaVM wasm)")
+
+	if err := c.SimpleTeaVMCalculatorTeaVMWASMSpark.LoadExports(); err != nil {
+		log.Printf("could not load spark exports: %v\n", err)
+
+		return
+	}
+
+	res := c.SimpleTeaVMCalculatorTeaVMWASMSpark.Call("add", c.simpleTeaVMCalculatorTeaVMWASMInputFirstAddend, c.simpleTeaVMCalculatorTeaVMWASMInputSecondAddend)
+
+	c.simpleTeaVMCalculatorTeaVMWASMOutputSum = res.Int()
+
+	c.Update()
+}
+
+func (c *AppComponent) runSimpleAssemblyScriptCalculatorWASI() {
+	log.Println("running Simple AssemblyScript Calculator (WASI)")
+
+	if err := c.SimpleAssemblyScriptCalculatorWASISpark.LoadExports(); err != nil {
+		log.Printf("could not load spark exports: %v\n", err)
+
+		return
+	}
+
+	res := c.SimpleAssemblyScriptCalculatorWASISpark.Call("add", c.simpleAssemblyScriptCalculatorWASIInputFirstAddend, c.simpleAssemblyScriptCalculatorWASIInputSecondAddend)
+
+	c.simpleAssemblyScriptCalculatorWASIOutputSum = res.Int()
+
+	c.Update()
+}
+
+func (c *AppComponent) runSimpleZigCalculatorWASI() {
+	log.Println("running Simple Zig Calculator (WASI)")
+
+	if err := c.SimpleZigCalculatorWASISpark.LoadExports(); err != nil {
+		log.Printf("could not load spark exports: %v\n", err)
+
+		return
+	}
+
+	res := c.SimpleZigCalculatorWASISpark.Call("add", c.simpleZigCalculatorWASIInputFirstAddend, c.simpleZigCalculatorWASIInputSecondAddend)
+
+	c.simpleZigCalculatorWASIOutputSum = res.Int()
+
+	c.Update()
 }
