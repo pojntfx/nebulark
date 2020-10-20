@@ -17,6 +17,7 @@ func main() {
 		SimpleTeaVMCalculatorTeaVMWASMSpark:       sparks.NewTeaVMSpark("/web/sparkexamples/teavm/simple_calculator/main.wasm", "/web/glue/teavm/wasm-runtime.js"),
 		SimpleAssemblyScriptCalculatorWASISpark:   sparks.NewWASISpark("/web/sparkexamples/assemblyscript/simple_calculator/main.wasm"),
 		SimpleZigCalculatorWASISpark:              sparks.NewWASISpark("/web/sparkexamples/zig/simple_calculator/main.wasm"),
+		JSONZigCalculatorWASISpark:                sparks.NewWASISpark("/web/sparkexamples/zig/json_calculator/main.wasm"),
 	})
 
 	app.Run()
