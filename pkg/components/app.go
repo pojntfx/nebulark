@@ -62,6 +62,11 @@ type AppComponent struct {
 	simpleAssemblyScriptCalculatorWASIInputFirstAddend  int
 	simpleAssemblyScriptCalculatorWASIInputSecondAddend int
 	simpleAssemblyScriptCalculatorWASIOutputSum         int
+
+	SimpleZigCalculatorWASISpark             *sparks.WASISpark
+	simpleZigCalculatorWASIInputFirstAddend  int
+	simpleZigCalculatorWASIInputSecondAddend int
+	simpleZigCalculatorWASIOutputSum         int
 }
 
 func (c *AppComponent) Render() app.UI {
@@ -434,6 +439,40 @@ func (c *AppComponent) Render() app.UI {
 						c.simpleAssemblyScriptCalculatorWASIOutputSum,
 					),
 				),
+				c.getExample(
+					"Simple Zig Calculator (WASI)",
+					app.Div().Body(
+						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
+							firstAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse first addend: %v\n", err)
+
+								return
+							}
+
+							c.simpleZigCalculatorWASIInputFirstAddend = firstAddend
+						}),
+						app.Input().Class("pf-c-form-control").Type("number").Pattern(`\d`).Placeholder("Second Addend").OnInput(func(ctx app.Context, e app.Event) {
+							secondAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse second addend: %v\n", err)
+
+								return
+							}
+
+							c.simpleZigCalculatorWASIInputSecondAddend = secondAddend
+						}),
+					),
+					app.Button().
+						Class("pf-c-button pf-m-control").
+						Text("Add").
+						OnClick(func(ctx app.Context, e app.Event) {
+							c.runSimpleZigCalculatorWASI()
+						}),
+					app.Div().Text(
+						c.simpleZigCalculatorWASIOutputSum,
+					),
+				),
 			),
 		),
 	)
@@ -634,6 +673,22 @@ func (c *AppComponent) runSimpleAssemblyScriptCalculatorWASI() {
 	res := c.SimpleAssemblyScriptCalculatorWASISpark.Call("add", c.simpleAssemblyScriptCalculatorWASIInputFirstAddend, c.simpleAssemblyScriptCalculatorWASIInputSecondAddend)
 
 	c.simpleAssemblyScriptCalculatorWASIOutputSum = res.Int()
+
+	c.Update()
+}
+
+func (c *AppComponent) runSimpleZigCalculatorWASI() {
+	log.Println("running Simple Zig Calculator (WASI)")
+
+	if err := c.SimpleZigCalculatorWASISpark.LoadExports(); err != nil {
+		log.Printf("could not load spark exports: %v\n", err)
+
+		return
+	}
+
+	res := c.SimpleZigCalculatorWASISpark.Call("add", c.simpleZigCalculatorWASIInputFirstAddend, c.simpleZigCalculatorWASIInputSecondAddend)
+
+	c.simpleZigCalculatorWASIOutputSum = res.Int()
 
 	c.Update()
 }
