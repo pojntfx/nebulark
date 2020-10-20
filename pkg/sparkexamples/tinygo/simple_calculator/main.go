@@ -4,7 +4,7 @@ func main() {
 
 }
 
-//export ignite
-func Ignite(firstAddend, secondAddend int) int {
+//export add
+func Add(firstAddend, secondAddend int) int {
 	return firstAddend + secondAddend
 }
