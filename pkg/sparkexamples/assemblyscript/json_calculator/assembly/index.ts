@@ -7,13 +7,13 @@ import { JSON } from "assemblyscript-json";
 let spark_input_encoded: Uint8Array;
 let spark_output_encoded: Uint8Array;
 
-let num1: JSON.Num;
-let num2: JSON.Num;
+let firstAddend: JSON.Num;
+let secondAddend: JSON.Num;
 let result: i64;
 
 export function nebulark_ion_spark_ignite(): i32 {
   
-  result = num1._num + num2._num
+  result = firstAddend._num + secondAddend._num
 
   return 0;
 }
@@ -47,8 +47,8 @@ export function nebulark_ion_spark_open(): i32 {
   }
   
   let jsonObj = JSON.parse(decoded_string) as JSON.Obj;
-  num1 = jsonObj.get("firstAddend") as JSON.Num;
-  num2 = jsonObj.get("secondAddend") as JSON.Num;
+  firstAddend = jsonObj.get("firstAddend") as JSON.Num;
+  secondAddend = jsonObj.get("secondAddend") as JSON.Num;
 
   return 0;
 }
