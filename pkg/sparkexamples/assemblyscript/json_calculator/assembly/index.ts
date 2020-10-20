@@ -3,8 +3,6 @@
 import "wasi";
 import { decode, encode } from "as-base64";
 import { JSON } from "assemblyscript-json";
-import { environ_get } from "wasi";
-import { Console } from "as-wasi";
 
 let spark_input_encoded: Uint8Array;
 let spark_output_encoded: Uint8Array;
@@ -15,7 +13,7 @@ let result: i64;
 
 export function nebulark_ion_spark_ignite(): i32 {
   
-  result = num1._num + num2._num;
+  result = num1._num + num2._num
 
   return 0;
 }
@@ -41,8 +39,14 @@ export function nebulark_ion_spark_open(): i32 {
     spark_decoded_input += String.fromCharCode(spark_input_encoded[j]);
   }
 
-  Console.log(spark_decoded_input)
-  let jsonObj = JSON.parse(spark_decoded_input) as JSON.Obj;
+  let decoded_array = decode(spark_decoded_input)
+
+  let decoded_string = "";
+  for (let j = 0; j < decoded_array.length; j++) {
+    decoded_string += String.fromCharCode(decoded_array[j]);
+  }
+  
+  let jsonObj = JSON.parse(decoded_string) as JSON.Obj;
   num1 = jsonObj.get("firstAddend") as JSON.Num;
   num2 = jsonObj.get("secondAddend") as JSON.Num;
 
@@ -52,9 +56,35 @@ export function nebulark_ion_spark_open(): i32 {
 export function nebulark_ion_spark_close(): i32 {
 
   let decodedOutput = "{\"sum\": " + result.toString() + "}";
+  
+  var bytes = [];
 
-  spark_output_encoded = decode(decodedOutput);
+  for(var i = 0; i < decodedOutput.length; i++) {
+    var char = decodedOutput.charCodeAt(i);
+    bytes.push(char & 0xFF);
+  }
 
+  let decoded_array = new Uint8Array(bytes.length);
+
+  for(let i = 0; i < bytes.length; i++) {
+    decoded_array[i] = bytes[i] as u32
+  }
+  
+  let encoded_string = encode(decoded_array);
+
+  var bytes1 = [];
+
+  for(var j = 0; j < encoded_string.length; j++) {
+    var char2 = encoded_string.charCodeAt(j);
+    bytes1.push(char2 & 0xFF);
+  }
+  
+  spark_output_encoded = new Uint8Array(bytes1.length)
+  
+  for(let k = 0; k < bytes1.length; k++) {
+    spark_output_encoded[k] = bytes1[k] as u32
+  }
+  
   return 0;
 }
 
