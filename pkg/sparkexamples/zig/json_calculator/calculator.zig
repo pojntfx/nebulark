@@ -10,6 +10,12 @@ const Output = struct {
 };
 
 var input_encoded = std.ArrayList(u8).init(std.heap.page_allocator);
+var output_encoded = std.ArrayList(u8).init(std.heap.page_allocator);
+
+var first_addend: i64 = 0;
+var second_addend: i64 = 0;
+
+var sum: i64 = 0;
 
 export fn nebulark_ion_spark_construct() i32 {
     return 0;
@@ -52,10 +58,15 @@ export fn nebulark_ion_spark_open() i32 {
         return 1;
     };
 
+    first_addend = input.firstAddend;
+    second_addend = input.secondAddend;
+
     return 0;
 }
 
 export fn nebulark_ion_spark_ignite() i32 {
+    sum = first_addend + second_addend;
+
     return 0;
 }
 
