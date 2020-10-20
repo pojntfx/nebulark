@@ -72,6 +72,11 @@ type AppComponent struct {
 	simpleZigCalculatorWASIInputFirstAddend  int
 	simpleZigCalculatorWASIInputSecondAddend int
 	simpleZigCalculatorWASIOutputSum         int
+
+	JSONZigCalculatorWASISpark             *sparks.WASISpark
+	jsonZigCalculatorWASIInputFirstAddend  int
+	jsonZigCalculatorWASIInputSecondAddend int
+	jsonZigCalculatorWASIOutputSum         int
 }
 
 func (c *AppComponent) Render() app.UI {
@@ -512,6 +517,40 @@ func (c *AppComponent) Render() app.UI {
 						c.simpleZigCalculatorWASIOutputSum,
 					),
 				),
+				c.getExample(
+					"JSON Zig Calculator (WASI)",
+					app.Div().Body(
+						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
+							firstAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse first addend: %v\n", err)
+
+								return
+							}
+
+							c.jsonZigCalculatorWASIInputFirstAddend = firstAddend
+						}),
+						app.Input().Class("pf-c-form-control").Type("number").Pattern(`\d`).Placeholder("Second Addend").OnInput(func(ctx app.Context, e app.Event) {
+							secondAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse second addend: %v\n", err)
+
+								return
+							}
+
+							c.jsonZigCalculatorWASIInputSecondAddend = secondAddend
+						}),
+					),
+					app.Button().
+						Class("pf-c-button pf-m-control").
+						Text("Add").
+						OnClick(func(ctx app.Context, e app.Event) {
+							c.runJSONZigCalculatorWASI()
+						}),
+					app.Div().Text(
+						c.jsonZigCalculatorWASIOutputSum,
+					),
+				),
 			),
 		),
 	)
@@ -752,6 +791,30 @@ func (c *AppComponent) runSimpleZigCalculatorWASI() {
 	res := c.SimpleZigCalculatorWASISpark.Call("add", c.simpleZigCalculatorWASIInputFirstAddend, c.simpleZigCalculatorWASIInputSecondAddend)
 
 	c.simpleZigCalculatorWASIOutputSum = res.Int()
+
+	c.Update()
+}
+
+func (c *AppComponent) runJSONZigCalculatorWASI() {
+	log.Println("running JSON Zig Calculator (WASI)")
+
+	input := &struct {
+		FirstAddend  int `json:"firstAddend"`
+		SecondAddend int `json:"secondAddend"`
+	}{
+		FirstAddend:  c.jsonZigCalculatorWASIInputFirstAddend,
+		SecondAddend: c.jsonZigCalculatorWASIInputSecondAddend,
+	}
+
+	output := &struct {
+		Sum int `json:"sum"`
+	}{}
+
+	if err := c.JSONZigCalculatorWASISpark.Run(input, output); err != nil {
+		log.Printf("could not run spark: %v\n", err)
+	}
+
+	c.jsonZigCalculatorWASIOutputSum = output.Sum
 
 	c.Update()
 }

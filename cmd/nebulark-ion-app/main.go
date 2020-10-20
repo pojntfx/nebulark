@@ -18,6 +18,7 @@ func main() {
 		SimpleAssemblyScriptCalculatorWASISpark:   sparks.NewWASISpark("/web/sparkexamples/assemblyscript/simple_calculator/main.wasm"),
 		JSONAssemblyScriptCalculatorWASISpark:     sparks.NewWASISpark("/web/sparkexamples/assemblyscript/json_calculator/main.wasm"),
 		SimpleZigCalculatorWASISpark:              sparks.NewWASISpark("/web/sparkexamples/zig/simple_calculator/main.wasm"),
+		JSONZigCalculatorWASISpark:                sparks.NewWASISpark("/web/sparkexamples/zig/json_calculator/main.wasm"),
 	})
 
 	app.Run()
