@@ -1,7 +1,7 @@
 # Aliases
 all: build
 
-build: build-ion build-sparkexamples-tinygo-simple_calculator build-sparkexamples-tinygo-json_calculator build-sparkexamples-go-simple_calculator build-sparkexamples-go-json_calculator build-sparkexamples-c-simple_calculator build-sparkexamples-c-json_calculator build-sparkexamples-cpp-simple_calculator build-sparkexamples-jwebassembly-simple_calculator build-sparkexamples-teavm-json_calculator build-sparkexamples-teavm-simple_calculator build-sparkexamples-assemblyscript-simple_calculator build-sparkexamples-assemblyscript-json_calculator build-sparkexamples-zig-simple_calculator
+build: build-ion build-sparkexamples-tinygo-simple_calculator build-sparkexamples-tinygo-json_calculator build-sparkexamples-go-simple_calculator build-sparkexamples-go-json_calculator build-sparkexamples-c-simple_calculator build-sparkexamples-c-json_calculator build-sparkexamples-cpp-simple_calculator build-sparkexamples-jwebassembly-simple_calculator build-sparkexamples-teavm-json_calculator build-sparkexamples-teavm-simple_calculator build-sparkexamples-assemblyscript-simple_calculator build-sparkexamples-assemblyscript-json_calculator build-sparkexamples-zig-simple_calculator build-sparkexamples-zig-json_calculator
 
 # Builders
 build-ion:
@@ -54,6 +54,9 @@ build-sparkexamples-assemblyscript-json_calculator:
 
 build-sparkexamples-zig-simple_calculator: build-zig-container
 	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/sparkexamples/zig/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/sparkexamples/zig/simple_calculator/ pojntfx/zig sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && zig build-lib calculator.zig -target wasm32-wasi && cp calculator.wasm $$OUTDIR/main.wasm'
+
+build-sparkexamples-zig-json_calculator: build-zig-container
+	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/sparkexamples/zig/json_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/sparkexamples/zig/json_calculator/ pojntfx/zig sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && zig build-lib calculator.zig -target wasm32-wasi && cp calculator.wasm $$OUTDIR/main.wasm'
 
 # Runners
 run-ion: build-ion
