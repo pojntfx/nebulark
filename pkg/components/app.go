@@ -63,6 +63,11 @@ type AppComponent struct {
 	simpleAssemblyScriptCalculatorWASIInputSecondAddend int
 	simpleAssemblyScriptCalculatorWASIOutputSum         int
 
+	JSONAssemblyScriptCalculatorWASISpark             *sparks.WASISpark
+	jsonAssemblyScriptCalculatorWASIInputFirstAddend  int
+	jsonAssemblyScriptCalculatorWASIInputSecondAddend int
+	jsonAssemblyScriptCalculatorWASIOutputSum         int
+
 	SimpleZigCalculatorWASISpark             *sparks.WASISpark
 	simpleZigCalculatorWASIInputFirstAddend  int
 	simpleZigCalculatorWASIInputSecondAddend int
@@ -445,6 +450,40 @@ func (c *AppComponent) Render() app.UI {
 					),
 				),
 				c.getExample(
+					"JSON AssemblyScript Calculator (WASI)",
+					app.Div().Body(
+						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
+							firstAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse first addend: %v\n", err)
+
+								return
+							}
+
+							c.jsonAssemblyScriptCalculatorWASIInputFirstAddend = firstAddend
+						}),
+						app.Input().Class("pf-c-form-control").Type("number").Pattern(`\d`).Placeholder("Second Addend").OnInput(func(ctx app.Context, e app.Event) {
+							secondAddend, err := strconv.Atoi(e.Get("target").Get("value").String())
+							if err != nil {
+								log.Printf("could parse second addend: %v\n", err)
+
+								return
+							}
+
+							c.jsonAssemblyScriptCalculatorWASIInputSecondAddend = secondAddend
+						}),
+					),
+					app.Button().
+						Class("pf-c-button pf-m-control").
+						Text("Add").
+						OnClick(func(ctx app.Context, e app.Event) {
+							c.runJSONAssemblyScriptCalculatorWASI()
+						}),
+					app.Div().Text(
+						c.jsonAssemblyScriptCalculatorWASIOutputSum,
+					),
+				),
+				c.getExample(
 					"Simple Zig Calculator (WASI)",
 					app.Div().Body(
 						app.Input().Class("pf-c-form-control pf-u-mb-sm").Type("number").Pattern(`\d`).Placeholder("First Addend").OnInput(func(ctx app.Context, e app.Event) {
@@ -712,6 +751,30 @@ func (c *AppComponent) runSimpleAssemblyScriptCalculatorWASI() {
 	res := c.SimpleAssemblyScriptCalculatorWASISpark.Call("add", c.simpleAssemblyScriptCalculatorWASIInputFirstAddend, c.simpleAssemblyScriptCalculatorWASIInputSecondAddend)
 
 	c.simpleAssemblyScriptCalculatorWASIOutputSum = res.Int()
+
+	c.Update()
+}
+
+func (c *AppComponent) runJSONAssemblyScriptCalculatorWASI() {
+	log.Println("running JSON AssemblyScript Calculator (WASI)")
+
+	input := &struct {
+		FirstAddend  int `json:"firstAddend"`
+		SecondAddend int `json:"secondAddend"`
+	}{
+		FirstAddend:  c.jsonAssemblyScriptCalculatorWASIInputFirstAddend,
+		SecondAddend: c.jsonAssemblyScriptCalculatorWASIInputSecondAddend,
+	}
+
+	output := &struct {
+		Sum int `json:"sum"`
+	}{}
+
+	if err := c.JSONAssemblyScriptCalculatorWASISpark.Run(input, output); err != nil {
+		log.Printf("could not run spark: %v\n", err)
+	}
+
+	c.jsonAssemblyScriptCalculatorWASIOutputSum = output.Sum
 
 	c.Update()
 }
