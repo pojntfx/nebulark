@@ -1,4 +1,4 @@
-package runtimes
+package virtualmachines
 
 import (
 	"encoding/base64"
@@ -7,40 +7,59 @@ import (
 	"syscall/js"
 )
 
-type WASIRuntime struct {
-	Runtime
-
+type WASMVirtualMachine struct {
 	wasmBinaryURL string
-	wasmExports   js.Value
+
+	wasi bool
+
+	tinygo           bool
+	tinygoRuntimeURL string
+
+	teavm           bool
+	teavmRuntimeURL string
+
+	wasmExports js.Value
 }
 
-func NewWASIRuntime(wasmBinaryURL string) *WASIRuntime {
-	return &WASIRuntime{
-		wasmBinaryURL: wasmBinaryURL,
-	}
-}
-
-func (s *WASIRuntime) LoadExports() error {
+func (s *WASMVirtualMachine) LoadExports() error {
 	done := make(chan bool)
 
-	js.Global().Call("openWASIWASMModule", s.wasmBinaryURL, js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
-		s.wasmExports = module[0].Get("exports")
+	if s.wasi {
+		js.Global().Call("openWASIWASMModule", s.wasmBinaryURL, js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
+			s.wasmExports = module[0].Get("exports")
 
-		done <- true
+			done <- true
 
-		return nil
-	}))
+			return nil
+		}))
+	} else if s.teavm {
+		js.Global().Call("openTeaVMWASMModule", s.wasmBinaryURL, s.teavmRuntimeURL, js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
+			s.wasmExports = module[0].Get("exports")
+
+			done <- true
+
+			return nil
+		}))
+	} else if s.tinygo {
+		js.Global().Call("openTinyGoWASMModule", s.wasmBinaryURL, s.tinygoRuntimeURL, js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
+			s.wasmExports = module[0].Get("exports")
+
+			done <- true
+
+			return nil
+		}))
+	}
 
 	<-done
 
 	return nil
 }
 
-func (s *WASIRuntime) Call(funcName string, args ...interface{}) js.Value {
+func (s *WASMVirtualMachine) Call(funcName string, args ...interface{}) js.Value {
 	return s.wasmExports.Call(funcName, args...)
 }
 
-func (s *WASIRuntime) Construct() error {
+func (s *WASMVirtualMachine) Construct() error {
 	if err := s.wasmExports.Call("nebulark_ion_spark_construct").Int(); err != 0 {
 		return fmt.Errorf("could not construct spark: %v", err)
 	}
@@ -48,7 +67,7 @@ func (s *WASIRuntime) Construct() error {
 	return nil
 }
 
-func (s *WASIRuntime) InputSetLength(length int) error {
+func (s *WASMVirtualMachine) InputSetLength(length int) error {
 	if err := s.wasmExports.Call("nebulark_ion_spark_input_set_length", length).Int(); err != 0 {
 		return fmt.Errorf("could not set spark input length: %v", err)
 	}
@@ -56,7 +75,7 @@ func (s *WASIRuntime) InputSetLength(length int) error {
 	return nil
 }
 
-func (s *WASIRuntime) InputSet(index int, input uint8) error {
+func (s *WASMVirtualMachine) InputSet(index int, input uint8) error {
 	if err := s.wasmExports.Call("nebulark_ion_spark_input_set", index, input).Int(); err != 0 {
 		return fmt.Errorf("could not set spark input: %v", err)
 	}
@@ -64,7 +83,7 @@ func (s *WASIRuntime) InputSet(index int, input uint8) error {
 	return nil
 }
 
-func (s *WASIRuntime) Open() error {
+func (s *WASMVirtualMachine) Open() error {
 	if err := s.wasmExports.Call("nebulark_ion_spark_open").Int(); err != 0 {
 		return fmt.Errorf("could not open spark: %v", err)
 	}
@@ -72,7 +91,7 @@ func (s *WASIRuntime) Open() error {
 	return nil
 }
 
-func (s *WASIRuntime) Ignite() error {
+func (s *WASMVirtualMachine) Ignite() error {
 	if err := s.wasmExports.Call("nebulark_ion_spark_ignite").Int(); err != 0 {
 		return fmt.Errorf("could not ignite spark: %v", err)
 	}
@@ -80,7 +99,7 @@ func (s *WASIRuntime) Ignite() error {
 	return nil
 }
 
-func (s *WASIRuntime) Close() error {
+func (s *WASMVirtualMachine) Close() error {
 	if err := s.wasmExports.Call("nebulark_ion_spark_close").Int(); err != 0 {
 		return fmt.Errorf("could not close spark: %v", err)
 	}
@@ -88,15 +107,15 @@ func (s *WASIRuntime) Close() error {
 	return nil
 }
 
-func (s *WASIRuntime) OutputGetLength() int {
+func (s *WASMVirtualMachine) OutputGetLength() int {
 	return s.wasmExports.Call("nebulark_ion_spark_output_get_length").Int()
 }
 
-func (s *WASIRuntime) OutputGet(index int) uint8 {
+func (s *WASMVirtualMachine) OutputGet(index int) uint8 {
 	return uint8(s.wasmExports.Call("nebulark_ion_spark_output_get", index).Int())
 }
 
-func (s *WASIRuntime) Deconstruct() error {
+func (s *WASMVirtualMachine) Deconstruct() error {
 	if err := s.wasmExports.Call("nebulark_ion_spark_deconstruct").Int(); err != 0 {
 		return fmt.Errorf("could not deconstruct spark: %v", err)
 	}
@@ -104,7 +123,7 @@ func (s *WASIRuntime) Deconstruct() error {
 	return nil
 }
 
-func (s *WASIRuntime) Run(input interface{}, output interface{}, exportsLoader ...func() error) error {
+func (s *WASMVirtualMachine) Run(input interface{}, output interface{}, exportsLoader ...func() error) error {
 	if exportsLoader == nil {
 		if err := s.LoadExports(); err != nil {
 			return fmt.Errorf("could not load spark exports: %v", err)

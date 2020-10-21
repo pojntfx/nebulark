@@ -5,15 +5,12 @@ import (
 	"strconv"
 
 	"github.com/maxence-charriere/go-app/v7/pkg/app"
-	"github.com/pojntfx/nebulark/pkg/runtimes"
+	"github.com/pojntfx/nebulark/pkg/virtualmachines"
 )
 
 type CalculatorExample struct {
-	Title string
-
-	WASIRuntime   *runtimes.WASIRuntime
-	TeaVMRuntime  *runtimes.TeaVMRuntime
-	TinyGoRuntime *runtimes.TinyGoRuntime
+	Title          string
+	VirtualMachine *virtualmachines.WASMVirtualMachine
 
 	firstAddend  int
 	secondAddend int
@@ -72,25 +69,11 @@ func (c *AppComponent) Render() app.UI {
 							OnClick(func(ctx app.Context, e app.Event) {
 								log.Printf("running %v\n", c.SimpleExamples[i].Title)
 
-								if c.SimpleExamples[i].WASIRuntime != nil {
-									if err := c.SimpleExamples[i].WASIRuntime.LoadExports(); err != nil {
-										log.Printf("could not load spark exports: %v\n", err)
-									}
-
-									c.SimpleExamples[i].sum = c.SimpleExamples[i].WASIRuntime.Call("add", c.SimpleExamples[i].firstAddend, c.SimpleExamples[i].secondAddend).Int()
-								} else if c.SimpleExamples[i].TinyGoRuntime != nil {
-									if err := c.SimpleExamples[i].TinyGoRuntime.LoadExports(); err != nil {
-										log.Printf("could not load spark exports: %v\n", err)
-									}
-
-									c.SimpleExamples[i].sum = c.SimpleExamples[i].TinyGoRuntime.WASIRuntime.Call("add", c.SimpleExamples[i].firstAddend, c.SimpleExamples[i].secondAddend).Int()
-								} else if c.SimpleExamples[i].TeaVMRuntime != nil {
-									if err := c.SimpleExamples[i].TeaVMRuntime.LoadExports(); err != nil {
-										log.Printf("could not load spark exports: %v\n", err)
-									}
-
-									c.SimpleExamples[i].sum = c.SimpleExamples[i].TeaVMRuntime.WASIRuntime.Call("add", c.SimpleExamples[i].firstAddend, c.SimpleExamples[i].secondAddend).Int()
+								if err := c.SimpleExamples[i].VirtualMachine.LoadExports(); err != nil {
+									log.Printf("could not load spark exports: %v\n", err)
 								}
+
+								c.SimpleExamples[i].sum = c.SimpleExamples[i].VirtualMachine.Call("add", c.SimpleExamples[i].firstAddend, c.SimpleExamples[i].secondAddend).Int()
 
 								c.Update()
 							})),
@@ -155,18 +138,8 @@ func (c *AppComponent) Render() app.UI {
 									Sum int `json:"sum"`
 								}{}
 
-								if c.JSONExamples[i].WASIRuntime != nil {
-									if err := c.JSONExamples[i].WASIRuntime.Run(input, output); err != nil {
-										log.Printf("could not run spark: %v\n", err)
-									}
-								} else if c.JSONExamples[i].TinyGoRuntime != nil {
-									if err := c.JSONExamples[i].TinyGoRuntime.Run(input, output); err != nil {
-										log.Printf("could not run spark: %v\n", err)
-									}
-								} else if c.JSONExamples[i].TeaVMRuntime != nil {
-									if err := c.JSONExamples[i].TeaVMRuntime.Run(input, output); err != nil {
-										log.Printf("could not run spark: %v\n", err)
-									}
+								if err := c.JSONExamples[i].VirtualMachine.Run(input, output); err != nil {
+									log.Printf("could not run spark: %v\n", err)
 								}
 
 								c.JSONExamples[i].sum = output.Sum
