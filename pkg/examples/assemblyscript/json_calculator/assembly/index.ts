@@ -12,8 +12,7 @@ let secondAddend: JSON.Num;
 let result: i64;
 
 export function nebulark_ion_spark_ignite(): i32 {
-  
-  result = firstAddend._num + secondAddend._num
+  result = firstAddend._num + secondAddend._num;
 
   return 0;
 }
@@ -22,7 +21,9 @@ export function nebulark_ion_spark_construct(): i32 {
   return 0;
 }
 
-export function nebulark_ion_spark_input_set_length(sparkInputArrayLength: i32): i32 {
+export function nebulark_ion_spark_input_set_length(
+  sparkInputArrayLength: i32
+): i32 {
   inputEncoded = new Uint8Array(sparkInputArrayLength);
   return 0;
 }
@@ -33,19 +34,18 @@ export function nebulark_ion_spark_input_set(index: i32, input: i32): i32 {
 }
 
 export function nebulark_ion_spark_open(): i32 {
-
   let inputEncodedString = "";
   for (let j = 0; j < inputEncoded.length; j++) {
     inputEncodedString += String.fromCharCode(inputEncoded[j]);
   }
 
-  let inputDecodedArray = decode(inputEncodedString)
+  let inputDecodedArray = decode(inputEncodedString);
 
   let inputDecodedString = "";
   for (let j = 0; j < inputDecodedArray.length; j++) {
     inputDecodedString += String.fromCharCode(inputDecodedArray[j]);
   }
-  
+
   let jsonObj = JSON.parse(inputDecodedString) as JSON.Obj;
   firstAddend = jsonObj.get("firstAddend") as JSON.Num;
   secondAddend = jsonObj.get("secondAddend") as JSON.Num;
@@ -54,37 +54,36 @@ export function nebulark_ion_spark_open(): i32 {
 }
 
 export function nebulark_ion_spark_close(): i32 {
+  let outputDecodedString = '{"sum": ' + result.toString() + "}";
 
-  let outputDecodedString = "{\"sum\": " + result.toString() + "}";
-  
   var bytes = [];
 
-  for(var i = 0; i < outputDecodedString.length; i++) {
+  for (var i = 0; i < outputDecodedString.length; i++) {
     var char = outputDecodedString.charCodeAt(i);
-    bytes.push(char & 0xFF);
+    bytes.push(char & 0xff);
   }
 
   let outputDecodedArray = new Uint8Array(bytes.length);
 
-  for(let i = 0; i < bytes.length; i++) {
-    outputDecodedArray[i] = bytes[i] as u32
+  for (let i = 0; i < bytes.length; i++) {
+    outputDecodedArray[i] = bytes[i] as u32;
   }
-  
+
   let outputEncodedString = encode(outputDecodedArray);
 
   var bytes1 = [];
 
-  for(var j = 0; j < outputEncodedString.length; j++) {
+  for (var j = 0; j < outputEncodedString.length; j++) {
     var char2 = outputEncodedString.charCodeAt(j);
-    bytes1.push(char2 & 0xFF);
+    bytes1.push(char2 & 0xff);
   }
-  
-  outputEncoded = new Uint8Array(bytes1.length)
-  
-  for(let k = 0; k < bytes1.length; k++) {
-    outputEncoded[k] = bytes1[k] as u32
+
+  outputEncoded = new Uint8Array(bytes1.length);
+
+  for (let k = 0; k < bytes1.length; k++) {
+    outputEncoded[k] = bytes1[k] as u32;
   }
-  
+
   return 0;
 }
 

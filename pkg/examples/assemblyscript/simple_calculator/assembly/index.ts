@@ -1,5 +1,5 @@
 import "wasi";
 
-export function add(a: i32, b: i32): i32 {
-  return a + b;
+export function add(firstAddend: i32, secondAddend: i32): i32 {
+  return firstAddend + secondAddend;
 }

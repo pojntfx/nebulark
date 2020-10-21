@@ -9,13 +9,15 @@ import (
 )
 
 type CalculatorExample struct {
-	Title         string
+	Title string
+
 	WASIRuntime   *runtimes.WASIRuntime
 	TeaVMRuntime  *runtimes.TeaVMRuntime
 	TinyGoRuntime *runtimes.TinyGoRuntime
-	firstAddend   int
-	secondAddend  int
-	sum           int
+
+	firstAddend  int
+	secondAddend int
+	sum          int
 }
 
 type AppComponent struct {
@@ -34,7 +36,7 @@ func (c *AppComponent) Render() app.UI {
 				app.Tr().Body(
 					app.Th().Text("Name"),
 					app.Th().Text("Input"),
-					app.Th().Text("Igniters"),
+					app.Th().Text("Actions"),
 					app.Th().Text("Output"),
 				),
 			),
@@ -64,7 +66,7 @@ func (c *AppComponent) Render() app.UI {
 								c.SimpleExamples[i].secondAddend = secondAddend
 							}),
 						)),
-						app.Td().DataSet("label", "Igniters").Body(app.Button().
+						app.Td().DataSet("label", "Actions").Body(app.Button().
 							Class("pf-c-button pf-m-control").
 							Text("Add").
 							OnClick(func(ctx app.Context, e app.Event) {
@@ -105,7 +107,7 @@ func (c *AppComponent) Render() app.UI {
 				app.Tr().Body(
 					app.Th().Text("Name"),
 					app.Th().Text("Input"),
-					app.Th().Text("Igniters"),
+					app.Th().Text("Actions"),
 					app.Th().Text("Output"),
 				),
 			),
@@ -135,7 +137,7 @@ func (c *AppComponent) Render() app.UI {
 								c.JSONExamples[i].secondAddend = secondAddend
 							}),
 						)),
-						app.Td().DataSet("label", "Igniters").Body(app.Button().
+						app.Td().DataSet("label", "Actions").Body(app.Button().
 							Class("pf-c-button pf-m-control").
 							Text("Add").
 							OnClick(func(ctx app.Context, e app.Event) {
