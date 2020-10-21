@@ -13,6 +13,7 @@ func main() {
 		SimpleCCalculatorWASISpark:                sparks.NewWASISpark("/web/sparkexamples/c/simple_calculator/main.wasm"),
 		JSONCCalculatorWASISpark:                  sparks.NewWASISpark("/web/sparkexamples/c/json_calculator/main.wasm"),
 		SimpleTeaVMCalculatorTeaVMWASMSpark:       sparks.NewTeaVMSpark("/web/sparkexamples/teavm/simple_calculator/main.wasm", "/web/glue/teavm/wasm-runtime.js"),
+		JSONTeaVMCalculatorTeaVMWASMSpark:         sparks.NewTeaVMSpark("/web/sparkexamples/teavm/json_calculator/main.wasm", "/web/glue/teavm/wasm-runtime.js"),
 		SimpleAssemblyScriptCalculatorWASISpark:   sparks.NewWASISpark("/web/sparkexamples/assemblyscript/simple_calculator/main.wasm"),
 		JSONAssemblyScriptCalculatorWASISpark:     sparks.NewWASISpark("/web/sparkexamples/assemblyscript/json_calculator/main.wasm"),
 		SimpleZigCalculatorWASISpark:              sparks.NewWASISpark("/web/sparkexamples/zig/simple_calculator/main.wasm"),
