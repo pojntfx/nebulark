@@ -3,9 +3,10 @@ package runtimes
 import "syscall/js"
 
 type TeaVMRuntime struct {
-	wasmRuntimeURL string
-
+	Runtime
 	*WASIRuntime
+
+	wasmRuntimeURL string
 }
 
 func NewTeaVMRuntime(wasmBinaryURL string, wasmRuntimeURL string) *TeaVMRuntime {

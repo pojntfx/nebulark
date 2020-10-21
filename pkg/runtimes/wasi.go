@@ -8,6 +8,8 @@ import (
 )
 
 type WASIRuntime struct {
+	Runtime
+
 	wasmBinaryURL string
 	wasmExports   js.Value
 }

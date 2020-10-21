@@ -5,9 +5,10 @@ import (
 )
 
 type TinyGoRuntime struct {
-	wasmRuntimeURL string
-
+	Runtime
 	*WASIRuntime
+
+	wasmRuntimeURL string
 }
 
 func NewTinyGoRuntime(wasmBinaryURL string, wasmRuntimeURL string) *TinyGoRuntime {
