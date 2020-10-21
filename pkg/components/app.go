@@ -20,6 +20,8 @@ type CalculatorExample struct {
 type AppComponent struct {
 	app.Compo
 
+	examplesRunning bool
+
 	SimpleExamples []CalculatorExample
 	JSONExamples   []CalculatorExample
 }
@@ -27,6 +29,35 @@ type AppComponent struct {
 func (c *AppComponent) Render() app.UI {
 	return app.Div().Class("pf-c-content").Body(
 		app.H1().Class("pf-u-p-lg").Text("nebulark Ion Spark Examples"),
+		app.Button().Class("pf-c-button pf-m-primary pf-u-mx-lg").Disabled(c.examplesRunning).Text(func() string {
+			if c.examplesRunning {
+				return "Running examples ..."
+			}
+
+			return "Run All Examples"
+		}()).OnClick(func(ctx app.Context, e app.Event) {
+			c.examplesRunning = true
+			c.Update()
+
+			go func() {
+				log.Println("running simple examples")
+				for _, example := range c.SimpleExamples {
+					c.RunSimpleExample(&example)
+
+					c.Update()
+				}
+
+				log.Println("running JSON examples")
+				for _, example := range c.JSONExamples {
+					c.RunJSONExample(&example)
+
+					c.Update()
+				}
+
+				c.examplesRunning = false
+				c.Update()
+			}()
+		}),
 		app.H2().Class("pf-u-p-lg").Text("Calculators (Simple)"),
 		app.Table().Class("pf-c-table pf-m-grid-md").Body(
 			app.THead().Body(
