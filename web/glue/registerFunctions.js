@@ -60,6 +60,8 @@ global.openTinyGoWASMModule = (url, wasmRuntimeURL, handler) =>
                   ...wasi.getImports(bytes),
                   ...new wasmImports.default().importObject,
                 }).then(async (vm) => {
+                  wasi.start(vm);
+
                   handler(vm);
 
                   wasmFs.getStdOut().then((stdout) => console.log(stdout));
@@ -84,6 +86,8 @@ global.openTeaVMWASMModule = (url, wasmRuntimeURL, handler) =>
       .then((bytes) =>
         WebAssembly.instantiate(bytes, importObj).then((vm) => {
           importObj.teavm.logString.memory = vm.instance.exports.memory;
+
+          vm.instance.exports.main();
 
           handler(vm.instance);
         })
