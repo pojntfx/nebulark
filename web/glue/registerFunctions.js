@@ -60,12 +60,14 @@ global.openTinyGoWASMModule = (url, wasmRuntimeURL, handler) =>
                   },
                 });
 
+                const go = new wasmImports.default();
+
                 WebAssembly.instantiate(bytes, {
                   ...wasi.getImports(bytes),
-                  ...new wasmImports.default().importObject,
+                  ...go.importObject,
                 }).then(async (vm) => {
                   try {
-                    wasi.start(vm);
+                    go.run(vm);
                   } catch (e) {
                     console.error(e);
                   }
