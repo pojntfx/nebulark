@@ -15,7 +15,7 @@ build-wasi-sdk-container:
 build-zig-container:
 	@docker build -t pojntfx/zig pkg/examples/zig/simple_calculator
 
-# Spark Examples
+# Examples
 build-examples-tinygo-simple_calculator:
 	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/examples/tinygo/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/examples/tinygo/simple_calculator/ tinygo/tinygo sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && tinygo build -o $$OUTDIR/main.wasm -target=wasm main.go'
 
