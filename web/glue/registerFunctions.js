@@ -24,7 +24,11 @@ global.openWASIWASMModule = (url, handler) =>
               WebAssembly.instantiate(bytes, {
                 ...wasi.getImports(bytes),
               }).then(async (vm) => {
-                wasi.start(vm);
+                try {
+                  wasi.start(vm);
+                } catch (e) {
+                  console.error(e);
+                }
 
                 handler(vm);
 
@@ -60,7 +64,11 @@ global.openTinyGoWASMModule = (url, wasmRuntimeURL, handler) =>
                   ...wasi.getImports(bytes),
                   ...new wasmImports.default().importObject,
                 }).then(async (vm) => {
-                  wasi.start(vm);
+                  try {
+                    wasi.start(vm);
+                  } catch (e) {
+                    console.error(e);
+                  }
 
                   handler(vm);
 
@@ -87,7 +95,11 @@ global.openTeaVMWASMModule = (url, wasmRuntimeURL, handler) =>
         WebAssembly.instantiate(bytes, importObj).then((vm) => {
           importObj.teavm.logString.memory = vm.instance.exports.memory;
 
-          vm.instance.exports.main();
+          try {
+            vm.instance.exports.main();
+          } catch (e) {
+            console.error(e);
+          }
 
           handler(vm.instance);
         })
