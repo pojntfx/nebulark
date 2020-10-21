@@ -67,13 +67,7 @@ func (c *AppComponent) Render() app.UI {
 							Class("pf-c-button pf-m-control").
 							Text("Add").
 							OnClick(func(ctx app.Context, e app.Event) {
-								log.Printf("running %v\n", c.SimpleExamples[i].Title)
-
-								if err := c.SimpleExamples[i].VirtualMachine.LoadExports(); err != nil {
-									log.Printf("could not load spark exports: %v\n", err)
-								}
-
-								c.SimpleExamples[i].sum = c.SimpleExamples[i].VirtualMachine.Call("add", c.SimpleExamples[i].firstAddend, c.SimpleExamples[i].secondAddend).Int()
+								c.RunSimpleExample(&c.SimpleExamples[i])
 
 								c.Update()
 							})),
@@ -124,25 +118,7 @@ func (c *AppComponent) Render() app.UI {
 							Class("pf-c-button pf-m-control").
 							Text("Add").
 							OnClick(func(ctx app.Context, e app.Event) {
-								log.Printf("running %v\n", c.JSONExamples[i].Title)
-
-								input := &struct {
-									FirstAddend  int `json:"firstAddend"`
-									SecondAddend int `json:"secondAddend"`
-								}{
-									FirstAddend:  c.JSONExamples[i].firstAddend,
-									SecondAddend: c.JSONExamples[i].secondAddend,
-								}
-
-								output := &struct {
-									Sum int `json:"sum"`
-								}{}
-
-								if err := c.JSONExamples[i].VirtualMachine.Run(input, output); err != nil {
-									log.Printf("could not run spark: %v\n", err)
-								}
-
-								c.JSONExamples[i].sum = output.Sum
+								c.RunJSONExample(&c.JSONExamples[i])
 
 								c.Update()
 							})),
@@ -154,4 +130,36 @@ func (c *AppComponent) Render() app.UI {
 			),
 		),
 	)
+}
+
+func (c *AppComponent) RunSimpleExample(example *CalculatorExample) {
+	log.Printf("running %v\n", example.Title)
+
+	if err := example.VirtualMachine.LoadExports(); err != nil {
+		log.Printf("could not load spark exports: %v\n", err)
+	}
+
+	example.sum = example.VirtualMachine.Call("add", example.firstAddend, example.secondAddend).Int()
+}
+
+func (c *AppComponent) RunJSONExample(example *CalculatorExample) {
+	log.Printf("running %v\n", example.Title)
+
+	input := &struct {
+		FirstAddend  int `json:"firstAddend"`
+		SecondAddend int `json:"secondAddend"`
+	}{
+		FirstAddend:  example.firstAddend,
+		SecondAddend: example.secondAddend,
+	}
+
+	output := &struct {
+		Sum int `json:"sum"`
+	}{}
+
+	if err := example.VirtualMachine.Run(input, output); err != nil {
+		log.Printf("could not run spark: %v\n", err)
+	}
+
+	example.sum = output.Sum
 }
