@@ -6,28 +6,28 @@ import (
 	"syscall/js"
 
 	"github.com/maxence-charriere/go-app/v7/pkg/app"
-	"github.com/pojntfx/nebulark/pkg/sparks"
+	"github.com/pojntfx/nebulark/pkg/runtimes"
 )
 
 type AppComponent struct {
 	app.Compo
 
-	SimpleTinyGoCalculatorTinyGoWasmExecSpark             *sparks.TinyGoSpark
+	SimpleTinyGoCalculatorTinyGoWasmExecSpark             *runtimes.TinyGoRuntime
 	simpleTinyGoCalculatorTinyGoWasmExecInputFirstAddend  int
 	simpleTinyGoCalculatorTinyGoWasmExecInputSecondAddend int
 	simpleTinyGoCalculatorTinyGoWasmExecOutputSum         int
 
-	JSONTinyGoCalculatorTinyGoWasmExecSpark             *sparks.TinyGoSpark
+	JSONTinyGoCalculatorTinyGoWasmExecSpark             *runtimes.TinyGoRuntime
 	jsonTinyGoCalculatorTinyGoWasmExecInputFirstAddend  int
 	jsonTinyGoCalculatorTinyGoWasmExecInputSecondAddend int
 	jsonTinyGoCalculatorTinyGoWasmExecOutputSum         int
 
-	SimpleCCalculatorWASISpark             *sparks.WASISpark
+	SimpleCCalculatorWASISpark             *runtimes.WASIRuntime
 	simpleCCalculatorWASIInputFirstAddend  int
 	simpleCCalculatorWASIInputSecondAddend int
 	simpleCCalculatorWASIOutputSum         int
 
-	JSONCCalculatorWASISpark             *sparks.WASISpark
+	JSONCCalculatorWASISpark             *runtimes.WASIRuntime
 	jsonCCalculatorWASIInputFirstAddend  int
 	jsonCCalculatorWASIInputSecondAddend int
 	jsonCCalculatorWASIOutputSum         int
@@ -36,32 +36,32 @@ type AppComponent struct {
 	simpleCppCalculatorWASIInputSecondAddend int
 	simpleCppCalculatorWASIOutputSum         int
 
-	SimpleTeaVMCalculatorTeaVMWASMSpark             *sparks.TeaVMSpark
+	SimpleTeaVMCalculatorTeaVMWASMSpark             *runtimes.TeaVMRuntime
 	simpleTeaVMCalculatorTeaVMWASMInputFirstAddend  int
 	simpleTeaVMCalculatorTeaVMWASMInputSecondAddend int
 	simpleTeaVMCalculatorTeaVMWASMOutputSum         int
 
-	JSONTeaVMCalculatorTeaVMWASMSpark             *sparks.TeaVMSpark
+	JSONTeaVMCalculatorTeaVMWASMSpark             *runtimes.TeaVMRuntime
 	jsonTeaVMCalculatorTeaVMWASMInputFirstAddend  int
 	jsonTeaVMCalculatorTeaVMWASMInputSecondAddend int
 	jsonTeaVMCalculatorTeaVMWASMOutputSum         int
 
-	SimpleAssemblyScriptCalculatorWASISpark             *sparks.WASISpark
+	SimpleAssemblyScriptCalculatorWASISpark             *runtimes.WASIRuntime
 	simpleAssemblyScriptCalculatorWASIInputFirstAddend  int
 	simpleAssemblyScriptCalculatorWASIInputSecondAddend int
 	simpleAssemblyScriptCalculatorWASIOutputSum         int
 
-	JSONAssemblyScriptCalculatorWASISpark             *sparks.WASISpark
+	JSONAssemblyScriptCalculatorWASISpark             *runtimes.WASIRuntime
 	jsonAssemblyScriptCalculatorWASIInputFirstAddend  int
 	jsonAssemblyScriptCalculatorWASIInputSecondAddend int
 	jsonAssemblyScriptCalculatorWASIOutputSum         int
 
-	SimpleZigCalculatorWASISpark             *sparks.WASISpark
+	SimpleZigCalculatorWASISpark             *runtimes.WASIRuntime
 	simpleZigCalculatorWASIInputFirstAddend  int
 	simpleZigCalculatorWASIInputSecondAddend int
 	simpleZigCalculatorWASIOutputSum         int
 
-	JSONZigCalculatorWASISpark             *sparks.WASISpark
+	JSONZigCalculatorWASISpark             *runtimes.WASIRuntime
 	jsonZigCalculatorWASIInputFirstAddend  int
 	jsonZigCalculatorWASIInputSecondAddend int
 	jsonZigCalculatorWASIOutputSum         int
@@ -69,7 +69,7 @@ type AppComponent struct {
 
 func (c *AppComponent) Render() app.UI {
 	return app.Div().Class("pf-c-content").Body(
-		app.H1().Class("pf-u-p-lg").Text("nebulark Ion Spark Runner Examples"),
+		app.H1().Class("pf-u-p-lg").Text("nebulark Ion Spark Examples"),
 		app.Table().Class("pf-c-table pf-m-grid-md").Body(
 			app.THead().Body(
 				app.Tr().Body(
@@ -546,7 +546,7 @@ func (c *AppComponent) runJSONCCalculatorWASI() {
 }
 
 func (c *AppComponent) runSimpleCppCalculatorWASI() {
-	js.Global().Call("openWASIWASMModule", "/web/sparkexamples/cpp/simple_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
+	js.Global().Call("openWASIWASMModule", "/web/examples/cpp/simple_calculator/main.wasm", js.FuncOf(func(_ js.Value, module []js.Value) interface{} {
 		log.Println("running Simple C++ Calculator (WASI Runtime)")
 
 		c.simpleCppCalculatorWASIOutputSum = module[0].Get("exports").Call("ignite", c.simpleCppCalculatorWASIInputFirstAddend, c.simpleCppCalculatorWASIInputSecondAddend).Int()
