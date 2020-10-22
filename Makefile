@@ -1,7 +1,7 @@
 # Aliases
 all: build
 
-build: build-ion build-examples-tinygo-simple_calculator build-examples-tinygo-json_calculator build-examples-c-simple_calculator build-examples-c-json_calculator build-examples-cpp-simple_calculator build-examples-teavm-json_calculator build-examples-teavm-simple_calculator build-examples-assemblyscript-simple_calculator build-examples-assemblyscript-json_calculator build-examples-zig-simple_calculator build-examples-zig-json_calculator
+build: build-ion build-examples-tinygo-simple_calculator build-examples-tinygo-json_calculator build-examples-c-simple_calculator build-examples-c-json_calculator build-examples-cpp-simple_calculator build-examples-cpp-json_calculator build-examples-teavm-json_calculator build-examples-teavm-simple_calculator build-examples-assemblyscript-simple_calculator build-examples-assemblyscript-json_calculator build-examples-zig-simple_calculator build-examples-zig-json_calculator
 
 # Builders
 build-ion:
@@ -30,6 +30,9 @@ build-examples-c-json_calculator: build-wasi-sdk-container
 
 build-examples-cpp-simple_calculator: build-wasi-sdk-container
 	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/examples/cpp/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/examples/cpp/simple_calculator/ pojntfx/wasi-sdk sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && rm -rf build && mkdir -p build && cd build && cmake .. && make && cp calculator.wasm $$OUTDIR/main.wasm'
+
+build-examples-cpp-json_calculator: build-wasi-sdk-container
+	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/examples/cpp/json_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/examples/cpp/json_calculator/ pojntfx/wasi-sdk sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && rm -rf _deps && mkdir -p _deps && git clone https://github.com/tkislan/base64.git _deps/base64 && rm -rf build && mkdir -p build && cd build && cmake .. && make && cp calculator.wasm $$OUTDIR/main.wasm'
 
 build-examples-teavm-json_calculator:
 	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/examples/teavm/json_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/examples/teavm/json_calculator/ maven sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && mvn clean install && cp target/javascript/classes.wasm $$OUTDIR/main.wasm'
