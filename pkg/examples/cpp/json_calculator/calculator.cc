@@ -26,23 +26,23 @@ int secondAddend;
 int result;
 
 __attribute__((export_name("nebulark_ion_spark_construct"))) int
-nebulark_ion_spark_construct() {
+nebularkIonSparkConstruct() {
   return 0;
 }
 
 __attribute__((export_name("nebulark_ion_spark_input_set_length"))) int
-nebulark_ion_spark_input_set_length(int length) {
+nebularkIonSparkInputSetLength(int length) {
   return 0;
 }
 
 __attribute__((export_name("nebulark_ion_spark_input_set"))) int
-nebulark_ion_spark_input_set(int index, char input) {
+nebularkIonSparkInputSet(int index, char input) {
   inputEncoded.push_back(input);
   return 0;
 }
 
 __attribute__((export_name("nebulark_ion_spark_open"))) int
-nebulark_ion_spark_open() {
+nebularkIonSparkOpen() {
 
   string inputEncodedString = "";
 
@@ -52,11 +52,7 @@ nebulark_ion_spark_open() {
 
   string inputDecodedString;
 
-  cout << inputEncodedString << endl;
-  
   bool decoder = Base64::Decode(inputEncodedString, &inputDecodedString);
-
-  cout << inputDecodedString << endl;
 
   json j = json::parse(inputDecodedString);
   firstAddend = j.at("firstAddend");
@@ -65,62 +61,41 @@ nebulark_ion_spark_open() {
 }
 
 __attribute__((export_name("nebulark_ion_spark_ignite"))) int
-nebulark_ion_spark_ignite() {
+nebularkIonSparkIgnite() {
   result = firstAddend + secondAddend;
-  cout << result << endl;
-  
   return 0;
 }
 
 __attribute__((export_name("nebulark_ion_spark_close"))) int
-nebulark_ion_spark_close() {
-  string outputDecodedString =
-      string("{\"sum\":") + std::to_string(result) + string("}");
-
-  cout << outputDecodedString << endl;
+nebularkIonSparkClose() {
+  string outputDecodedString = string("{\"sum\":") + std::to_string(result) + string("}");
 
   string outputEncodedString;
   bool encoder = Base64::Encode(outputDecodedString, &outputEncodedString);
 
-  cout << outputEncodedString << endl;
-  
-  cout << outputEncodedString.length() << endl;
-  
   for (int k = 0; k < outputEncodedString.length(); k++) {
-    // all above here is correct
     char currentChar2 = outputEncodedString.at(k);
     outputEncoded.push_back(currentChar2);
   }
-
-  for (int a = 0; a < outputEncoded.size(); a++) {
-    cout << outputEncoded[a] << endl;
-  }
-
-  // bis hier sollte alles richtig sein
 
   return 0;
 }
 
 __attribute__((export_name("nebulark_ion_spark_output_get_length"))) int
-nebulark_ion_spark_output_get_length() {
+nebularkIonSparkOutputGetLength() {
   return outputEncoded.size();
 }
 
 __attribute__((export_name("nebulark_ion_spark_output_get"))) int
-nebulark_ion_spark_output_get(int index) {
-  cout << "SUCCESS" << endl;
+nebularkIonSparkOutputGet(int index) {
   return outputEncoded[index];
-  
 }
 
 __attribute__((export_name("nebulark_ion_spark_deconstruct"))) int
-nebulark_ion_spark_deconstruct() {
+nebularkIonSparkDeconstruct() {
   return 0;
 }
 
 int main() {
-  cout << "Hello World" << endl;
-  //nebulark_ion_spark_open();
-  //nebulark_ion_spark_ignite();
-  //nebulark_ion_spark_close();
+  cout << "" << endl;
 }
