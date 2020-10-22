@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 3.18)
 
+# Toolchain
+set(WASI_SDK_PREFIX "/opt/wasi-sdk-11.0")
+if (NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+    set(CMAKE_TOOLCHAIN_FILE "wasi-sdk.cmake")
+endif()
+
+# Project
 project("calculator")
 
 # Libraries
