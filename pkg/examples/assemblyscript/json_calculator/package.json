@@ -1,5 +1,5 @@
 {
-  "name": "@pojntfx/nebulark-pkg-examples-assemblyscript-simple_calculator",
+  "name": "@pojntfx/nebulark-pkg-examples-assemblyscript-json_calculator",
   "version": "0.0.1-alpha1",
   "description": "AssemblyScript JSON Calculator Spark Example",
   "main": "index.js",
