@@ -5,15 +5,12 @@ import (
 	"strconv"
 
 	"github.com/maxence-charriere/go-app/v7/pkg/app"
-	"github.com/pojntfx/nebulark/pkg/runtimes"
+	"github.com/pojntfx/nebulark/pkg/virtualmachines"
 )
 
 type CalculatorExample struct {
-	Title string
-
-	WASIRuntime   *runtimes.WASIRuntime
-	TeaVMRuntime  *runtimes.TeaVMRuntime
-	TinyGoRuntime *runtimes.TinyGoRuntime
+	Title          string
+	VirtualMachine *virtualmachines.WASMVirtualMachine
 
 	firstAddend  int
 	secondAddend int
@@ -23,6 +20,8 @@ type CalculatorExample struct {
 type AppComponent struct {
 	app.Compo
 
+	examplesRunning bool
+
 	SimpleExamples []CalculatorExample
 	JSONExamples   []CalculatorExample
 }
@@ -30,6 +29,35 @@ type AppComponent struct {
 func (c *AppComponent) Render() app.UI {
 	return app.Div().Class("pf-c-content").Body(
 		app.H1().Class("pf-u-p-lg").Text("nebulark Ion Spark Examples"),
+		app.Button().Class("pf-c-button pf-m-primary pf-u-mx-lg").Disabled(c.examplesRunning).Text(func() string {
+			if c.examplesRunning {
+				return "Running examples ..."
+			}
+
+			return "Run All Examples"
+		}()).OnClick(func(ctx app.Context, e app.Event) {
+			c.examplesRunning = true
+			c.Update()
+
+			go func() {
+				log.Println("running simple examples")
+				for _, example := range c.SimpleExamples {
+					c.RunSimpleExample(&example)
+
+					c.Update()
+				}
+
+				log.Println("running JSON examples")
+				for _, example := range c.JSONExamples {
+					c.RunJSONExample(&example)
+
+					c.Update()
+				}
+
+				c.examplesRunning = false
+				c.Update()
+			}()
+		}),
 		app.H2().Class("pf-u-p-lg").Text("Calculators (Simple)"),
 		app.Table().Class("pf-c-table pf-m-grid-md").Body(
 			app.THead().Body(
@@ -70,27 +98,7 @@ func (c *AppComponent) Render() app.UI {
 							Class("pf-c-button pf-m-control").
 							Text("Add").
 							OnClick(func(ctx app.Context, e app.Event) {
-								log.Printf("running %v\n", c.SimpleExamples[i].Title)
-
-								if c.SimpleExamples[i].WASIRuntime != nil {
-									if err := c.SimpleExamples[i].WASIRuntime.LoadExports(); err != nil {
-										log.Printf("could not load spark exports: %v\n", err)
-									}
-
-									c.SimpleExamples[i].sum = c.SimpleExamples[i].WASIRuntime.Call("add", c.SimpleExamples[i].firstAddend, c.SimpleExamples[i].secondAddend).Int()
-								} else if c.SimpleExamples[i].TinyGoRuntime != nil {
-									if err := c.SimpleExamples[i].TinyGoRuntime.LoadExports(); err != nil {
-										log.Printf("could not load spark exports: %v\n", err)
-									}
-
-									c.SimpleExamples[i].sum = c.SimpleExamples[i].TinyGoRuntime.WASIRuntime.Call("add", c.SimpleExamples[i].firstAddend, c.SimpleExamples[i].secondAddend).Int()
-								} else if c.SimpleExamples[i].TeaVMRuntime != nil {
-									if err := c.SimpleExamples[i].TeaVMRuntime.LoadExports(); err != nil {
-										log.Printf("could not load spark exports: %v\n", err)
-									}
-
-									c.SimpleExamples[i].sum = c.SimpleExamples[i].TeaVMRuntime.WASIRuntime.Call("add", c.SimpleExamples[i].firstAddend, c.SimpleExamples[i].secondAddend).Int()
-								}
+								c.RunSimpleExample(&c.SimpleExamples[i])
 
 								c.Update()
 							})),
@@ -141,35 +149,7 @@ func (c *AppComponent) Render() app.UI {
 							Class("pf-c-button pf-m-control").
 							Text("Add").
 							OnClick(func(ctx app.Context, e app.Event) {
-								log.Printf("running %v\n", c.JSONExamples[i].Title)
-
-								input := &struct {
-									FirstAddend  int `json:"firstAddend"`
-									SecondAddend int `json:"secondAddend"`
-								}{
-									FirstAddend:  c.JSONExamples[i].firstAddend,
-									SecondAddend: c.JSONExamples[i].secondAddend,
-								}
-
-								output := &struct {
-									Sum int `json:"sum"`
-								}{}
-
-								if c.JSONExamples[i].WASIRuntime != nil {
-									if err := c.JSONExamples[i].WASIRuntime.Run(input, output); err != nil {
-										log.Printf("could not run spark: %v\n", err)
-									}
-								} else if c.JSONExamples[i].TinyGoRuntime != nil {
-									if err := c.JSONExamples[i].TinyGoRuntime.Run(input, output); err != nil {
-										log.Printf("could not run spark: %v\n", err)
-									}
-								} else if c.JSONExamples[i].TeaVMRuntime != nil {
-									if err := c.JSONExamples[i].TeaVMRuntime.Run(input, output); err != nil {
-										log.Printf("could not run spark: %v\n", err)
-									}
-								}
-
-								c.JSONExamples[i].sum = output.Sum
+								c.RunJSONExample(&c.JSONExamples[i])
 
 								c.Update()
 							})),
@@ -181,4 +161,36 @@ func (c *AppComponent) Render() app.UI {
 			),
 		),
 	)
+}
+
+func (c *AppComponent) RunSimpleExample(example *CalculatorExample) {
+	log.Printf("running %v\n", example.Title)
+
+	if err := example.VirtualMachine.LoadExports(); err != nil {
+		log.Printf("could not load spark exports: %v\n", err)
+	}
+
+	example.sum = example.VirtualMachine.Call("add", example.firstAddend, example.secondAddend).Int()
+}
+
+func (c *AppComponent) RunJSONExample(example *CalculatorExample) {
+	log.Printf("running %v\n", example.Title)
+
+	input := &struct {
+		FirstAddend  int `json:"firstAddend"`
+		SecondAddend int `json:"secondAddend"`
+	}{
+		FirstAddend:  example.firstAddend,
+		SecondAddend: example.secondAddend,
+	}
+
+	output := &struct {
+		Sum int `json:"sum"`
+	}{}
+
+	if err := example.VirtualMachine.Run(input, output); err != nil {
+		log.Printf("could not run spark: %v\n", err)
+	}
+
+	example.sum = output.Sum
 }
