@@ -41,6 +41,10 @@ func main() {
 				VirtualMachine: virtualmachines.NewWASMVirtualMachineBuilder().SetBinary("/web/examples/c/json_calculator/main.wasm").EnableWASIRuntime().Build(),
 			},
 			{
+				Title:			"C++ Calculator JSON Example",
+				VirtualMachine: virtualmachines.NewWASMVirtualMachineBuilder().SetBinary("/web/examples/cpp/json_calculator/main.wasm").EnableWASIRuntime().Build(),
+			},
+			{
 				Title:          "AssemblyScript Calculator JSON Example",
 				VirtualMachine: virtualmachines.NewWASMVirtualMachineBuilder().SetBinary("/web/examples/assemblyscript/json_calculator/main.wasm").EnableWASIRuntime().Build(),
 			},
