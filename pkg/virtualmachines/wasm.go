@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"syscall/js"
-
-	"github.com/mattn/go/src/log"
 )
 
 type WASMVirtualMachine struct {
@@ -172,8 +170,6 @@ func (s *WASMVirtualMachine) Run(input interface{}, output interface{}, exportsL
 	for i := 0; i < encodedOutputLength; i++ {
 		encodedOutput = append(encodedOutput, s.OutputGet(i))
 	}
-
-	log.Println(encodedOutputLength)
 
 	decodedOutput, err := base64.StdEncoding.DecodeString(string(encodedOutput))
 	if err != nil {
