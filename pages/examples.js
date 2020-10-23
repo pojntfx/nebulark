@@ -6,13 +6,23 @@ function Examples() {
   const [simpleExamples, setSimpleExample] = React.useState([
     [
       "Zig Simple Calculator",
-      new VirtualMachine("/zig-simple-calculator.wasm"),
+      new VirtualMachine.Builder()
+        .setBinaryURL("/zig-simple-calculator.wasm")
+        .isWASI()
+        .build(),
       0,
     ],
   ]);
 
   const [jsonExamples, setJSONExample] = React.useState([
-    ["Zig JSON Calculator", new VirtualMachine("/zig-json-calculator.wasm"), 0],
+    [
+      "Zig JSON Calculator",
+      new VirtualMachine.Builder()
+        .setBinaryURL("/zig-json-calculator.wasm")
+        .isWASI()
+        .build(),
+      0,
+    ],
   ]);
 
   return (
