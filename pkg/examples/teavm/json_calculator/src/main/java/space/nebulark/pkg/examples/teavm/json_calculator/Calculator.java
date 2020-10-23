@@ -9,6 +9,10 @@ public class Calculator {
     private static byte[] inputEncoded;
     private static byte[] outputEncoded;
 
+    private static long firstAddend;
+    private static long secondAddend;
+    private static long result;
+
     public static void main(String[] args) {
         System.out.println("");
 
@@ -36,33 +40,39 @@ public class Calculator {
 
     @Export(name = "nebulark_ion_spark_open")
     static int open() {
-        return 0;
-    };
 
-    @Export(name = "nebulark_ion_spark_ignite")
-    static int ignite() {
         byte[] bytesDecoded = Base64.decodeBase64(inputEncoded);
         String inputDecoded = new String(bytesDecoded);
 
         JSONParser jsonParser = new JSONParser();
 
-        String outputDecoded = "";
+        
 
         try {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(inputDecoded);
-            outputDecoded = String.format("{\"sum\": %d}",
-                    (Long) jsonObject.get("firstAddend") + (Long) jsonObject.get("secondAddend"));
+            firstAddend = (Long) jsonObject.get("firstAddend");
+            secondAddend = (Long) jsonObject.get("secondAddend");
         } catch (org.json.simple.parser.ParseException e) {
             return 1;
         }
 
-        outputEncoded = Base64.encodeBase64(outputDecoded.getBytes());
+        return 0;
+    };
+
+    @Export(name = "nebulark_ion_spark_ignite")
+    static int ignite() {
+        
+        result = firstAddend + secondAddend;
 
         return 0;
     }
 
     @Export(name = "nebulark_ion_spark_close")
     static int close() {
+
+        String outputDecoded = "{\"sum\":" + result + "}";
+        outputEncoded = Base64.encodeBase64(outputDecoded.getBytes());
+
         return 0;
     }
 
