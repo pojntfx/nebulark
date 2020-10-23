@@ -9,10 +9,10 @@ public class Calculator {
     private static byte[] inputEncoded;
     private static byte[] outputEncoded;
 
-    private long firstAddend;
-    private long secondAddend;
-    private long result;
-    
+    private static long firstAddend;
+    private static long secondAddend;
+    private static long result;
+
     public static void main(String[] args) {
         System.out.println("");
 
@@ -46,7 +46,7 @@ public class Calculator {
 
         JSONParser jsonParser = new JSONParser();
 
-        String outputDecoded = "";
+        
 
         try {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(inputDecoded);
@@ -70,7 +70,7 @@ public class Calculator {
     @Export(name = "nebulark_ion_spark_close")
     static int close() {
 
-        outputDecoded = "{\"sum\": + result + "}";
+        String outputDecoded = "{\"sum\":" + result + "}";
         outputEncoded = Base64.encodeBase64(outputDecoded.getBytes());
 
         return 0;
