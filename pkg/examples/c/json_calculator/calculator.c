@@ -72,6 +72,10 @@ int calculator_output_marshal(calculator_output_t calculator_output,
 char *calculator_input_encoded;
 char *calculator_output_encoded;
 
+calculator_input_t calculator_input = {1, 1};
+int sum;
+int err;
+
 // Functions
 __attribute__((export_name("nebulark_ion_spark_construct"))) int
 nebulark_ion_spark_construct() {
@@ -94,45 +98,49 @@ nebulark_ion_spark_input_set(int index, char input) {
 
 __attribute__((export_name("nebulark_ion_spark_open"))) int
 nebulark_ion_spark_open() {
-  return 0;
-}
-
-__attribute__((export_name("nebulark_ion_spark_ignite"))) int
-nebulark_ion_spark_ignite() {
-  // Decode spark input
+   // Decode spark input
   char *calculator_input_decoded = (char *)calculator_base64_decode(
       calculator_input_encoded, strlen(calculator_input_encoded));
 
   // Unmarshal spark input
-  calculator_input_t calculator_input = {1, 1};
+  // Calculator_input_t calculator_input = {1, 1};
+  
 
-  int err =
+  err =
       calculator_input_unmarshal(&calculator_input, calculator_input_decoded);
   if (err != 0) {
     return 1;
   }
 
+  return 0;
+}
+
+__attribute__((export_name("nebulark_ion_spark_ignite"))) int
+nebulark_ion_spark_ignite() {
+ 
   // Process spark input
-  int sum = calculator_input.first_addend + calculator_input.second_addend;
+  sum = calculator_input.first_addend + calculator_input.second_addend;
 
-  // Marshal spark output
-  calculator_output_t calculator_output = {sum};
-
-  char *calculator_output_decoded = "";
-  err =
-      calculator_output_marshal(calculator_output, &calculator_output_decoded);
-  if (err != 0) {
-    return 1;
-  }
-
-  calculator_output_encoded = calculator_base64_encode(
-      (void *)calculator_output_decoded, strlen(calculator_output_decoded));
+  
 
   return 0;
 }
 
 __attribute__((export_name("nebulark_ion_spark_close"))) int
 nebulark_ion_spark_close() {
+
+  // Marshal spark output
+  calculator_output_t calculator_output = {sum};
+
+  char *calculator_output_decoded = "";
+  err = calculator_output_marshal(calculator_output, &calculator_output_decoded);
+  
+  if (err != 0) {
+    return 1;
+  }
+
+  calculator_output_encoded = calculator_base64_encode(
+      (void *)calculator_output_decoded, strlen(calculator_output_decoded));
   return 0;
 }
 
