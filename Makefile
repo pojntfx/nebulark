@@ -52,6 +52,28 @@ build-examples-zig-simple_calculator: build-zig-container
 build-examples-zig-json_calculator: build-zig-container
 	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/examples/zig/json_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/examples/zig/json_calculator/ pojntfx/zig sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && zig build-lib calculator.zig -target wasm32-wasi && cp calculator.wasm $$OUTDIR/main.wasm'
 
+# Cleaners
+clean:
+	@rm -f nebulark-ion-server
+	@rm -f web/app.wasm
+	@rm -rf web/examples
+	@rm -rf pkg/examples/assemblyscript/json_calculator/build
+	@rm -rf pkg/examples/assemblyscript/json_calculator/node_modules
+	@rm -rf pkg/examples/assemblyscript/simple_calculator/build
+	@rm -rf pkg/examples/assemblyscript/simple_calculator/node_modules
+	@rm -rf pkg/examples/c/json_calculator/_deps
+	@rm -rf pkg/examples/c/json_calculator/build
+	@rm -rf pkg/examples/c/simple_calculator/build
+	@rm -rf pkg/examples/cpp/json_calculator/_deps
+	@rm -rf pkg/examples/cpp/json_calculator/build
+	@rm -rf pkg/examples/cpp/simple_calculator/build
+	@rm -rf pkg/examples/teavm/json_calculator/target
+	@rm -rf pkg/examples/teavm/simple_calculator/target
+	@rm -rf pkg/examples/zig/json_calculator/calculator.o
+	@rm -rf pkg/examples/zig/json_calculator/calculator.wasm
+	@rm -rf pkg/examples/zig/simple_calculator/calculator.o
+	@rm -rf pkg/examples/zig/simple_calculator/calculator.wasm
+
 # Runners
 run-ion: build-ion
 	@./nebulark-ion-server
