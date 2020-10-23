@@ -1,2 +1,3 @@
-*.wasm*
-/nebulark-ion-server
+node_modules
+.next
+public/*.wasm
