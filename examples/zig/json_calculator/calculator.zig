@@ -13,8 +13,7 @@ comptime {
 const std = @import("std");
 
 const Input = struct {
-    firstAddend: i64,
-    secondAddend: i64
+    firstAddend: i64, secondAddend: i64
 };
 
 const Output = struct {
@@ -43,7 +42,7 @@ export fn inputSetLength(length: i32) i32 {
     return 0;
 }
 
-export fn inputSet(index: i32 , input: u8 ) i32 {
+export fn inputSet(index: i32, input: u8) i32 {
     input_encoded.items[@intCast(usize, index)] = input;
 
     return 0;
@@ -59,13 +58,7 @@ export fn open() i32 {
         return 1;
     };
 
-    const input = std.json.parse(
-        Input, 
-        &std.json.TokenStream.init(decoded_input),
-        std.json.ParseOptions{
-            .allocator = std.heap.page_allocator
-        }
-    ) catch |err| {
+    const input = std.json.parse(Input, &std.json.TokenStream.init(decoded_input), std.json.ParseOptions{ .allocator = std.heap.page_allocator }) catch |err| {
         return 1;
     };
 
@@ -82,9 +75,7 @@ export fn ignite() i32 {
 }
 
 export fn close() i32 {
-    const output = Output{
-        .sum = sum
-    };
+    const output = Output{ .sum = sum };
 
     var jsonBuffer: [0x100]u8 = undefined;
     var decoded_output = std.io.fixedBufferStream(&jsonBuffer);
@@ -102,7 +93,7 @@ export fn close() i32 {
             return 1;
         };
     }
-    
+
     return 0;
 }
 
