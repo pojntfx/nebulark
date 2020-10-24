@@ -3,7 +3,7 @@ import Example from "../components/example";
 import React from "react";
 
 function Examples() {
-  const [simpleExamples, setSimpleExample] = React.useState([
+  const [simpleExamples, setSimpleExamples] = React.useState([
     [
       "Zig Simple Calculator",
       new VirtualMachine.Builder()
@@ -12,14 +12,30 @@ function Examples() {
         .build(),
       0,
     ],
+    [
+      "TinyGo Simple Calculator",
+      new VirtualMachine.Builder()
+        .setBinaryURL("/tinygo-simple-calculator.wasm")
+        .useTinyGoRuntime()
+        .build(),
+      0,
+    ],
   ]);
 
-  const [jsonExamples, setJSONExample] = React.useState([
+  const [jsonExamples, setJSONExamples] = React.useState([
     [
       "Zig JSON Calculator",
       new VirtualMachine.Builder()
         .setBinaryURL("/zig-json-calculator.wasm")
         .useWASIRuntime()
+        .build(),
+      0,
+    ],
+    [
+      "TinyGo JSON Calculator",
+      new VirtualMachine.Builder()
+        .setBinaryURL("/tinygo-json-calculator.wasm")
+        .useTinyGoRuntime()
         .build(),
       0,
     ],
@@ -35,6 +51,7 @@ function Examples() {
           return (
             <li key={i}>
               <Example
+                title={example[0]}
                 calculate={async (firstAddend, secondAddend) => {
                   await example[1].loadExports();
 
@@ -63,7 +80,7 @@ function Examples() {
                     return;
                   }
 
-                  setSimpleExample((oldExamples) =>
+                  setSimpleExamples((oldExamples) =>
                     oldExamples.map((oldExample, j) =>
                       i === j ? [oldExample[0], oldExample[1], sum] : oldExample
                     )
@@ -82,6 +99,7 @@ function Examples() {
           return (
             <li key={i}>
               <Example
+                title={example[0]}
                 calculate={async (firstAddend, secondAddend) => {
                   let sum = 0;
                   try {
@@ -107,7 +125,7 @@ function Examples() {
                     return;
                   }
 
-                  setJSONExample((oldExamples) =>
+                  setJSONExamples((oldExamples) =>
                     oldExamples.map((oldExample, j) =>
                       i === j ? [oldExample[0], oldExample[1], sum] : oldExample
                     )
