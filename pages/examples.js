@@ -1,6 +1,7 @@
 import VirtualMachine from "../lib/virtualmachine";
 import Example from "../components/example";
 import React from "react";
+import Link from "next/link";
 
 function Examples() {
   const [simpleExamples, setSimpleExamples] = React.useState([
@@ -105,9 +106,93 @@ function Examples() {
     ],
   ]);
 
+  const [examplesRunning, setExamplesRunning] = React.useState(false);
+
   return (
     <>
-      <h1>Examples</h1>
+      <Link href="/">🔙 Back</Link>
+
+      <h1>Nebulark Examples</h1>
+
+      <button
+        onClick={async () => {
+          setExamplesRunning(true);
+
+          await Promise.all([
+            ...simpleExamples.map(async (example, i) => {
+              const firstAddend = Math.floor(Math.random() * 10000);
+              const secondAddend = Math.floor(Math.random() * 10000);
+
+              await example[1].loadExports();
+
+              let sum = 0;
+              try {
+                await example[1].start();
+
+                sum = await example[1].call("add", firstAddend, secondAddend);
+
+                const stdout = await example[1].getStdout();
+                if (stdout.length !== 0) {
+                  console.log(stdout);
+                }
+              } catch (e) {
+                const stdout = await example[1].getStdout();
+                if (stdout.length !== 0) {
+                  console.log(stdout);
+                }
+
+                console.error(e);
+
+                return;
+              }
+
+              setSimpleExamples((oldExamples) =>
+                oldExamples.map((oldExample, j) =>
+                  i === j ? [oldExample[0], oldExample[1], sum] : oldExample
+                )
+              );
+            }),
+            ...jsonExamples.map(async (example, i) => {
+              const firstAddend = Math.floor(Math.random() * 10000);
+              const secondAddend = Math.floor(Math.random() * 10000);
+
+              let sum = 0;
+              try {
+                const res = await example[1].run({
+                  firstAddend,
+                  secondAddend,
+                });
+
+                const stdout = await example[1].getStdout();
+                if (stdout.length !== 0) {
+                  console.log(stdout);
+                }
+
+                sum = res.sum;
+              } catch (e) {
+                const stdout = await example[1].getStdout();
+                if (stdout.length !== 0) {
+                  console.log(stdout);
+                }
+
+                console.error(e);
+
+                return;
+              }
+
+              setJSONExamples((oldExamples) =>
+                oldExamples.map((oldExample, j) =>
+                  i === j ? [oldExample[0], oldExample[1], sum] : oldExample
+                )
+              );
+            }),
+          ]);
+
+          setExamplesRunning(false);
+        }}
+      >
+        {examplesRunning ? "Running Examples ..." : "Run Examples"}
+      </button>
 
       <h2>Simple Examples</h2>
       <ul>
