@@ -16,3 +16,20 @@ jobs:
         run: make
       - name: Run examples with make
         run: make run-examples
+      - name: Cache the build directories
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            .next
+
+            examples/c/simple_calculator/build
+            examples/c/json_calculator/_deps
+            examples/c/json_calculator/build
+
+            examples/teavm/simple_calculator/.m2
+            examples/teavm/json_calculator/.m2
+
+            examples/tinygo/simple_calculator/go
+            examples/tinygo/json_calculator/go
+          key: ${{ runner.os }}-nebulark
