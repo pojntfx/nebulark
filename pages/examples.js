@@ -12,6 +12,8 @@ function Examples() {
         .useWASIRuntime()
         .build(),
       0,
+      0,
+      0,
     ],
     [
       "C++ Simple Calculator",
@@ -19,6 +21,8 @@ function Examples() {
         .setBinaryURL("/cpp-simple-calculator.wasm")
         .useWASIRuntime()
         .build(),
+      0,
+      0,
       0,
     ],
     [
@@ -28,6 +32,8 @@ function Examples() {
         .useWASIRuntime()
         .build(),
       0,
+      0,
+      0,
     ],
     [
       "Zig Simple Calculator",
@@ -35,6 +41,8 @@ function Examples() {
         .setBinaryURL("/zig-simple-calculator.wasm")
         .useWASIRuntime()
         .build(),
+      0,
+      0,
       0,
     ],
     [
@@ -44,6 +52,8 @@ function Examples() {
         .useTinyGoRuntime()
         .build(),
       0,
+      0,
+      0,
     ],
     [
       "TeaVM Simple Calculator",
@@ -51,6 +61,8 @@ function Examples() {
         .setBinaryURL("/teavm-simple-calculator.wasm")
         .useTeaVMRuntime()
         .build(),
+      0,
+      0,
       0,
     ],
   ]);
@@ -63,6 +75,8 @@ function Examples() {
         .useWASIRuntime()
         .build(),
       0,
+      0,
+      0,
     ],
     [
       "C++ JSON Calculator",
@@ -70,6 +84,8 @@ function Examples() {
         .setBinaryURL("/cpp-json-calculator.wasm")
         .useWASIRuntime()
         .build(),
+      0,
+      0,
       0,
     ],
     [
@@ -79,6 +95,8 @@ function Examples() {
         .useWASIRuntime()
         .build(),
       0,
+      0,
+      0,
     ],
     [
       "Zig JSON Calculator",
@@ -86,6 +104,8 @@ function Examples() {
         .setBinaryURL("/zig-json-calculator.wasm")
         .useWASIRuntime()
         .build(),
+      0,
+      0,
       0,
     ],
     [
@@ -95,6 +115,8 @@ function Examples() {
         .useTinyGoRuntime()
         .build(),
       0,
+      0,
+      0,
     ],
     [
       "TeaVM JSON Calculator",
@@ -102,6 +124,8 @@ function Examples() {
         .setBinaryURL("/teavm-json-calculator.wasm")
         .useTeaVMRuntime()
         .build(),
+      0,
+      0,
       0,
     ],
   ]);
@@ -122,6 +146,9 @@ function Examples() {
             ...simpleExamples.map(async (example, i) => {
               const firstAddend = Math.floor(Math.random() * 10000);
               const secondAddend = Math.floor(Math.random() * 10000);
+
+              example[3] = firstAddend;
+              example[4] = secondAddend;
 
               await example[1].loadExports();
 
@@ -148,13 +175,24 @@ function Examples() {
 
               setSimpleExamples((oldExamples) =>
                 oldExamples.map((oldExample, j) =>
-                  i === j ? [oldExample[0], oldExample[1], sum] : oldExample
+                  i === j
+                    ? [
+                        oldExample[0],
+                        oldExample[1],
+                        sum,
+                        example[3],
+                        example[4],
+                      ]
+                    : oldExample
                 )
               );
             }),
             ...jsonExamples.map(async (example, i) => {
               const firstAddend = Math.floor(Math.random() * 10000);
               const secondAddend = Math.floor(Math.random() * 10000);
+
+              example[3] = firstAddend;
+              example[4] = secondAddend;
 
               let sum = 0;
               try {
@@ -182,7 +220,15 @@ function Examples() {
 
               setJSONExamples((oldExamples) =>
                 oldExamples.map((oldExample, j) =>
-                  i === j ? [oldExample[0], oldExample[1], sum] : oldExample
+                  i === j
+                    ? [
+                        oldExample[0],
+                        oldExample[1],
+                        sum,
+                        example[3],
+                        example[4],
+                      ]
+                    : oldExample
                 )
               );
             }),
@@ -201,6 +247,38 @@ function Examples() {
             <li key={i}>
               <Example
                 title={example[0]}
+                firstAddend={example[3]}
+                setFirstAddend={(a) =>
+                  setSimpleExamples((oldExamples) =>
+                    oldExamples.map((oldExample, j) =>
+                      i === j
+                        ? [
+                            oldExample[0],
+                            oldExample[1],
+                            oldExample[2],
+                            a,
+                            oldExample[4],
+                          ]
+                        : oldExample
+                    )
+                  )
+                }
+                secondAddend={example[4]}
+                setSecondAddend={(a) =>
+                  setSimpleExamples((oldExamples) =>
+                    oldExamples.map((oldExample, j) =>
+                      i === j
+                        ? [
+                            oldExample[0],
+                            oldExample[1],
+                            oldExample[2],
+                            oldExample[3],
+                            a,
+                          ]
+                        : oldExample
+                    )
+                  )
+                }
                 calculate={async (firstAddend, secondAddend) => {
                   await example[1].loadExports();
 
@@ -231,7 +309,15 @@ function Examples() {
 
                   setSimpleExamples((oldExamples) =>
                     oldExamples.map((oldExample, j) =>
-                      i === j ? [oldExample[0], oldExample[1], sum] : oldExample
+                      i === j
+                        ? [
+                            oldExample[0],
+                            oldExample[1],
+                            sum,
+                            oldExample[3],
+                            oldExample[4],
+                          ]
+                        : oldExample
                     )
                   );
                 }}
@@ -249,6 +335,38 @@ function Examples() {
             <li key={i}>
               <Example
                 title={example[0]}
+                firstAddend={example[3]}
+                setFirstAddend={(a) =>
+                  setJSONExamples((oldExamples) =>
+                    oldExamples.map((oldExample, j) =>
+                      i === j
+                        ? [
+                            oldExample[0],
+                            oldExample[1],
+                            oldExample[2],
+                            a,
+                            oldExample[4],
+                          ]
+                        : oldExample
+                    )
+                  )
+                }
+                secondAddend={example[4]}
+                setSecondAddend={(a) =>
+                  setJSONExamples((oldExamples) =>
+                    oldExamples.map((oldExample, j) =>
+                      i === j
+                        ? [
+                            oldExample[0],
+                            oldExample[1],
+                            oldExample[2],
+                            oldExample[3],
+                            a,
+                          ]
+                        : oldExample
+                    )
+                  )
+                }
                 calculate={async (firstAddend, secondAddend) => {
                   let sum = 0;
                   try {
@@ -278,7 +396,15 @@ function Examples() {
 
                   setJSONExamples((oldExamples) =>
                     oldExamples.map((oldExample, j) =>
-                      i === j ? [oldExample[0], oldExample[1], sum] : oldExample
+                      i === j
+                        ? [
+                            oldExample[0],
+                            oldExample[1],
+                            sum,
+                            oldExample[3],
+                            oldExample[4],
+                          ]
+                        : oldExample
                     )
                   );
                 }}
