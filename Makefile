@@ -1,79 +1,158 @@
-# Aliases
+# All
 all: build
 
-build: build-ion build-examples-tinygo-simple_calculator build-examples-tinygo-json_calculator build-examples-c-simple_calculator build-examples-c-json_calculator build-examples-cpp-simple_calculator build-examples-cpp-json_calculator build-examples-teavm-json_calculator build-examples-teavm-simple_calculator build-examples-assemblyscript-simple_calculator build-examples-assemblyscript-json_calculator build-examples-zig-simple_calculator build-examples-zig-json_calculator
+# Build
+build: \
+	build-container-zig \
+	build-container-wasi-sdk \
+	build-example-c-simple-calculator \
+	build-example-c-json-calculator \
+	build-example-cpp-simple-calculator \
+	build-example-cpp-json-calculator \
+	build-example-assemblyscript-simple-calculator \
+	build-example-assemblyscript-json-calculator \
+	build-example-zig-simple-calculator \
+	build-example-zig-json-calculator \
+	build-example-tinygo-simple-calculator \
+	build-example-tinygo-json-calculator \
+	build-example-teavm-simple-calculator \
+	build-example-teavm-json-calculator \
+	build-ion
 
-# Builders
+build-container-wasi-sdk:
+	@docker build -t pojntfx/wasi-sdk examples/c
+
+build-container-zig:
+	@docker build -t pojntfx/zig examples/zig
+
+build-example-c-simple-calculator: build-container-wasi-sdk
+	@docker run -v ${PWD}/examples/c/simple_calculator:/src:Z pojntfx/wasi-sdk sh -c 'cd /src && mkdir -p /src/build && cd /src/build && cmake .. && make'
+	@cp examples/c/simple_calculator/build/calculator.wasm public/c-simple-calculator.wasm
+build-example-c-json-calculator: build-container-wasi-sdk
+	@docker run -v ${PWD}/examples/c/json_calculator:/src:Z pojntfx/wasi-sdk sh -c 'cd /src && mkdir -p _deps && if [ ! -d "_deps/base64" ]; then git clone https://github.com/zhicheng/base64.git _deps/base64; fi && mkdir -p /src/build && cd /src/build && cmake .. && make'
+	@cp examples/c/json_calculator/build/calculator.wasm public/c-json-calculator.wasm
+
+build-example-cpp-simple-calculator: build-container-wasi-sdk
+	@docker run -v ${PWD}/examples/cpp/simple_calculator:/src:Z pojntfx/wasi-sdk sh -c 'cd /src && mkdir -p /src/build && cd /src/build && cmake .. && make'
+	@cp examples/cpp/simple_calculator/build/calculator.wasm public/cpp-simple-calculator.wasm
+build-example-cpp-json-calculator: build-container-wasi-sdk
+	@docker run -v ${PWD}/examples/cpp/json_calculator:/src:Z pojntfx/wasi-sdk sh -c 'cd /src && mkdir -p _deps && if [ ! -d "_deps/base64" ]; then git clone https://github.com/tkislan/base64.git _deps/base64; fi && mkdir -p /src/build && cd /src/build && cmake .. && make'
+	@cp examples/cpp/json_calculator/build/calculator.wasm public/cpp-json-calculator.wasm
+
+build-example-assemblyscript-simple-calculator: build-container-wasi-sdk
+	@docker run -v ${PWD}/examples/assemblyscript/simple_calculator:/src:Z node sh -c 'cd /src && yarn && yarn asbuild'
+	@cp examples/assemblyscript/simple_calculator/build/optimized.wasm public/assemblyscript-simple-calculator.wasm
+build-example-assemblyscript-json-calculator: build-container-wasi-sdk
+	@docker run -v ${PWD}/examples/assemblyscript/json_calculator:/src:Z node sh -c 'cd /src && yarn && yarn asbuild'
+	@cp examples/assemblyscript/json_calculator/build/optimized.wasm public/assemblyscript-json-calculator.wasm
+
+build-example-zig-simple-calculator: build-container-zig
+	@docker run -v ${PWD}/examples/zig/simple_calculator:/src:Z pojntfx/zig sh -c 'cd /src && zig build-lib -target wasm32-wasi calculator.zig'
+	@cp examples/zig/simple_calculator/calculator.wasm public/zig-simple-calculator.wasm
+build-example-zig-json-calculator: build-container-zig
+	@docker run -v ${PWD}/examples/zig/json_calculator:/src:Z pojntfx/zig sh -c 'cd /src && zig build-lib -target wasm32-wasi calculator.zig'
+	@cp examples/zig/json_calculator/calculator.wasm public/zig-json-calculator.wasm
+
+build-example-tinygo-simple-calculator:
+	@docker run -v ${PWD}/examples/tinygo/simple_calculator:/src:Z -v ${PWD}/examples/tinygo/simple_calculator/go:/root/go:Z tinygo/tinygo sh -c 'cd /src && tinygo build -o /src/calculator.wasm -target=wasm calculator.go'
+	@cp examples/tinygo/simple_calculator/calculator.wasm public/tinygo-simple-calculator.wasm
+build-example-tinygo-json-calculator:
+	@docker run -v ${PWD}/examples/tinygo/json_calculator:/src:Z -v ${PWD}/examples/tinygo/json_calculator/go:/root/go:Z tinygo/tinygo sh -c 'cd /src && tinygo build -o /src/calculator.wasm -target=wasm calculator.go'
+	@cp examples/tinygo/json_calculator/calculator.wasm public/tinygo-json-calculator.wasm
+
+build-example-teavm-simple-calculator:
+	@docker run -v ${PWD}/examples/teavm/simple_calculator:/src:Z -v ${PWD}/examples/teavm/simple_calculator/.m2:/root/.m2:Z maven sh -c 'cd /src && mvn clean install'
+	@cp examples/teavm/simple_calculator/target/javascript/classes.wasm public/teavm-simple-calculator.wasm
+build-example-teavm-json-calculator:
+	@docker run -v ${PWD}/examples/teavm/json_calculator:/src:Z -v ${PWD}/examples/teavm/json_calculator/.m2:/root/.m2:Z maven sh -c 'cd /src && mvn clean install'
+	@cp examples/teavm/json_calculator/target/javascript/classes.wasm public/teavm-json-calculator.wasm
+
 build-ion:
-	@GOARCH=wasm GOOS=js go build -o web/app.wasm cmd/nebulark-ion-app/main.go
-	@go build -o nebulark-ion-server cmd/nebulark-ion-server/main.go
+	@yarn
+	@yarn build
 
-# Containers
-build-wasi-sdk-container:
-	@docker build -t pojntfx/wasi-sdk pkg/examples/c/json_calculator
+# Clean
+clean: \
+	clean-example-c-simple-calculator \
+	clean-example-c-json-calculator \
+	clean-example-cpp-simple-calculator \
+	clean-example-cpp-json-calculator \
+	clean-example-assemblyscript-simple-calculator \
+	clean-example-assemblyscript-json-calculator \
+	clean-example-zig-simple-calculator \
+	clean-example-zig-json-calculator \
+	clean-example-tinygo-simple-calculator \
+	clean-example-tinygo-json-calculator \
+	clean-example-teavm-simple-calculator \
+	clean-example-teavm-json-calculator \
+	clean-public \
+	clean-ion
 
-build-zig-container:
-	@docker build -t pojntfx/zig pkg/examples/zig/simple_calculator
+clean-example-c-simple-calculator:
+	@rm -rf examples/c/simple_calculator/build
+clean-example-c-json-calculator:
+	@rm -rf examples/c/json_calculator/{build,_deps}
 
-# Examples
-build-examples-tinygo-simple_calculator:
-	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/examples/tinygo/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/examples/tinygo/simple_calculator/ tinygo/tinygo sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && tinygo build -o $$OUTDIR/main.wasm -target=wasm main.go'
+clean-example-cpp-simple-calculator:
+	@rm -rf examples/cpp/simple_calculator/build
+clean-example-cpp-json-calculator:
+	@rm -rf examples/cpp/json_calculator/{build,_deps}
 
-build-examples-tinygo-json_calculator:
-	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/examples/tinygo/json_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/examples/tinygo/json_calculator/ tinygo/tinygo sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && tinygo build -o $$OUTDIR/main.wasm -target=wasm main.go'
+clean-example-assemblyscript-simple-calculator:
+	@rm -rf examples/assemblyscript/simple_calculator/{build,node_modules}
+clean-example-assemblyscript-json-calculator:
+	@rm -rf examples/assemblyscript/json_calculator/{build,node_modules}
 
-build-examples-c-simple_calculator: build-wasi-sdk-container
-	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/examples/c/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/examples/c/simple_calculator/ pojntfx/wasi-sdk sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && rm -rf build && mkdir -p build && cd build && cmake .. && make && cp calculator.wasm $$OUTDIR/main.wasm'
+clean-example-zig-simple-calculator:
+	@rm -f examples/zig/simple_calculator/{*.o,*.wasm}
+clean-example-zig-json-calculator:
+	@rm -f examples/zig/json_calculator/{*.o,*.wasm}
 
-build-examples-c-json_calculator: build-wasi-sdk-container
-	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/examples/c/json_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/examples/c/json_calculator/ pojntfx/wasi-sdk sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && rm -rf _deps && mkdir -p _deps && git clone https://github.com/zhicheng/base64.git _deps/base64 && rm -rf build && mkdir -p build && cd build && cmake .. && make && cp calculator.wasm $$OUTDIR/main.wasm'
+clean-example-tinygo-simple-calculator:
+	@rm -f examples/tinygo/simple_calculator/{*.o,*.wasm,go}
+clean-example-tinygo-json-calculator:
+	@rm -f examples/tinygo/json_calculator/{*.o,*.wasm,go}
 
-build-examples-cpp-simple_calculator: build-wasi-sdk-container
-	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/examples/cpp/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/examples/cpp/simple_calculator/ pojntfx/wasi-sdk sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && rm -rf build && mkdir -p build && cd build && cmake .. && make && cp calculator.wasm $$OUTDIR/main.wasm'
+clean-example-teavm-simple-calculator:
+	@rm -rf examples/teavm/simple_calculator/{target,.m2}}
+clean-example-teavm-json-calculator:
+	@rm -rf examples/teavm/json_calculator/{target,.m2}
 
-build-examples-cpp-json_calculator: build-wasi-sdk-container
-	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/examples/cpp/json_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/examples/cpp/json_calculator/ pojntfx/wasi-sdk sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && rm -rf _deps && mkdir -p _deps && git clone https://github.com/tkislan/base64.git _deps/base64 && rm -rf build && mkdir -p build && cd build && cmake .. && make && cp calculator.wasm $$OUTDIR/main.wasm'
+clean-public:
+	@rm public/*.wasm
 
-build-examples-teavm-json_calculator:
-	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/examples/teavm/json_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/examples/teavm/json_calculator/ maven sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && mvn clean install && cp target/javascript/classes.wasm $$OUTDIR/main.wasm'
+clean-ion:
+	@rm -rf .next node_modules
 
-build-examples-teavm-simple_calculator:
-	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/examples/teavm/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/examples/teavm/simple_calculator/ maven sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && mvn clean install && cp target/javascript/classes.wasm $$OUTDIR/main.wasm'
+# Run
+run: \
+	run-examples \
+	run-ion
 
-build-examples-assemblyscript-simple_calculator:
-	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/examples/assemblyscript/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/examples/assemblyscript/simple_calculator/ node sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && yarn && yarn asbuild && cp build/untouched.wasm $$OUTDIR/main.wasm'
+run-examples: \
+	run-example-c-simple-calculator \
+	run-example-cpp-simple-calculator \
+	run-example-assemblyscript-simple-calculator \
+	run-example-zig-simple-calculator
 
-build-examples-assemblyscript-json_calculator:
-	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/examples/assemblyscript/json_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/examples/assemblyscript/json_calculator/ node sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && yarn && yarn asbuild && cp build/untouched.wasm $$OUTDIR/main.wasm'
+run-example-c-simple-calculator:
+	@wasmtime run --invoke add public/c-simple-calculator.wasm 1 2
 
-build-examples-zig-simple_calculator: build-zig-container
-	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/examples/zig/simple_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/examples/zig/simple_calculator/ pojntfx/zig sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && zig build-lib calculator.zig -target wasm32-wasi && cp calculator.wasm $$OUTDIR/main.wasm'
+run-example-cpp-simple-calculator:
+	@wasmtime run --invoke add public/cpp-simple-calculator.wasm 1 2
 
-build-examples-zig-json_calculator: build-zig-container
-	@docker run --rm -v ${PWD}:/root/go/src/github.com/pojntfx/nebulark:Z -e WORKDIR=/root/go/src/github.com/pojntfx/nebulark/pkg/examples/zig/json_calculator/ -e OUTDIR=/root/go/src/github.com/pojntfx/nebulark/web/examples/zig/json_calculator/ pojntfx/zig sh -c 'mkdir -p $$OUTDIR && cd $$WORKDIR && zig build-lib calculator.zig -target wasm32-wasi && cp calculator.wasm $$OUTDIR/main.wasm'
+run-example-assemblyscript-simple-calculator:
+	@wasmtime run --invoke add public/assemblyscript-simple-calculator.wasm 1 2
 
-# Cleaners
-clean:
-	@rm -f nebulark-ion-server
-	@rm -f web/app.wasm
-	@rm -rf web/examples
-	@rm -rf pkg/examples/assemblyscript/json_calculator/build
-	@rm -rf pkg/examples/assemblyscript/json_calculator/node_modules
-	@rm -rf pkg/examples/assemblyscript/simple_calculator/build
-	@rm -rf pkg/examples/assemblyscript/simple_calculator/node_modules
-	@rm -rf pkg/examples/c/json_calculator/_deps
-	@rm -rf pkg/examples/c/json_calculator/build
-	@rm -rf pkg/examples/c/simple_calculator/build
-	@rm -rf pkg/examples/cpp/json_calculator/_deps
-	@rm -rf pkg/examples/cpp/json_calculator/build
-	@rm -rf pkg/examples/cpp/simple_calculator/build
-	@rm -rf pkg/examples/teavm/json_calculator/target
-	@rm -rf pkg/examples/teavm/simple_calculator/target
-	@rm -rf pkg/examples/zig/json_calculator/calculator.o
-	@rm -rf pkg/examples/zig/json_calculator/calculator.wasm
-	@rm -rf pkg/examples/zig/simple_calculator/calculator.o
-	@rm -rf pkg/examples/zig/simple_calculator/calculator.wasm
+run-example-zig-simple-calculator:
+	@wasmtime run --invoke add public/zig-simple-calculator.wasm 1 2
 
-# Runners
-run-ion: build-ion
-	@./nebulark-ion-server
+run-ion:
+	@yarn start
+
+# Dev
+dev: \
+	dev-ion
+
+dev-ion:
+	@yarn dev

@@ -8,4 +8,35 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - run: make
+      - name: Setup wasmtime
+        run: curl https://wasmtime.dev/install.sh -sSf | bash
+      - name: Add wasmtime to PATH
+        run: sudo ln -s /home/runner/.wasmtime/bin/wasmtime /usr/local/bin/wasmtime
+      - name: Build with make
+        run: make
+      - name: Run examples with make
+        run: make run-examples
+      - name: Cache the build directories
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            .next
+
+            examples/c/simple_calculator/build
+            examples/c/json_calculator/_deps
+            examples/c/json_calculator/build
+
+            examples/cpp/simple_calculator/build
+            examples/cpp/json_calculator/_deps
+            examples/cpp/json_calculator/build
+
+            examples/assemblyscript/simple_calculator/node_modules
+            examples/assemblyscript/json_calculator/node_modules
+
+            examples/teavm/simple_calculator/.m2
+            examples/teavm/json_calculator/.m2
+
+            examples/tinygo/simple_calculator/go
+            examples/tinygo/json_calculator/go
+          key: ${{ runner.os }}-nebulark
