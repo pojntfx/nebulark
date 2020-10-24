@@ -3,21 +3,23 @@ all: build
 
 # Build
 build: \
-	build-zig-container \
+	build-container-zig \
 	build-example-zig-simple-calculator \
 	build-example-zig-json-calculator \
 	build-example-tinygo-simple-calculator \
 	build-example-tinygo-json-calculator \
+	build-example-teavm-simple-calculator \
+	build-example-teavm-json-calculator \
 	build-ion
 
-build-zig-container:
+build-container-zig:
 	@docker build -t pojntfx/zig examples/zig
 
-build-example-zig-simple-calculator: build-zig-container
+build-example-zig-simple-calculator: build-container-zig
 	@docker run -v ${PWD}/examples/zig/simple_calculator:/opt:Z pojntfx/zig zig build-lib -target wasm32-wasi calculator.zig
 	@cp examples/zig/simple_calculator/calculator.wasm public/zig-simple-calculator.wasm
 
-build-example-zig-json-calculator: build-zig-container
+build-example-zig-json-calculator: build-container-zig
 	@docker run -v ${PWD}/examples/zig/json_calculator:/opt:Z pojntfx/zig zig build-lib -target wasm32-wasi calculator.zig
 	@cp examples/zig/json_calculator/calculator.wasm public/zig-json-calculator.wasm
 
@@ -29,6 +31,14 @@ build-example-tinygo-json-calculator:
 	@docker run -v ${PWD}/examples/tinygo/json_calculator:/opt:Z tinygo/tinygo sh -c 'cd /opt && tinygo build -o /opt/calculator.wasm -target=wasm calculator.go'
 	@cp examples/tinygo/json_calculator/calculator.wasm public/tinygo-json-calculator.wasm
 
+build-example-teavm-simple-calculator:
+	@docker run -v ${PWD}/examples/teavm/simple_calculator:/opt:Z maven sh -c 'cd /opt && mvn clean install'
+	@cp examples/teavm/simple_calculator/target/javascript/classes.wasm public/teavm-simple-calculator.wasm
+
+build-example-teavm-json-calculator:
+	@docker run -v ${PWD}/examples/teavm/json_calculator:/opt:Z maven sh -c 'cd /opt && mvn clean install'
+	@cp examples/teavm/json_calculator/target/javascript/classes.wasm public/teavm-json-calculator.wasm
+
 build-ion:
 	@yarn
 	@yarn build
@@ -39,6 +49,8 @@ clean: \
 	clean-example-zig-json-calculator \
 	clean-example-tinygo-simple-calculator \
 	clean-example-tinygo-json-calculator \
+	clean-example-teavm-simple-calculator \
+	clean-example-teavm-json-calculator \
 	clean-public \
 	clean-ion
 
@@ -53,6 +65,12 @@ clean-example-tinygo-simple-calculator:
 
 clean-example-tinygo-json-calculator:
 	@rm -f examples/tinygo/json_calculator/{*.o,*.wasm}
+
+clean-example-teavm-simple-calculator:
+	@rm -rf examples/teavm/simple_calculator/target
+
+clean-example-teavm-json-calculator:
+	@rm -rf examples/teavm/json_calculator/target
 
 clean-public:
 	@rm public/*.wasm
