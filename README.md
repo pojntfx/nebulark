@@ -46,7 +46,7 @@ See the [examples](./examples) for more concrete implementations and see [nebula
 
 ## Installation
 
-Just visit [nebulark.space](https://nebulark.space/). Currently, there are just some examples, but as we continue development you'll be able to create and join a nebula, upload your sparks etc.
+Just visit [nebulark.space](https://nebulark.space/); all modern browsers (Chrome, Firefox, Safari) are supported. Currently, there are just some examples, but as we continue development you'll be able to create and join a nebula, upload your sparks etc.
 
 ## License
 
