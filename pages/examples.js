@@ -8,7 +8,7 @@ function Examples() {
       "Zig Simple Calculator",
       new VirtualMachine.Builder()
         .setBinaryURL("/zig-simple-calculator.wasm")
-        .isWASI()
+        .useWASIRuntime()
         .build(),
       0,
     ],
@@ -19,7 +19,7 @@ function Examples() {
       "Zig JSON Calculator",
       new VirtualMachine.Builder()
         .setBinaryURL("/zig-json-calculator.wasm")
-        .isWASI()
+        .useWASIRuntime()
         .build(),
       0,
     ],
