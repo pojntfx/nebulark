@@ -102,9 +102,12 @@ clean-ion:
 
 # Run
 run: \
-	run-example-c-simple-calculator \
-	run-example-zig-simple-calculator \
+	run-examples \
 	run-ion
+
+run-examples: \
+	run-example-c-simple-calculator \
+	run-example-zig-simple-calculator
 
 run-example-c-simple-calculator:
 	@wasmtime run --invoke add public/c-simple-calculator.wasm 1 2
