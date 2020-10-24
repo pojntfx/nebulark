@@ -20,6 +20,14 @@ function Examples() {
         .build(),
       0,
     ],
+    [
+      "TeaVM Simple Calculator",
+      new VirtualMachine.Builder()
+        .setBinaryURL("/teavm-simple-calculator.wasm")
+        .useTeaVMRuntime()
+        .build(),
+      0,
+    ],
   ]);
 
   const [jsonExamples, setJSONExamples] = React.useState([
@@ -36,6 +44,14 @@ function Examples() {
       new VirtualMachine.Builder()
         .setBinaryURL("/tinygo-json-calculator.wasm")
         .useTinyGoRuntime()
+        .build(),
+      0,
+    ],
+    [
+      "TeaVM JSON Calculator",
+      new VirtualMachine.Builder()
+        .setBinaryURL("/teavm-json-calculator.wasm")
+        .useTeaVMRuntime()
         .build(),
       0,
     ],
