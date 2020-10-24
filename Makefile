@@ -9,6 +9,8 @@ build: \
 	build-example-c-json-calculator \
 	build-example-cpp-simple-calculator \
 	build-example-cpp-json-calculator \
+	build-example-assemblyscript-simple-calculator \
+	build-example-assemblyscript-json-calculator \
 	build-example-zig-simple-calculator \
 	build-example-zig-json-calculator \
 	build-example-tinygo-simple-calculator \
@@ -36,6 +38,13 @@ build-example-cpp-simple-calculator: build-container-wasi-sdk
 build-example-cpp-json-calculator: build-container-wasi-sdk
 	@docker run -v ${PWD}/examples/cpp/json_calculator:/src:Z pojntfx/wasi-sdk sh -c 'cd /src && mkdir -p _deps && if [ ! -d "_deps/base64" ]; then git clone https://github.com/tkislan/base64.git _deps/base64; fi && mkdir -p /src/build && cd /src/build && cmake .. && make'
 	@cp examples/cpp/json_calculator/build/calculator.wasm public/cpp-json-calculator.wasm
+
+build-example-assemblyscript-simple-calculator: build-container-wasi-sdk
+	@docker run -v ${PWD}/examples/assemblyscript/simple_calculator:/src:Z node sh -c 'cd /src && yarn && yarn asbuild'
+	@cp examples/assemblyscript/simple_calculator/build/optimized.wasm public/assemblyscript-simple-calculator.wasm
+build-example-assemblyscript-json-calculator: build-container-wasi-sdk
+	@docker run -v ${PWD}/examples/assemblyscript/json_calculator:/src:Z node sh -c 'cd /src && yarn && yarn asbuild'
+	@cp examples/assemblyscript/json_calculator/build/optimized.wasm public/assemblyscript-json-calculator.wasm
 
 build-example-zig-simple-calculator: build-container-zig
 	@docker run -v ${PWD}/examples/zig/simple_calculator:/src:Z pojntfx/zig sh -c 'cd /src && zig build-lib -target wasm32-wasi calculator.zig'
@@ -68,6 +77,8 @@ clean: \
 	clean-example-c-json-calculator \
 	clean-example-cpp-simple-calculator \
 	clean-example-cpp-json-calculator \
+	clean-example-assemblyscript-simple-calculator \
+	clean-example-assemblyscript-json-calculator \
 	clean-example-zig-simple-calculator \
 	clean-example-zig-json-calculator \
 	clean-example-tinygo-simple-calculator \
@@ -86,6 +97,11 @@ clean-example-cpp-simple-calculator:
 	@rm -rf examples/cpp/simple_calculator/build
 clean-example-cpp-json-calculator:
 	@rm -rf examples/cpp/json_calculator/{build,_deps}
+
+clean-example-assemblyscript-simple-calculator:
+	@rm -rf examples/assemblyscript/simple_calculator/{build,node_modules}
+clean-example-assemblyscript-json-calculator:
+	@rm -rf examples/assemblyscript/json_calculator/{build,node_modules}
 
 clean-example-zig-simple-calculator:
 	@rm -f examples/zig/simple_calculator/{*.o,*.wasm}
@@ -116,6 +132,7 @@ run: \
 run-examples: \
 	run-example-c-simple-calculator \
 	run-example-cpp-simple-calculator \
+	run-example-assemblyscript-simple-calculator \
 	run-example-zig-simple-calculator
 
 run-example-c-simple-calculator:
@@ -123,6 +140,9 @@ run-example-c-simple-calculator:
 
 run-example-cpp-simple-calculator:
 	@wasmtime run --invoke add public/cpp-simple-calculator.wasm 1 2
+
+run-example-assemblyscript-simple-calculator:
+	@wasmtime run --invoke add public/assemblyscript-simple-calculator.wasm 1 2
 
 run-example-zig-simple-calculator:
 	@wasmtime run --invoke add public/zig-simple-calculator.wasm 1 2

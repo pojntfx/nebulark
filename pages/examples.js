@@ -21,6 +21,14 @@ function Examples() {
       0,
     ],
     [
+      "AssemblyScript Simple Calculator",
+      new VirtualMachine.Builder()
+        .setBinaryURL("/assemblyscript-simple-calculator.wasm")
+        .useWASIRuntime()
+        .build(),
+      0,
+    ],
+    [
       "Zig Simple Calculator",
       new VirtualMachine.Builder()
         .setBinaryURL("/zig-simple-calculator.wasm")
@@ -59,6 +67,14 @@ function Examples() {
       "C++ JSON Calculator",
       new VirtualMachine.Builder()
         .setBinaryURL("/cpp-json-calculator.wasm")
+        .useWASIRuntime()
+        .build(),
+      0,
+    ],
+    [
+      "AssemblyScript JSON Calculator",
+      new VirtualMachine.Builder()
+        .setBinaryURL("/assemblyscript-json-calculator.wasm")
         .useWASIRuntime()
         .build(),
       0,
@@ -109,8 +125,8 @@ function Examples() {
 
                     sum = await example[1].call(
                       "add",
-                      parseInt(firstAddend),
-                      parseInt(secondAddend)
+                      firstAddend == "" ? 0 : parseInt(firstAddend),
+                      secondAddend == "" ? 0 : parseInt(secondAddend)
                     );
 
                     const stdout = await example[1].getStdout();
@@ -152,8 +168,10 @@ function Examples() {
                   let sum = 0;
                   try {
                     const res = await example[1].run({
-                      firstAddend: parseInt(firstAddend),
-                      secondAddend: parseInt(secondAddend),
+                      firstAddend:
+                        firstAddend == "" ? 0 : parseInt(firstAddend),
+                      secondAddend:
+                        secondAddend == "" ? 0 : parseInt(secondAddend),
                     });
 
                     const stdout = await example[1].getStdout();
