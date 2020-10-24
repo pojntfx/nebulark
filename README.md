@@ -21,7 +21,7 @@ The system is made up of the following components:
 
 ### Current Status
 
-While all WebAssembly binaries are supported in theory, we support the following languages and toolchains using a Tier system::
+While all WebAssembly binaries are supported in theory, we support the following languages and toolchains using a Tier system:
 
 | Tier Name | Exports Support | WASI           | Mainstream Adoption |
 | --------- | --------------- | -------------- | ------------------- |
