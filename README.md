@@ -14,7 +14,7 @@ Nebulark is a distributed computing system build on WebAssembly, WebRTC and IPFS
 The system is made up of the following components:
 
 - **Nebulark**: The distributed computing system as a whole
-- **Ion**: A compute, network and storage node of the network, running
+- **Ion**: A compute, network and storage node of the network, running in the browser
 - **Nebula**: A cluster of ions
 - **Spark**: An app running on Nebulark
 - **Mission Control**: A cluster and spark scheduling management interface

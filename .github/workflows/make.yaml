@@ -8,16 +8,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Setup wasmtime
-        run: curl https://wasmtime.dev/install.sh -sSf | bash
-      - name: Add wasmtime to PATH
-        run: sudo ln -s /home/runner/.wasmtime/bin/wasmtime /usr/local/bin/wasmtime
-      - name: Build with make
-        run: make
-      - name: Run examples with make
-        run: make run-examples
-      - name: Fix permissions for caches
-        run: export CURRENT_USER=$(whoami) && sudo chown -R ${CURRENT_USER} .
       - name: Cache the build directories
         uses: actions/cache@v2
         with:
@@ -42,6 +32,16 @@ jobs:
             examples/tinygo/simple_calculator/go
             examples/tinygo/json_calculator/go
           key: nebulark-make-ci
+      - name: Setup wasmtime
+        run: curl https://wasmtime.dev/install.sh -sSf | bash
+      - name: Add wasmtime to PATH
+        run: sudo ln -s /home/runner/.wasmtime/bin/wasmtime /usr/local/bin/wasmtime
+      - name: Build with make
+        run: make
+      - name: Run examples with make
+        run: make run-examples
+      - name: Fix permissions for caches
+        run: export CURRENT_USER=$(whoami) && sudo chown -R ${CURRENT_USER} .
       - name: Deploy to GitHub pages
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: JamesIves/github-pages-deploy-action@3.7.1
