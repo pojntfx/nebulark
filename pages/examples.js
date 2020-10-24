@@ -5,6 +5,14 @@ import React from "react";
 function Examples() {
   const [simpleExamples, setSimpleExamples] = React.useState([
     [
+      "C Simple Calculator",
+      new VirtualMachine.Builder()
+        .setBinaryURL("/c-simple-calculator.wasm")
+        .useWASIRuntime()
+        .build(),
+      0,
+    ],
+    [
       "Zig Simple Calculator",
       new VirtualMachine.Builder()
         .setBinaryURL("/zig-simple-calculator.wasm")
@@ -31,6 +39,14 @@ function Examples() {
   ]);
 
   const [jsonExamples, setJSONExamples] = React.useState([
+    [
+      "C JSON Calculator",
+      new VirtualMachine.Builder()
+        .setBinaryURL("/c-json-calculator.wasm")
+        .useWASIRuntime()
+        .build(),
+      0,
+    ],
     [
       "Zig JSON Calculator",
       new VirtualMachine.Builder()
