@@ -6,6 +6,7 @@ build: \
 	build-container-zig \
 	build-container-wasi-sdk \
 	build-example-c-simple-calculator \
+	build-example-c-json-calculator \
 	build-example-zig-simple-calculator \
 	build-example-zig-json-calculator \
 	build-example-tinygo-simple-calculator \
@@ -23,6 +24,10 @@ build-container-zig:
 build-example-c-simple-calculator: build-container-wasi-sdk
 	@docker run -v ${PWD}/examples/c/simple_calculator:/src:Z pojntfx/wasi-sdk sh -c 'cd /src && mkdir -p /src/build && cd /src/build && cmake .. && make'
 	@cp examples/c/simple_calculator/build/calculator.wasm public/c-simple-calculator.wasm
+
+build-example-c-json-calculator: build-container-wasi-sdk
+	@docker run -v ${PWD}/examples/c/json_calculator:/src:Z pojntfx/wasi-sdk sh -c 'cd /src && mkdir -p _deps && if [ ! -d "_deps/base64" ]; then git clone https://github.com/zhicheng/base64.git _deps/base64; fi && mkdir -p /src/build && cd /src/build && cmake .. && make'
+	@cp examples/c/json_calculator/build/calculator.wasm public/c-json-calculator.wasm
 
 build-example-zig-simple-calculator: build-container-zig
 	@docker run -v ${PWD}/examples/zig/simple_calculator:/src:Z pojntfx/zig sh -c 'cd /src && zig build-lib -target wasm32-wasi calculator.zig'
@@ -55,6 +60,7 @@ build-ion:
 # Clean
 clean: \
 	clean-example-c-simple-calculator \
+	clean-example-c-json-calculator \
 	clean-example-zig-simple-calculator \
 	clean-example-zig-json-calculator \
 	clean-example-tinygo-simple-calculator \
@@ -66,6 +72,9 @@ clean: \
 
 clean-example-c-simple-calculator:
 	@rm -rf examples/c/simple_calculator/build
+
+clean-example-c-json-calculator:
+	@rm -rf examples/c/json_calculator/{build,_deps}
 
 clean-example-zig-simple-calculator:
 	@rm -f examples/zig/simple_calculator/{*.o,*.wasm}
