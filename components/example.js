@@ -1,11 +1,13 @@
 import React from "react";
 
-function Example({ calculate, output, ...otherProps }) {
+function Example({ title, calculate, output, ...otherProps }) {
   const [firstAddend, setFirstAddend] = React.useState("");
   const [secondAddend, setSecondAddend] = React.useState("");
 
   return (
     <div {...otherProps}>
+      <div>{title}</div>
+
       <input
         type="number"
         value={firstAddend}
