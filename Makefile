@@ -4,6 +4,8 @@ all: build
 # Build
 build: \
 	build-container-zig \
+	build-container-wasi-sdk \
+	build-example-c-simple-calculator \
 	build-example-zig-simple-calculator \
 	build-example-zig-json-calculator \
 	build-example-tinygo-simple-calculator \
@@ -12,31 +14,38 @@ build: \
 	build-example-teavm-json-calculator \
 	build-ion
 
+build-container-wasi-sdk:
+	@docker build -t pojntfx/wasi-sdk examples/c
+
 build-container-zig:
 	@docker build -t pojntfx/zig examples/zig
 
+build-example-c-simple-calculator: build-container-wasi-sdk
+	@docker run -v ${PWD}/examples/c/simple_calculator:/src:Z pojntfx/wasi-sdk sh -c 'cd /src && mkdir -p /src/build && cd /src/build && cmake .. && make'
+	@cp examples/c/simple_calculator/build/calculator.wasm public/c-simple-calculator.wasm
+
 build-example-zig-simple-calculator: build-container-zig
-	@docker run -v ${PWD}/examples/zig/simple_calculator:/opt:Z pojntfx/zig zig build-lib -target wasm32-wasi calculator.zig
+	@docker run -v ${PWD}/examples/zig/simple_calculator:/src:Z pojntfx/zig sh -c 'cd /src && zig build-lib -target wasm32-wasi calculator.zig'
 	@cp examples/zig/simple_calculator/calculator.wasm public/zig-simple-calculator.wasm
 
 build-example-zig-json-calculator: build-container-zig
-	@docker run -v ${PWD}/examples/zig/json_calculator:/opt:Z pojntfx/zig zig build-lib -target wasm32-wasi calculator.zig
+	@docker run -v ${PWD}/examples/zig/json_calculator:/src:Z pojntfx/zig sh -c 'cd /src && zig build-lib -target wasm32-wasi calculator.zig'
 	@cp examples/zig/json_calculator/calculator.wasm public/zig-json-calculator.wasm
 
 build-example-tinygo-simple-calculator:
-	@docker run -v ${PWD}/examples/tinygo/simple_calculator:/opt:Z tinygo/tinygo sh -c 'cd /opt && tinygo build -o /opt/calculator.wasm -target=wasm calculator.go'
+	@docker run -v ${PWD}/examples/tinygo/simple_calculator:/src:Z tinygo/tinygo sh -c 'cd /src && tinygo build -o /src/calculator.wasm -target=wasm calculator.go'
 	@cp examples/tinygo/simple_calculator/calculator.wasm public/tinygo-simple-calculator.wasm
 
 build-example-tinygo-json-calculator:
-	@docker run -v ${PWD}/examples/tinygo/json_calculator:/opt:Z tinygo/tinygo sh -c 'cd /opt && tinygo build -o /opt/calculator.wasm -target=wasm calculator.go'
+	@docker run -v ${PWD}/examples/tinygo/json_calculator:/src:Z tinygo/tinygo sh -c 'cd /src && tinygo build -o /src/calculator.wasm -target=wasm calculator.go'
 	@cp examples/tinygo/json_calculator/calculator.wasm public/tinygo-json-calculator.wasm
 
 build-example-teavm-simple-calculator:
-	@docker run -v ${PWD}/examples/teavm/simple_calculator:/opt:Z maven sh -c 'cd /opt && mvn clean install'
+	@docker run -v ${PWD}/examples/teavm/simple_calculator:/src:Z maven sh -c 'cd /src && mvn clean install'
 	@cp examples/teavm/simple_calculator/target/javascript/classes.wasm public/teavm-simple-calculator.wasm
 
 build-example-teavm-json-calculator:
-	@docker run -v ${PWD}/examples/teavm/json_calculator:/opt:Z maven sh -c 'cd /opt && mvn clean install'
+	@docker run -v ${PWD}/examples/teavm/json_calculator:/src:Z maven sh -c 'cd /src && mvn clean install'
 	@cp examples/teavm/json_calculator/target/javascript/classes.wasm public/teavm-json-calculator.wasm
 
 build-ion:
@@ -45,6 +54,7 @@ build-ion:
 
 # Clean
 clean: \
+	clean-example-c-simple-calculator \
 	clean-example-zig-simple-calculator \
 	clean-example-zig-json-calculator \
 	clean-example-tinygo-simple-calculator \
@@ -53,6 +63,9 @@ clean: \
 	clean-example-teavm-json-calculator \
 	clean-public \
 	clean-ion
+
+clean-example-c-simple-calculator:
+	@rm -rf examples/c/simple_calculator/build
 
 clean-example-zig-simple-calculator:
 	@rm -f examples/zig/simple_calculator/{*.o,*.wasm}
@@ -80,8 +93,12 @@ clean-ion:
 
 # Run
 run: \
+	run-example-c-simple-calculator \
 	run-example-zig-simple-calculator \
 	run-ion
+
+run-example-c-simple-calculator:
+	@wasmtime run --invoke add public/c-simple-calculator.wasm 1 2
 
 run-example-zig-simple-calculator:
 	@wasmtime run --invoke add public/zig-simple-calculator.wasm 1 2
