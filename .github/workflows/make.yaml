@@ -11,7 +11,7 @@ jobs:
       - name: Setup wasmtime
         run: curl https://wasmtime.dev/install.sh -sSf | bash
       - name: Add wasmtime to PATH
-        run: source ~/.bashrc
+        run: export PATH="/root/.wasmtime/bin/wasmtime:$PATH"
       - name: Build with make
         run: make
       - name: Run examples with make
@@ -26,6 +26,10 @@ jobs:
             examples/c/simple_calculator/build
             examples/c/json_calculator/_deps
             examples/c/json_calculator/build
+
+            examples/cpp/simple_calculator/build
+            examples/cpp/json_calculator/_deps
+            examples/cpp/json_calculator/build
 
             examples/teavm/simple_calculator/.m2
             examples/teavm/json_calculator/.m2

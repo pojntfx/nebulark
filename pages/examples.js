@@ -13,6 +13,14 @@ function Examples() {
       0,
     ],
     [
+      "C++ Simple Calculator",
+      new VirtualMachine.Builder()
+        .setBinaryURL("/cpp-simple-calculator.wasm")
+        .useWASIRuntime()
+        .build(),
+      0,
+    ],
+    [
       "Zig Simple Calculator",
       new VirtualMachine.Builder()
         .setBinaryURL("/zig-simple-calculator.wasm")
@@ -43,6 +51,14 @@ function Examples() {
       "C JSON Calculator",
       new VirtualMachine.Builder()
         .setBinaryURL("/c-json-calculator.wasm")
+        .useWASIRuntime()
+        .build(),
+      0,
+    ],
+    [
+      "C++ JSON Calculator",
+      new VirtualMachine.Builder()
+        .setBinaryURL("/cpp-json-calculator.wasm")
         .useWASIRuntime()
         .build(),
       0,
