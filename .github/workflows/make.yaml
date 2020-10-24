@@ -16,6 +16,8 @@ jobs:
         run: make
       - name: Run examples with make
         run: make run-examples
+      - name: Fix permissions for caches
+        run: export CURRENT_USER=$(whoami) && sudo chown -R ${CURRENT_USER} .
       - name: Cache the build directories
         uses: actions/cache@v2
         with:
