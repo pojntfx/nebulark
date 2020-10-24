@@ -41,9 +41,9 @@ jobs:
 
             examples/tinygo/simple_calculator/go
             examples/tinygo/json_calculator/go
-          key: ${{ runner.os }}-nebulark
+          key: nebulark-make-ci
       - name: Deploy to GitHub pages
-        if: ${{ github.ref == 'main' }}
+        if: ${{ github.ref == 'refs/heads/main' }}
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
