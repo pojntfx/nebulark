@@ -1,9 +1,15 @@
 import React from "react";
 
-function Example({ title, calculate, output, ...otherProps }) {
-  const [firstAddend, setFirstAddend] = React.useState("");
-  const [secondAddend, setSecondAddend] = React.useState("");
-
+function Example({
+  title,
+  calculate,
+  output,
+  firstAddend,
+  setFirstAddend,
+  secondAddend,
+  setSecondAddend,
+  ...otherProps
+}) {
   return (
     <div {...otherProps}>
       <div>{title}</div>
