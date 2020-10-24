@@ -11,7 +11,7 @@ jobs:
       - name: Setup wasmtime
         run: curl https://wasmtime.dev/install.sh -sSf | bash
       - name: Add wasmtime to PATH
-        run: export PATH="/home/runner/.wasmtime/bin:$PATH"
+        run: sudo ln -s /home/runner/.wasmtime/bin/wasmtime /usr/local/bin/wasmtime
       - name: Build with make
         run: make
       - name: Run examples with make
