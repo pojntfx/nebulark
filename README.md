@@ -36,7 +36,7 @@ The current implementation status:
 | ---- | -------------- | --------- | ----------------------- | --------------------- |
 | 1A   | C              | clang     | x                       | x                     |
 | 1A   | C++            | clang     | x                       | x                     |
-| 1A   | Rust           | rustup    | x                       | WIP                   |
+| 1A   | Rust           | rustup    | x                       | x                     |
 | 1B   | AssemblyScript | asc       | x                       | x                     |
 | 1B   | Zig            | Zig       | x                       | x                     |
 | 2A   | Go             | TinyGo    | x                       | x                     |
