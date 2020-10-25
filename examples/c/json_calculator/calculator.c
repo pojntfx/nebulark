@@ -3,9 +3,9 @@
 #include <string.h>
 
 #include "_deps/base64/base64.h"
-// #include "build/jansson-prefix/include/jansson.h"
-#include "calculator.h"
+// #include "build/jansson-prefix/src/jansson-build/include/jansson.h"
 #include "jansson.h"
+#include "calculator.h"
 #include "nebulark_ion_spark.h"
 
 // base64 utils
@@ -98,16 +98,12 @@ nebulark_ion_spark_input_set(int index, char input) {
 
 __attribute__((export_name("nebulark_ion_spark_open"))) int
 nebulark_ion_spark_open() {
-   // Decode spark input
+  // Decode spark input
   char *calculator_input_decoded = (char *)calculator_base64_decode(
       calculator_input_encoded, strlen(calculator_input_encoded));
 
   // Unmarshal spark input
-  // Calculator_input_t calculator_input = {1, 1};
-  
-
-  err =
-      calculator_input_unmarshal(&calculator_input, calculator_input_decoded);
+  err = calculator_input_unmarshal(&calculator_input, calculator_input_decoded);
   if (err != 0) {
     return 1;
   }
@@ -117,24 +113,20 @@ nebulark_ion_spark_open() {
 
 __attribute__((export_name("nebulark_ion_spark_ignite"))) int
 nebulark_ion_spark_ignite() {
- 
   // Process spark input
   sum = calculator_input.first_addend + calculator_input.second_addend;
-
-  
 
   return 0;
 }
 
 __attribute__((export_name("nebulark_ion_spark_close"))) int
 nebulark_ion_spark_close() {
-
   // Marshal spark output
   calculator_output_t calculator_output = {sum};
 
   char *calculator_output_decoded = "";
-  err = calculator_output_marshal(calculator_output, &calculator_output_decoded);
-  
+  err =
+      calculator_output_marshal(calculator_output, &calculator_output_decoded);
   if (err != 0) {
     return 1;
   }
