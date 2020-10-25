@@ -16,10 +16,10 @@ build: \
 	build-example-assemblyscript-json-calculator \
 	build-example-zig-simple-calculator \
 	build-example-zig-json-calculator \
-	build-example-tinygo-simple-calculator \
-	build-example-tinygo-json-calculator \
-	build-example-teavm-simple-calculator \
-	build-example-teavm-json-calculator \
+	build-example-go-simple-calculator \
+	build-example-go-json-calculator \
+	build-example-java-simple-calculator \
+	build-example-java-json-calculator \
 	build-ion
 
 build-container-wasi-sdk:
@@ -66,19 +66,19 @@ build-example-zig-json-calculator: build-container-zig
 	@docker run -v ${PWD}/examples/zig/json_calculator:/src:Z pojntfx/zig sh -c 'cd /src && zig build-lib -target wasm32-wasi calculator.zig'
 	@cp examples/zig/json_calculator/calculator.wasm public/zig-json-calculator.wasm
 
-build-example-tinygo-simple-calculator:
-	@docker run -v ${PWD}/examples/tinygo/simple_calculator:/src:Z -v ${PWD}/examples/tinygo/simple_calculator/go:/root/go:Z tinygo/tinygo sh -c 'cd /src && tinygo build -o /src/calculator.wasm -target=wasm calculator.go'
-	@cp examples/tinygo/simple_calculator/calculator.wasm public/tinygo-simple-calculator.wasm
-build-example-tinygo-json-calculator:
-	@docker run -v ${PWD}/examples/tinygo/json_calculator:/src:Z -v ${PWD}/examples/tinygo/json_calculator/go:/root/go:Z tinygo/tinygo sh -c 'cd /src && tinygo build -o /src/calculator.wasm -target=wasm calculator.go'
-	@cp examples/tinygo/json_calculator/calculator.wasm public/tinygo-json-calculator.wasm
+build-example-go-simple-calculator:
+	@docker run -v ${PWD}/examples/go/simple_calculator:/src:Z -v ${PWD}/examples/go/simple_calculator/go:/root/go:Z tinygo/tinygo sh -c 'cd /src && tinygo build -o /src/calculator.wasm -target=wasm calculator.go'
+	@cp examples/go/simple_calculator/calculator.wasm public/go-simple-calculator.wasm
+build-example-go-json-calculator:
+	@docker run -v ${PWD}/examples/go/json_calculator:/src:Z -v ${PWD}/examples/go/json_calculator/go:/root/go:Z tinygo/tinygo sh -c 'cd /src && tinygo build -o /src/calculator.wasm -target=wasm calculator.go'
+	@cp examples/go/json_calculator/calculator.wasm public/go-json-calculator.wasm
 
-build-example-teavm-simple-calculator:
-	@docker run -v ${PWD}/examples/teavm/simple_calculator:/src:Z -v ${PWD}/examples/teavm/simple_calculator/.m2:/root/.m2:Z maven sh -c 'cd /src && mvn clean install'
-	@cp examples/teavm/simple_calculator/target/javascript/classes.wasm public/teavm-simple-calculator.wasm
-build-example-teavm-json-calculator:
-	@docker run -v ${PWD}/examples/teavm/json_calculator:/src:Z -v ${PWD}/examples/teavm/json_calculator/.m2:/root/.m2:Z maven sh -c 'cd /src && mvn clean install'
-	@cp examples/teavm/json_calculator/target/javascript/classes.wasm public/teavm-json-calculator.wasm
+build-example-java-simple-calculator:
+	@docker run -v ${PWD}/examples/java/simple_calculator:/src:Z -v ${PWD}/examples/java/simple_calculator/.m2:/root/.m2:Z maven sh -c 'cd /src && mvn clean install'
+	@cp examples/java/simple_calculator/target/javascript/classes.wasm public/java-simple-calculator.wasm
+build-example-java-json-calculator:
+	@docker run -v ${PWD}/examples/java/json_calculator:/src:Z -v ${PWD}/examples/java/json_calculator/.m2:/root/.m2:Z maven sh -c 'cd /src && mvn clean install'
+	@cp examples/java/json_calculator/target/javascript/classes.wasm public/java-json-calculator.wasm
 
 build-ion:
 	@yarn
@@ -96,10 +96,10 @@ clean: \
 	clean-example-assemblyscript-json-calculator \
 	clean-example-zig-simple-calculator \
 	clean-example-zig-json-calculator \
-	clean-example-tinygo-simple-calculator \
-	clean-example-tinygo-json-calculator \
-	clean-example-teavm-simple-calculator \
-	clean-example-teavm-json-calculator \
+	clean-example-go-simple-calculator \
+	clean-example-go-json-calculator \
+	clean-example-java-simple-calculator \
+	clean-example-java-json-calculator \
 	clean-public \
 	clean-ion
 
@@ -128,15 +128,15 @@ clean-example-zig-simple-calculator:
 clean-example-zig-json-calculator:
 	@rm -f examples/zig/json_calculator/{*.o,*.wasm}
 
-clean-example-tinygo-simple-calculator:
-	@rm -rf examples/tinygo/simple_calculator/{*.o,*.wasm,go}
-clean-example-tinygo-json-calculator:
-	@rm -rf examples/tinygo/json_calculator/{*.o,*.wasm,go}
+clean-example-go-simple-calculator:
+	@rm -rf examples/go/simple_calculator/{*.o,*.wasm,go}
+clean-example-go-json-calculator:
+	@rm -rf examples/go/json_calculator/{*.o,*.wasm,go}
 
-clean-example-teavm-simple-calculator:
-	@rm -rf examples/teavm/simple_calculator/{target,.m2}}
-clean-example-teavm-json-calculator:
-	@rm -rf examples/teavm/json_calculator/{target,.m2}
+clean-example-java-simple-calculator:
+	@rm -rf examples/java/simple_calculator/{target,.m2}}
+clean-example-java-json-calculator:
+	@rm -rf examples/java/json_calculator/{target,.m2}
 
 clean-public:
 	@rm -f public/*.wasm

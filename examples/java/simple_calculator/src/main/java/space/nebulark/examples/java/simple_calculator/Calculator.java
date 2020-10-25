@@ -1,4 +1,4 @@
-package space.nebulark.examples.teavm.simple_calculator;
+package space.nebulark.examples.java.simple_calculator;
 
 import org.teavm.interop.Export;
 
