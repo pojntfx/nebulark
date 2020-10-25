@@ -56,7 +56,7 @@ function Examples() {
       0,
     ],
     [
-      "TinyGo Simple Calculator",
+      "Go Simple Calculator",
       new VirtualMachine.Builder()
         .setBinaryURL("/tinygo-simple-calculator.wasm")
         .useTinyGoRuntime()
@@ -66,7 +66,7 @@ function Examples() {
       0,
     ],
     [
-      "TeaVM Simple Calculator",
+      "Java Simple Calculator",
       new VirtualMachine.Builder()
         .setBinaryURL("/teavm-simple-calculator.wasm")
         .useTeaVMRuntime()
@@ -99,6 +99,16 @@ function Examples() {
       0,
     ],
     [
+      "Rust JSON Calculator",
+      new VirtualMachine.Builder()
+        .setBinaryURL("/rust-json-calculator.wasm")
+        .useWASIRuntime()
+        .build(),
+      0,
+      0,
+      0,
+    ],
+    [
       "AssemblyScript JSON Calculator",
       new VirtualMachine.Builder()
         .setBinaryURL("/assemblyscript-json-calculator.wasm")
@@ -119,7 +129,7 @@ function Examples() {
       0,
     ],
     [
-      "TinyGo JSON Calculator",
+      "Go JSON Calculator",
       new VirtualMachine.Builder()
         .setBinaryURL("/tinygo-json-calculator.wasm")
         .useTinyGoRuntime()
@@ -129,7 +139,7 @@ function Examples() {
       0,
     ],
     [
-      "TeaVM JSON Calculator",
+      "Java JSON Calculator",
       new VirtualMachine.Builder()
         .setBinaryURL("/teavm-json-calculator.wasm")
         .useTeaVMRuntime()

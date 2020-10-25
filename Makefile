@@ -10,6 +10,8 @@ build: \
 	build-example-c-json-calculator \
 	build-example-cpp-simple-calculator \
 	build-example-cpp-json-calculator \
+	build-example-rust-simple-calculator \
+	build-example-rust-json-calculator \
 	build-example-assemblyscript-simple-calculator \
 	build-example-assemblyscript-json-calculator \
 	build-example-zig-simple-calculator \
@@ -46,6 +48,9 @@ build-example-cpp-json-calculator: build-container-wasi-sdk
 build-example-rust-simple-calculator: build-container-rust-wasi
 	@docker run -v ${PWD}/examples/rust/simple_calculator:/src:Z -v ${PWD}/examples/rust/simple_calculator/.cargo:/root/.cargo:Z pojntfx/rust-wasi sh -c 'cd /src && cargo build --release --target wasm32-wasi'
 	@cp examples/rust/simple_calculator/target/wasm32-wasi/release/simple_calculator.wasm public/rust-simple-calculator.wasm
+build-example-rust-json-calculator: build-container-rust-wasi
+	@docker run -v ${PWD}/examples/rust/json_calculator:/src:Z -v ${PWD}/examples/rust/json_calculator/.cargo:/root/.cargo:Z pojntfx/rust-wasi sh -c 'cd /src && cargo build --release --target wasm32-wasi'
+	@cp examples/rust/json_calculator/target/wasm32-wasi/release/json_calculator.wasm public/rust-json-calculator.wasm
 
 build-example-assemblyscript-simple-calculator: build-container-wasi-sdk
 	@docker run -v ${PWD}/examples/assemblyscript/simple_calculator:/src:Z node sh -c 'cd /src && yarn && yarn asbuild'
@@ -86,6 +91,7 @@ clean: \
 	clean-example-cpp-simple-calculator \
 	clean-example-cpp-json-calculator \
 	clean-example-rust-simple-calculator \
+	clean-example-rust-json-calculator \
 	clean-example-assemblyscript-simple-calculator \
 	clean-example-assemblyscript-json-calculator \
 	clean-example-zig-simple-calculator \
@@ -108,7 +114,9 @@ clean-example-cpp-json-calculator:
 	@rm -rf examples/cpp/json_calculator/{build,_deps}
 
 clean-example-rust-simple-calculator:
-	@rm -rf examples/rust/simple_calculator/build
+	@rm -rf examples/rust/simple_calculator/{target,cargo}
+clean-example-rust-json-calculator:
+	@rm -rf examples/rust/json_calculator/{target,cargo}
 
 clean-example-assemblyscript-simple-calculator:
 	@rm -rf examples/assemblyscript/simple_calculator/{build,node_modules}
@@ -121,9 +129,9 @@ clean-example-zig-json-calculator:
 	@rm -f examples/zig/json_calculator/{*.o,*.wasm}
 
 clean-example-tinygo-simple-calculator:
-	@rm -f examples/tinygo/simple_calculator/{*.o,*.wasm,go}
+	@rm -rf examples/tinygo/simple_calculator/{*.o,*.wasm,go}
 clean-example-tinygo-json-calculator:
-	@rm -f examples/tinygo/json_calculator/{*.o,*.wasm,go}
+	@rm -rf examples/tinygo/json_calculator/{*.o,*.wasm,go}
 
 clean-example-teavm-simple-calculator:
 	@rm -rf examples/teavm/simple_calculator/{target,.m2}}
@@ -131,7 +139,7 @@ clean-example-teavm-json-calculator:
 	@rm -rf examples/teavm/json_calculator/{target,.m2}
 
 clean-public:
-	@rm public/*.wasm
+	@rm -f public/*.wasm
 
 clean-ion:
 	@rm -rf .next node_modules
