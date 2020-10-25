@@ -46,10 +46,10 @@ build-example-cpp-json-calculator: build-container-wasi-sdk
 	@cp examples/cpp/json_calculator/build/calculator.wasm public/cpp-json-calculator.wasm
 
 build-example-rust-simple-calculator: build-container-rust-wasi
-	@docker run -v ${PWD}/examples/rust/simple_calculator:/src:Z -v ${PWD}/examples/rust/simple_calculator/.cargo:/root/.cargo:Z pojntfx/rust-wasi sh -c 'cd /src && cargo build --release --target wasm32-wasi'
+	@docker run -v ${PWD}/examples/rust/simple_calculator:/src:Z -v ${PWD}/examples/rust/simple_calculator/.cargo:/usr/local/cargo/registry:Z pojntfx/rust-wasi sh -c 'cd /src && cargo build --release --target wasm32-wasi'
 	@cp examples/rust/simple_calculator/target/wasm32-wasi/release/simple_calculator.wasm public/rust-simple-calculator.wasm
 build-example-rust-json-calculator: build-container-rust-wasi
-	@docker run -v ${PWD}/examples/rust/json_calculator:/src:Z -v ${PWD}/examples/rust/json_calculator/.cargo:/root/.cargo:Z pojntfx/rust-wasi sh -c 'cd /src && cargo build --release --target wasm32-wasi'
+	@docker run -v ${PWD}/examples/rust/json_calculator:/src:Z -v ${PWD}/examples/rust/json_calculator/.cargo:/usr/local/cargo/registry:Z pojntfx/rust-wasi sh -c 'cd /src && cargo build --release --target wasm32-wasi'
 	@cp examples/rust/json_calculator/target/wasm32-wasi/release/json_calculator.wasm public/rust-json-calculator.wasm
 
 build-example-assemblyscript-simple-calculator: build-container-wasi-sdk

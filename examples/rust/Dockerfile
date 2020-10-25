@@ -1,4 +1,4 @@
-FROM rust:alpine
+FROM rust
 
 WORKDIR /opt
 
