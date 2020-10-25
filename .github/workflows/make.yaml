@@ -26,11 +26,11 @@ jobs:
             examples/assemblyscript/simple_calculator/node_modules
             examples/assemblyscript/json_calculator/node_modules
 
-            examples/teavm/simple_calculator/.m2
-            examples/teavm/json_calculator/.m2
+            examples/java/simple_calculator/.m2
+            examples/java/json_calculator/.m2
 
-            examples/tinygo/simple_calculator/go
-            examples/tinygo/json_calculator/go
+            examples/go/simple_calculator/go
+            examples/go/json_calculator/go
           key: nebulark-make-ci
       - name: Setup wasmtime
         run: curl https://wasmtime.dev/install.sh -sSf | bash

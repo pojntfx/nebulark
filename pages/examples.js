@@ -58,7 +58,7 @@ function Examples() {
     [
       "Go Simple Calculator",
       new VirtualMachine.Builder()
-        .setBinaryURL("/tinygo-simple-calculator.wasm")
+        .setBinaryURL("/go-simple-calculator.wasm")
         .useTinyGoRuntime()
         .build(),
       0,
@@ -68,7 +68,7 @@ function Examples() {
     [
       "Java Simple Calculator",
       new VirtualMachine.Builder()
-        .setBinaryURL("/teavm-simple-calculator.wasm")
+        .setBinaryURL("/java-simple-calculator.wasm")
         .useTeaVMRuntime()
         .build(),
       0,
@@ -131,7 +131,7 @@ function Examples() {
     [
       "Go JSON Calculator",
       new VirtualMachine.Builder()
-        .setBinaryURL("/tinygo-json-calculator.wasm")
+        .setBinaryURL("/go-json-calculator.wasm")
         .useTinyGoRuntime()
         .build(),
       0,
@@ -141,7 +141,7 @@ function Examples() {
     [
       "Java JSON Calculator",
       new VirtualMachine.Builder()
-        .setBinaryURL("/teavm-json-calculator.wasm")
+        .setBinaryURL("/java-json-calculator.wasm")
         .useTeaVMRuntime()
         .build(),
       0,

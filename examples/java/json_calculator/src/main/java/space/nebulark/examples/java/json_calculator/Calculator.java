@@ -1,4 +1,4 @@
-package space.nebulark.examples.teavm.json_calculator;
+package space.nebulark.examples.java.json_calculator;
 
 import org.apache.commons.codec.binary.Base64;
 import org.json.simple.JSONObject;
