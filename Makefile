@@ -5,6 +5,7 @@ all: build
 build: \
 	build-container-zig \
 	build-container-wasi-sdk \
+	build-container-rust-wasi \
 	build-example-c-simple-calculator \
 	build-example-c-json-calculator \
 	build-example-cpp-simple-calculator \
@@ -22,6 +23,9 @@ build: \
 build-container-wasi-sdk:
 	@docker build -t pojntfx/wasi-sdk examples/c
 
+build-container-rust-wasi:
+	@docker build -t pojntfx/rust-wasi examples/rust
+
 build-container-zig:
 	@docker build -t pojntfx/zig examples/zig
 
@@ -38,6 +42,10 @@ build-example-cpp-simple-calculator: build-container-wasi-sdk
 build-example-cpp-json-calculator: build-container-wasi-sdk
 	@docker run -v ${PWD}/examples/cpp/json_calculator:/src:Z pojntfx/wasi-sdk sh -c 'cd /src && mkdir -p _deps && if [ ! -d "_deps/base64" ]; then git clone https://github.com/tkislan/base64.git _deps/base64; fi && mkdir -p /src/build && cd /src/build && cmake .. && make'
 	@cp examples/cpp/json_calculator/build/calculator.wasm public/cpp-json-calculator.wasm
+
+build-example-rust-simple-calculator: build-container-rust-wasi
+	@docker run -v ${PWD}/examples/rust/simple_calculator:/src:Z -v ${PWD}/examples/rust/simple_calculator/.cargo:/root/.cargo:Z pojntfx/rust-wasi sh -c 'cd /src && cargo build --release --target wasm32-wasi'
+	@cp examples/rust/simple_calculator/target/wasm32-wasi/release/simple_calculator.wasm public/rust-simple-calculator.wasm
 
 build-example-assemblyscript-simple-calculator: build-container-wasi-sdk
 	@docker run -v ${PWD}/examples/assemblyscript/simple_calculator:/src:Z node sh -c 'cd /src && yarn && yarn asbuild'
@@ -77,6 +85,7 @@ clean: \
 	clean-example-c-json-calculator \
 	clean-example-cpp-simple-calculator \
 	clean-example-cpp-json-calculator \
+	clean-example-rust-simple-calculator \
 	clean-example-assemblyscript-simple-calculator \
 	clean-example-assemblyscript-json-calculator \
 	clean-example-zig-simple-calculator \
@@ -97,6 +106,9 @@ clean-example-cpp-simple-calculator:
 	@rm -rf examples/cpp/simple_calculator/build
 clean-example-cpp-json-calculator:
 	@rm -rf examples/cpp/json_calculator/{build,_deps}
+
+clean-example-rust-simple-calculator:
+	@rm -rf examples/rust/simple_calculator/build
 
 clean-example-assemblyscript-simple-calculator:
 	@rm -rf examples/assemblyscript/simple_calculator/{build,node_modules}
@@ -132,6 +144,7 @@ run: \
 run-examples: \
 	run-example-c-simple-calculator \
 	run-example-cpp-simple-calculator \
+	run-example-rust-simple-calculator \
 	run-example-assemblyscript-simple-calculator \
 	run-example-zig-simple-calculator
 
@@ -140,6 +153,9 @@ run-example-c-simple-calculator:
 
 run-example-cpp-simple-calculator:
 	@wasmtime run --invoke add public/cpp-simple-calculator.wasm 1 2
+
+run-example-rust-simple-calculator:
+	@wasmtime run --invoke add public/rust-simple-calculator.wasm 1 2
 
 run-example-assemblyscript-simple-calculator:
 	@wasmtime run --invoke add public/assemblyscript-simple-calculator.wasm 1 2

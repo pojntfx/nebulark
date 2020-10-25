@@ -26,6 +26,16 @@ function Examples() {
       0,
     ],
     [
+      "Rust Simple Calculator",
+      new VirtualMachine.Builder()
+        .setBinaryURL("/rust-simple-calculator.wasm")
+        .useWASIRuntime()
+        .build(),
+      0,
+      0,
+      0,
+    ],
+    [
       "AssemblyScript Simple Calculator",
       new VirtualMachine.Builder()
         .setBinaryURL("/assemblyscript-simple-calculator.wasm")

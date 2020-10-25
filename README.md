@@ -36,13 +36,13 @@ The current implementation status:
 | ---- | -------------- | --------- | ----------------------- | --------------------- |
 | 1A   | C              | clang     | x                       | x                     |
 | 1A   | C++            | clang     | x                       | x                     |
-| 1A   | Rust           | rustup    | Planned                 | Planned               |
+| 1A   | Rust           | rustup    | x                       | Planned               |
 | 1B   | AssemblyScript | asc       | x                       | x                     |
 | 1B   | Zig            | Zig       | x                       | x                     |
 | 2A   | Go             | TinyGo    | x                       | x                     |
 | 2B   | Java           | TeaVM     | x                       | x                     |
 
-See the [examples](./examples) for more concrete implementations and see [nebulark.space](https://nebulark.space/).
+See the [examples](./examples) for more concrete implementations.
 
 ## Installation
 
