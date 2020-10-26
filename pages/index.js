@@ -9,7 +9,7 @@ function Home() {
       <nav>
         <ul>
           <li>
-            <Link href="/examples">Examples</Link>
+            <Link href="/examples/compute">Compute Examples</Link>
           </li>
         </ul>
       </nav>

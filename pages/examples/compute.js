@@ -1,9 +1,9 @@
-import VirtualMachine from "../lib/virtualmachine";
-import Example from "../components/example";
+import VirtualMachine from "../../lib/virtualmachine";
+import Example from "../../components/example";
 import React from "react";
 import Link from "next/link";
 
-function Examples() {
+function ComputeExamples() {
   const [simpleExamples, setSimpleExamples] = React.useState([
     [
       "C Simple Calculator",
@@ -156,7 +156,7 @@ function Examples() {
     <>
       <Link href="/">🔙 Back</Link>
 
-      <h1>Nebulark Examples</h1>
+      <h1>Nebulark Compute Examples</h1>
 
       <button
         onClick={async () => {
@@ -257,7 +257,7 @@ function Examples() {
           setExamplesRunning(false);
         }}
       >
-        {examplesRunning ? "Running Examples ..." : "Run Examples"}
+        {examplesRunning ? "Running All Examples ..." : "Run All Examples"}
       </button>
 
       <h2>Simple Examples</h2>
@@ -438,4 +438,4 @@ function Examples() {
   );
 }
 
-export default Examples;
+export default ComputeExamples;

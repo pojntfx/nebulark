@@ -7,7 +7,7 @@ Distribute your workload to the edge.
 
 ## Overview
 
-Nebulark is a distributed computing system build on WebAssembly, WebRTC and IPFS which runs in the browser.
+Nebulark is a distributed computing system for the browser built on WebAssembly for compute, WebRTC for networking and IPFS for storage.
 
 ### Components
 
@@ -20,6 +20,8 @@ The system is made up of the following components:
 - **Mission Control**: A cluster and spark scheduling management interface
 
 ### Current Status
+
+#### Compute
 
 While all WebAssembly binaries are supported in theory, we support the following languages and toolchains using a Tier system:
 
