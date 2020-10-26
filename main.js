@@ -7,15 +7,8 @@ class Transceiver {
     this.#config = config;
   }
 
-  #handleIceCandidate = (candidate) => {
-    candidate && this.#connection.addIceCandidate(candidate);
-  };
-
   offer = async () => {
     this.#connection = new RTCPeerConnection(this.#config);
-    this.#connection.remoteDescription &&
-      (this.#connection.onicecandidate = (e) =>
-        this.#handleIceCandidate(e.candidate));
 
     this.#sendChannel = this.#connection.createDataChannel("sendChannel");
     this.#sendChannel.onopen = async () => {
@@ -33,8 +26,6 @@ class Transceiver {
 
   answer = async (offer) => {
     this.#connection = new RTCPeerConnection(this.#config);
-    this.#connection.onicecandidate = (e) =>
-      this.#handleIceCandidate(e.candidate);
 
     this.#connection.setRemoteDescription(offer);
     this.#connection.ondatachannel = async () => {
@@ -49,6 +40,10 @@ class Transceiver {
 
   connect = async (answer) => {
     this.#connection.setRemoteDescription(answer);
+  };
+
+  sendMessage = async (message) => {
+    await this.#sendChannel.send(message);
   };
 }
 
@@ -100,6 +95,14 @@ document.getElementById("sender__connect").onclick = async () => {
       type: "answer",
       sdp: document.getElementById("sender__answer").value,
     })
+  );
+};
+
+document.getElementById("sender__message-send").onclick = async () => {
+  console.log("sending message");
+
+  await sender.sendMessage(
+    document.getElementById("sender__message-content").value
   );
 };
 

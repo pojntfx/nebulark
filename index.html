@@ -38,6 +38,12 @@
       <textarea placeholder="Receiver's answer" id="sender__answer"></textarea>
       <br />
       <button id="sender__connect">Connect to receiver</button>
+      <br />
+      <input
+        type="text"
+        placeholder="Message to send to receiver"
+        id="sender__message-content"
+      /><button id="sender__message-send">Send message to receiver</button>
     </section>
 
     <!-- Receiver -->
@@ -53,6 +59,9 @@
         id="receiver__answer"
         readonly
       ></textarea>
+      <br />
+      <h3>Received Messages</h3>
+      <ul id="receiver_messages"></ul>
     </section>
 
     <script src="./main.js"></script>
