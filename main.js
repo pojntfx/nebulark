@@ -7,7 +7,7 @@ class Transceiver {
     this.#config = config;
   }
 
-  generateOffer = async () => {
+  offer = async () => {
     this.#connection = new RTCPeerConnection(this.#config);
     this.#sendChannel = this.#connection.createDataChannel("sendChannel");
 
@@ -18,13 +18,13 @@ class Transceiver {
       console.log("send channel closed");
     };
 
-    const offer = this.#connection.createOffer();
+    const offer = await this.#connection.createOffer();
     this.#connection.setLocalDescription(offer);
 
     return offer;
   };
 
-  generateAnswer = async (offer) => {
+  answer = async (offer) => {
     this.#connection = new RTCPeerConnection(this.#config);
     this.#connection.setRemoteDescription(offer);
 
@@ -32,11 +32,17 @@ class Transceiver {
       console.log("received data channel");
     };
 
-    const answer = this.#connection.createAnswer();
+    const answer = await this.#connection.createAnswer();
     this.#connection.setLocalDescription(answer);
 
     return answer;
   };
+
+  connect = async (answer) => {
+    this.#connection.setRemoteDescription(answer);
+  };
+
+  // TODO: Handle receiving ICE candidates for transmitter and receiver
 }
 
 const config = {
@@ -74,9 +80,20 @@ const sender = new Transceiver(config);
 document.getElementById("sender__generate-offer").onclick = async () => {
   console.log("generating offer");
 
-  const offer = await sender.generateOffer();
+  const offer = await sender.offer();
 
   document.getElementById("sender__offer").value = offer.sdp;
+};
+
+document.getElementById("sender__connect").onclick = async () => {
+  console.log("connecting");
+
+  await sender.connect(
+    new RTCSessionDescription({
+      type: "answer",
+      sdp: document.getElementById("sender__answer").value,
+    })
+  );
 };
 
 const receiver = new Transceiver(config);
@@ -84,10 +101,12 @@ const receiver = new Transceiver(config);
 document.getElementById("receiver__generate-answer").onclick = async () => {
   console.log("generating answer");
 
-  const answer = await receiver.generateAnswer({
-    type: "offer",
-    sdp: document.getElementById("receiver__offer").value,
-  });
+  const answer = await receiver.answer(
+    new RTCSessionDescription({
+      type: "offer",
+      sdp: document.getElementById("receiver__offer").value,
+    })
+  );
 
   document.getElementById("receiver__answer").value = answer.sdp;
 };
