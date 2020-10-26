@@ -23,6 +23,7 @@ class Transceiver {
       this.#sendChannel.onclose = async () => {
         console.log("send channel closed");
       };
+      this.#sendChannel.onmessage = this.#onMessage;
 
       const offer = await this.#connection.createOffer();
       this.#connection.setLocalDescription(offer);
@@ -52,7 +53,8 @@ class Transceiver {
   };
 
   sendMessage = async (message) => {
-    await this.#sendChannel.send(message);
+    this.#sendChannel && (await this.#sendChannel.send(message));
+    this.#receiveChannel && (await this.#receiveChannel.channel.send(message));
   };
 
   setOnMessage = (onMessage) => (this.#onMessage = onMessage);
@@ -90,6 +92,17 @@ const config = {
 
 const sender = new Transceiver(config);
 
+sender.setOnMessage((message) => {
+  console.log("received message", message);
+
+  const messageElement = document.createElement("li");
+  messageElement.innerText = `[${new Date().toLocaleString()}] <receiver> ${atob(
+    message.data
+  )}`;
+
+  document.getElementById("sender_messages").appendChild(messageElement);
+});
+
 document.getElementById("sender__generate-offer").onclick = async () => {
   console.log("generating offer");
 
@@ -115,6 +128,8 @@ document.getElementById("sender__message-send").onclick = async () => {
   await sender.sendMessage(
     btoa(document.getElementById("sender__message-content").value)
   );
+
+  document.getElementById("sender__message-content").value = "";
 };
 
 const receiver = new Transceiver(config);
@@ -122,8 +137,10 @@ const receiver = new Transceiver(config);
 receiver.setOnMessage((message) => {
   console.log("received message", message);
 
-  const messageElement = document.createElement("ul");
-  messageElement.innerText = atob(message.data);
+  const messageElement = document.createElement("li");
+  messageElement.innerText = `[${new Date().toLocaleString()}] <sender> ${atob(
+    message.data
+  )}`;
 
   document.getElementById("receiver_messages").appendChild(messageElement);
 });
@@ -139,4 +156,14 @@ document.getElementById("receiver__generate-answer").onclick = async () => {
   );
 
   document.getElementById("receiver__answer").value = btoa(answer.sdp);
+};
+
+document.getElementById("receiver__message-send").onclick = async () => {
+  console.log("sending message");
+
+  await receiver.sendMessage(
+    btoa(document.getElementById("receiver__message-content").value)
+  );
+
+  document.getElementById("receiver__message-content").value = "";
 };
