@@ -28,8 +28,13 @@
       <h2>Sender</h2>
 
       <button id="sender__generate-offer">Generate offer</button>
-      <pre id="sender__offer"></pre>
-
+      <br />
+      <textarea
+        placeholder="Sender's offer"
+        id="sender__offer"
+        readonly
+      ></textarea>
+      <br />
       <textarea placeholder="Receiver's answer" id="sender__answer"></textarea>
       <br />
       <button id="sender__connect">Connect to receiver</button>
@@ -42,8 +47,12 @@
       <textarea placeholder="Sender's offer" id="receiver__offer"></textarea>
       <br />
       <button id="receiver__generate-answer">Generate answer</button>
-
-      <pre id="receiver__answer"></pre>
+      <br />
+      <textarea
+        placeholder="Receiver's answer"
+        id="receiver__answer"
+        readonly
+      ></textarea>
     </section>
 
     <script src="./main.js"></script>
