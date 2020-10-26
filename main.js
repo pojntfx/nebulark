@@ -3,6 +3,7 @@ export const TRANSCEIVER_TYPE_WORKER = 1;
 
 export default class Transceiver {
   #config = {};
+  #transceiverType = "";
 
   #connection = undefined;
   #sendChannel = undefined;
@@ -12,17 +13,22 @@ export default class Transceiver {
   #onMessage = () => {};
   #onDisconnect = () => {};
 
-  #transceiverType = "";
-
-  constructor(config, transceiverType) {
+  constructor(config, transceiverType, onConnect, onMessage, onDisconnect) {
     this.#config = config;
     this.#transceiverType = transceiverType;
+
+    this.#onConnect = onConnect;
+    this.#onMessage = onMessage;
+    this.#onDisconnect = onDisconnect;
   }
 
   static Builder = class {
-    // TODO: Enable setting all properties here
     #config = {};
     #transceiverType = TRANSCEIVER_TYPE_MANAGER;
+
+    #onConnect = () => {};
+    #onMessage = () => {};
+    #onDisconnect = () => {};
 
     setConfig = (config) => {
       this.#config = config;
@@ -42,7 +48,32 @@ export default class Transceiver {
       return this;
     };
 
-    build = () => new Transceiver(this.#config, this.#transceiverType);
+    setOnMessage = (onMessage) => {
+      this.#onMessage = onMessage;
+
+      return this;
+    };
+
+    setOnConnect = (onConnect) => {
+      this.#onConnect = onConnect;
+
+      return this;
+    };
+
+    setOnDisconnect = (onDisconnect) => {
+      this.#onDisconnect = onDisconnect;
+
+      return this;
+    };
+
+    build = () =>
+      new Transceiver(
+        this.#config,
+        this.#transceiverType,
+        this.#onConnect,
+        this.#onMessage,
+        this.#onDisconnect
+      );
   };
 
   /**
@@ -100,15 +131,19 @@ export default class Transceiver {
   };
 
   sendMessage = async (message) => {
-    this.#sendChannel && (await this.#sendChannel.send(message));
-    this.#receiveChannel && (await this.#receiveChannel.channel.send(message));
+    switch (this.#transceiverType) {
+      case TRANSCEIVER_TYPE_MANAGER: {
+        await this.#sendChannel.send(message);
+
+        break;
+      }
+      case TRANSCEIVER_TYPE_WORKER: {
+        await this.#receiveChannel.channel.send(message);
+
+        break;
+      }
+    }
   };
-
-  setOnMessage = (onMessage) => (this.#onMessage = onMessage);
-
-  setOnConnect = (onConnect) => (this.#onConnect = onConnect);
-
-  setOnDisconnect = (onDisconnect) => (this.#onDisconnect = onDisconnect);
 }
 
 const config = {
@@ -141,31 +176,32 @@ const config = {
   ],
 };
 
-const sender = new Transceiver.Builder().setConfig(config).useManager().build();
+const sender = new Transceiver.Builder()
+  .setConfig(config)
+  .useManager()
+  .setOnConnect(() => {
+    console.log("connected");
 
-sender.setOnConnect(() => {
-  console.log("connected");
+    document.getElementById("sender__connection_status").innerText =
+      "Connected";
+  })
+  .setOnMessage((message) => {
+    console.log("received message");
 
-  document.getElementById("sender__connection_status").innerText = "Connected";
-});
+    const messageElement = document.createElement("li");
+    messageElement.innerText = `[${new Date().toLocaleString()}] <receiver> ${atob(
+      message.data
+    )}`;
 
-sender.setOnMessage((message) => {
-  console.log("received message");
+    document.getElementById("sender_messages").appendChild(messageElement);
+  })
+  .setOnDisconnect(() => {
+    console.log("disconnected");
 
-  const messageElement = document.createElement("li");
-  messageElement.innerText = `[${new Date().toLocaleString()}] <receiver> ${atob(
-    message.data
-  )}`;
-
-  document.getElementById("sender_messages").appendChild(messageElement);
-});
-
-sender.setOnDisconnect(() => {
-  console.log("disconnected");
-
-  document.getElementById("sender__connection_status").innerText =
-    "Disconnected";
-});
+    document.getElementById("sender__connection_status").innerText =
+      "Disconnected";
+  })
+  .build();
 
 document.getElementById("sender__generate-offer").onclick = async () => {
   console.log("generating offer");
@@ -199,32 +235,29 @@ document.getElementById("sender__message-send").onclick = async () => {
 const receiver = new Transceiver.Builder()
   .setConfig(config)
   .useWorker()
+  .setOnConnect(() => {
+    console.log("connected");
+
+    document.getElementById("receiver__connection_status").innerText =
+      "Connected";
+  })
+  .setOnMessage((message) => {
+    console.log("received message");
+
+    const messageElement = document.createElement("li");
+    messageElement.innerText = `[${new Date().toLocaleString()}] <receiver> ${atob(
+      message.data
+    )}`;
+
+    document.getElementById("receiver_messages").appendChild(messageElement);
+  })
+  .setOnDisconnect(() => {
+    console.log("disconnected");
+
+    document.getElementById("receiver__connection_status").innerText =
+      "Disconnected";
+  })
   .build();
-
-receiver.setOnConnect(() => {
-  console.log("connected");
-
-  document.getElementById("receiver__connection_status").innerText =
-    "Connected";
-});
-
-receiver.setOnMessage((message) => {
-  console.log("received message");
-
-  const messageElement = document.createElement("li");
-  messageElement.innerText = `[${new Date().toLocaleString()}] <receiver> ${atob(
-    message.data
-  )}`;
-
-  document.getElementById("receiver_messages").appendChild(messageElement);
-});
-
-receiver.setOnDisconnect(() => {
-  console.log("disconnected");
-
-  document.getElementById("receiver__connection_status").innerText =
-    "Disconnected";
-});
 
 document.getElementById("receiver__generate-answer").onclick = async () => {
   console.log("generating answer");
