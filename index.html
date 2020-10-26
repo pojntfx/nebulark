@@ -36,14 +36,14 @@
           placeholder="Sender's offer"
           id="sender__offer"
           readonly
-          rows="50"
+          rows="5"
           cols="50"
         ></textarea>
         <br />
         <textarea
           placeholder="Receiver's answer"
           id="sender__answer"
-          rows="50"
+          rows="5"
           cols="50"
         ></textarea>
         <br />
@@ -54,6 +54,9 @@
           placeholder="Message to send to receiver"
           id="sender__message-content"
         /><button id="sender__message-send">Send message to receiver</button>
+        <br />
+        <h3>Messages</h3>
+        <ul id="sender_messages"></ul>
       </details>
     </section>
 
@@ -67,7 +70,7 @@
         <textarea
           placeholder="Sender's offer"
           id="receiver__offer"
-          rows="50"
+          rows="5"
           cols="50"
         ></textarea>
         <br />
@@ -77,11 +80,17 @@
           placeholder="Receiver's answer"
           id="receiver__answer"
           readonly
-          rows="50"
+          rows="5"
           cols="50"
         ></textarea>
         <br />
-        <h3>Received Messages</h3>
+        <input
+          type="text"
+          placeholder="Message to send to sender"
+          id="receiver__message-content"
+        /><button id="receiver__message-send">Send message to sender</button>
+        <br />
+        <h3>Messages</h3>
         <ul id="receiver_messages"></ul>
       </details>
     </section>

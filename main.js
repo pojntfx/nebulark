@@ -95,7 +95,7 @@ document.getElementById("sender__generate-offer").onclick = async () => {
 
   const offer = await sender.offer();
 
-  document.getElementById("sender__offer").value = offer.sdp;
+  document.getElementById("sender__offer").value = btoa(offer.sdp);
 };
 
 document.getElementById("sender__connect").onclick = async () => {
@@ -104,7 +104,7 @@ document.getElementById("sender__connect").onclick = async () => {
   await sender.connect(
     new RTCSessionDescription({
       type: "answer",
-      sdp: document.getElementById("sender__answer").value,
+      sdp: atob(document.getElementById("sender__answer").value),
     })
   );
 };
@@ -113,7 +113,7 @@ document.getElementById("sender__message-send").onclick = async () => {
   console.log("sending message");
 
   await sender.sendMessage(
-    document.getElementById("sender__message-content").value
+    btoa(document.getElementById("sender__message-content").value)
   );
 };
 
@@ -123,7 +123,7 @@ receiver.setOnMessage((message) => {
   console.log("received message", message);
 
   const messageElement = document.createElement("ul");
-  messageElement.innerText = message.data;
+  messageElement.innerText = atob(message.data);
 
   document.getElementById("receiver_messages").appendChild(messageElement);
 });
@@ -134,9 +134,9 @@ document.getElementById("receiver__generate-answer").onclick = async () => {
   const answer = await receiver.answer(
     new RTCSessionDescription({
       type: "offer",
-      sdp: document.getElementById("receiver__offer").value,
+      sdp: atob(document.getElementById("receiver__offer").value),
     })
   );
 
-  document.getElementById("receiver__answer").value = answer.sdp;
+  document.getElementById("receiver__answer").value = btoa(answer.sdp);
 };
