@@ -7,42 +7,40 @@ class Transceiver {
     this.#config = config;
   }
 
-  offer = async () => {
-    this.#connection = new RTCPeerConnection(this.#config);
-    this.#connection.onicecandidate = async (e) => {
-      e.candidate && console.log(e.candidate); // TODO: Send to receiver
-    };
+  offer = async () =>
+    new Promise(async (res) => {
+      this.#connection = new RTCPeerConnection(this.#config);
+      this.#connection.onicecandidate = async (e) => {
+        e.candidate || res(this.#connection.localDescription);
+      };
 
-    this.#sendChannel = this.#connection.createDataChannel("sendChannel");
-    this.#sendChannel.onopen = async () => {
-      console.log("send channel opened");
-    };
-    this.#sendChannel.onclose = async () => {
-      console.log("send channel closed");
-    };
+      this.#sendChannel = this.#connection.createDataChannel("sendChannel");
+      this.#sendChannel.onopen = async () => {
+        console.log("send channel opened");
+      };
+      this.#sendChannel.onclose = async () => {
+        console.log("send channel closed");
+      };
 
-    const offer = await this.#connection.createOffer();
-    this.#connection.setLocalDescription(offer);
+      const offer = await this.#connection.createOffer();
+      this.#connection.setLocalDescription(offer);
+    });
 
-    return offer;
-  };
+  answer = async (offer) =>
+    new Promise(async (res) => {
+      this.#connection = new RTCPeerConnection(this.#config);
+      this.#connection.onicecandidate = async (e) => {
+        e.candidate || res(this.#connection.localDescription);
+      };
 
-  answer = async (offer) => {
-    this.#connection = new RTCPeerConnection(this.#config);
-    this.#connection.onicecandidate = async (e) => {
-      e.candidate && console.log(e.candidate); // TODO: Send to sender
-    };
+      this.#connection.setRemoteDescription(offer);
+      this.#connection.ondatachannel = async () => {
+        console.log("received data channel");
+      };
 
-    this.#connection.setRemoteDescription(offer);
-    this.#connection.ondatachannel = async () => {
-      console.log("received data channel");
-    };
-
-    const answer = await this.#connection.createAnswer();
-    this.#connection.setLocalDescription(answer);
-
-    return answer;
-  };
+      const answer = await this.#connection.createAnswer();
+      this.#connection.setLocalDescription(answer);
+    });
 
   connect = async (answer) => {
     this.#connection.setRemoteDescription(answer);
