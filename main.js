@@ -3,7 +3,9 @@ class Transceiver {
   #connection = undefined;
   #sendChannel = undefined;
   #receiveChannel = undefined;
+  #onConnect = () => {};
   #onMessage = () => {};
+  #onDisconnect = () => {};
 
   constructor(config) {
     this.#config = config;
@@ -17,13 +19,9 @@ class Transceiver {
       };
 
       this.#sendChannel = this.#connection.createDataChannel("sendChannel");
-      this.#sendChannel.onopen = async () => {
-        console.log("send channel opened");
-      };
-      this.#sendChannel.onclose = async () => {
-        console.log("send channel closed");
-      };
+      this.#sendChannel.onopen = this.#onConnect;
       this.#sendChannel.onmessage = this.#onMessage;
+      this.#sendChannel.onclose = this.#onDisconnect;
 
       const offer = await this.#connection.createOffer();
       this.#connection.setLocalDescription(offer);
@@ -38,10 +36,10 @@ class Transceiver {
 
       this.#connection.setRemoteDescription(offer);
       this.#connection.ondatachannel = async (channel) => {
-        console.log("received data channel");
-
         this.#receiveChannel = channel;
+        this.#receiveChannel.channel.onopen = this.#onConnect;
         this.#receiveChannel.channel.onmessage = this.#onMessage;
+        this.#receiveChannel.channel.onclose = this.#onDisconnect;
       };
 
       const answer = await this.#connection.createAnswer();
@@ -58,6 +56,10 @@ class Transceiver {
   };
 
   setOnMessage = (onMessage) => (this.#onMessage = onMessage);
+
+  setOnConnect = (onConnect) => (this.#onConnect = onConnect);
+
+  setOnDisconnect = (onDisconnect) => (this.#onDisconnect = onDisconnect);
 }
 
 const config = {
@@ -92,8 +94,14 @@ const config = {
 
 const sender = new Transceiver(config);
 
+sender.setOnConnect(() => {
+  console.log("connected");
+
+  document.getElementById("sender__connection_status").innerText = "Connected";
+});
+
 sender.setOnMessage((message) => {
-  console.log("received message", message);
+  console.log("received message");
 
   const messageElement = document.createElement("li");
   messageElement.innerText = `[${new Date().toLocaleString()}] <receiver> ${atob(
@@ -101,6 +109,13 @@ sender.setOnMessage((message) => {
   )}`;
 
   document.getElementById("sender_messages").appendChild(messageElement);
+});
+
+sender.setOnDisconnect(() => {
+  console.log("disconnected");
+
+  document.getElementById("sender__connection_status").innerText =
+    "Disconnected";
 });
 
 document.getElementById("sender__generate-offer").onclick = async () => {
@@ -134,15 +149,29 @@ document.getElementById("sender__message-send").onclick = async () => {
 
 const receiver = new Transceiver(config);
 
+receiver.setOnConnect(() => {
+  console.log("connected");
+
+  document.getElementById("receiver__connection_status").innerText =
+    "Connected";
+});
+
 receiver.setOnMessage((message) => {
-  console.log("received message", message);
+  console.log("received message");
 
   const messageElement = document.createElement("li");
-  messageElement.innerText = `[${new Date().toLocaleString()}] <sender> ${atob(
+  messageElement.innerText = `[${new Date().toLocaleString()}] <receiver> ${atob(
     message.data
   )}`;
 
   document.getElementById("receiver_messages").appendChild(messageElement);
+});
+
+receiver.setOnDisconnect(() => {
+  console.log("disconnected");
+
+  document.getElementById("receiver__connection_status").innerText =
+    "Disconnected";
 });
 
 document.getElementById("receiver__generate-answer").onclick = async () => {
