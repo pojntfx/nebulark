@@ -7,10 +7,17 @@ class Transceiver {
     this.#config = config;
   }
 
+  #handleIceCandidate = (candidate) => {
+    candidate && this.#connection.addIceCandidate(candidate);
+  };
+
   offer = async () => {
     this.#connection = new RTCPeerConnection(this.#config);
-    this.#sendChannel = this.#connection.createDataChannel("sendChannel");
+    this.#connection.remoteDescription &&
+      (this.#connection.onicecandidate = (e) =>
+        this.#handleIceCandidate(e.candidate));
 
+    this.#sendChannel = this.#connection.createDataChannel("sendChannel");
     this.#sendChannel.onopen = async () => {
       console.log("send channel opened");
     };
@@ -26,8 +33,10 @@ class Transceiver {
 
   answer = async (offer) => {
     this.#connection = new RTCPeerConnection(this.#config);
-    this.#connection.setRemoteDescription(offer);
+    this.#connection.onicecandidate = (e) =>
+      this.#handleIceCandidate(e.candidate);
 
+    this.#connection.setRemoteDescription(offer);
     this.#connection.ondatachannel = async () => {
       console.log("received data channel");
     };
@@ -41,8 +50,6 @@ class Transceiver {
   connect = async (answer) => {
     this.#connection.setRemoteDescription(answer);
   };
-
-  // TODO: Handle receiving ICE candidates for transmitter and receiver
 }
 
 const config = {
