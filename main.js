@@ -9,6 +9,9 @@ class Transceiver {
 
   offer = async () => {
     this.#connection = new RTCPeerConnection(this.#config);
+    this.#connection.onicecandidate = async (e) => {
+      e.candidate && console.log(e.candidate); // TODO: Send to receiver
+    };
 
     this.#sendChannel = this.#connection.createDataChannel("sendChannel");
     this.#sendChannel.onopen = async () => {
@@ -26,6 +29,9 @@ class Transceiver {
 
   answer = async (offer) => {
     this.#connection = new RTCPeerConnection(this.#config);
+    this.#connection.onicecandidate = async (e) => {
+      e.candidate && console.log(e.candidate); // TODO: Send to sender
+    };
 
     this.#connection.setRemoteDescription(offer);
     this.#connection.ondatachannel = async () => {
