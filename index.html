@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>dataportal</title>
+  </head>
+
+  <body>
+    <h1>dataportal</h1>
+
+    <!-- Instructions -->
+    <section id="instructions">
+      <h2>Instructions</h2>
+
+      <ol>
+        <li>Generate offer on sender</li>
+        <li>Copy offer to receiver</li>
+        <li>Generate answer on receiver</li>
+        <li>Copy answer to sender</li>
+        <li>Connect to receiver from sender</li>
+      </ol>
+    </section>
+
+    <!-- Sender -->
+    <section id="sender">
+      <h2>Sender</h2>
+
+      <button id="sender__generate-offer">Generate offer</button>
+      <pre id="sender__offer"></pre>
+
+      <textarea placeholder="Receiver's answer" id="sender__answer"></textarea>
+      <br />
+      <button id="sender__connect">Connect to receiver</button>
+    </section>
+
+    <!-- Receiver -->
+    <section id="receiver">
+      <h2>Receiver</h2>
+
+      <textarea placeholder="Sender's offer" id="receiver__offer"></textarea>
+      <br />
+      <button id="receiver__generate-answer">Generate answer</button>
+
+      <pre id="receiver__answer"></pre>
+    </section>
+
+    <script src="./main.js"></script>
+  </body>
+</html>
