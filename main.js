@@ -8,8 +8,6 @@ class Transceiver {
   }
 
   generateOffer = async () => {
-    console.log("generating offer");
-
     this.#connection = new RTCPeerConnection(this.#config);
     this.#sendChannel = this.#connection.createDataChannel("sendChannel");
 
@@ -24,6 +22,20 @@ class Transceiver {
     this.#connection.setLocalDescription(offer);
 
     return offer;
+  };
+
+  generateAnswer = async (offer) => {
+    this.#connection = new RTCPeerConnection(this.#config);
+    this.#connection.setRemoteDescription(offer);
+
+    this.#connection.ondatachannel = async () => {
+      console.log("received data channel");
+    };
+
+    const answer = this.#connection.createAnswer();
+    this.#connection.setLocalDescription(answer);
+
+    return answer;
   };
 }
 
@@ -57,10 +69,25 @@ const config = {
   ],
 };
 
-const transceiver = new Transceiver(config);
+const sender = new Transceiver(config);
 
 document.getElementById("sender__generate-offer").onclick = async () => {
-  const offer = await transceiver.generateOffer();
+  console.log("generating offer");
 
-  document.getElementById("sender__offer").innerText = offer.sdp;
+  const offer = await sender.generateOffer();
+
+  document.getElementById("sender__offer").value = offer.sdp;
+};
+
+const receiver = new Transceiver(config);
+
+document.getElementById("receiver__generate-answer").onclick = async () => {
+  console.log("generating answer");
+
+  const answer = await receiver.generateAnswer({
+    type: "offer",
+    sdp: document.getElementById("receiver__offer").value,
+  });
+
+  document.getElementById("receiver__answer").value = answer.sdp;
 };
