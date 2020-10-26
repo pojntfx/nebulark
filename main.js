@@ -1,53 +1,102 @@
-class Transceiver {
+export const TRANSCEIVER_TYPE_MANAGER = 0;
+export const TRANSCEIVER_TYPE_WORKER = 1;
+
+export default class Transceiver {
   #config = {};
+
   #connection = undefined;
   #sendChannel = undefined;
   #receiveChannel = undefined;
+
   #onConnect = () => {};
   #onMessage = () => {};
   #onDisconnect = () => {};
 
-  constructor(config) {
+  #transceiverType = "";
+
+  constructor(config, transceiverType) {
     this.#config = config;
+    this.#transceiverType = transceiverType;
   }
 
-  offer = async () =>
+  static Builder = class {
+    // TODO: Enable setting all properties here
+    #config = {};
+    #transceiverType = TRANSCEIVER_TYPE_MANAGER;
+
+    setConfig = (config) => {
+      this.#config = config;
+
+      return this;
+    };
+
+    useManager = () => {
+      this.#transceiverType = TRANSCEIVER_TYPE_MANAGER;
+
+      return this;
+    };
+
+    useWorker = () => {
+      this.#transceiverType = TRANSCEIVER_TYPE_WORKER;
+
+      return this;
+    };
+
+    build = () => new Transceiver(this.#config, this.#transceiverType);
+  };
+
+  /**
+   * Get the connection info
+   * @param {*} offer (Only required if the transceiver is a worker) Offer to compute answer to
+   */
+  getConnectionInfo = async (offer) =>
     new Promise(async (res) => {
-      this.#connection = new RTCPeerConnection(this.#config);
-      this.#connection.onicecandidate = async (e) => {
-        e.candidate || res(this.#connection.localDescription);
-      };
+      switch (this.#transceiverType) {
+        case TRANSCEIVER_TYPE_MANAGER: {
+          this.#connection = new RTCPeerConnection(this.#config);
+          this.#connection.onicecandidate = async (e) => {
+            e.candidate || res(this.#connection.localDescription);
+          };
 
-      this.#sendChannel = this.#connection.createDataChannel("sendChannel");
-      this.#sendChannel.onopen = this.#onConnect;
-      this.#sendChannel.onmessage = this.#onMessage;
-      this.#sendChannel.onclose = this.#onDisconnect;
+          this.#sendChannel = this.#connection.createDataChannel("sendChannel");
+          this.#sendChannel.onopen = this.#onConnect;
+          this.#sendChannel.onmessage = this.#onMessage;
+          this.#sendChannel.onclose = this.#onDisconnect;
 
-      const offer = await this.#connection.createOffer();
-      this.#connection.setLocalDescription(offer);
+          const offer = await this.#connection.createOffer();
+          this.#connection.setLocalDescription(offer);
+
+          break;
+        }
+        case TRANSCEIVER_TYPE_WORKER: {
+          this.#connection = new RTCPeerConnection(this.#config);
+          this.#connection.onicecandidate = async (e) => {
+            e.candidate || res(this.#connection.localDescription);
+          };
+
+          this.#connection.setRemoteDescription(offer);
+          this.#connection.ondatachannel = async (channel) => {
+            this.#receiveChannel = channel;
+            this.#receiveChannel.channel.onopen = this.#onConnect;
+            this.#receiveChannel.channel.onmessage = this.#onMessage;
+            this.#receiveChannel.channel.onclose = this.#onDisconnect;
+          };
+
+          const answer = await this.#connection.createAnswer();
+          this.#connection.setLocalDescription(answer);
+
+          break;
+        }
+      }
     });
 
-  answer = async (offer) =>
-    new Promise(async (res) => {
-      this.#connection = new RTCPeerConnection(this.#config);
-      this.#connection.onicecandidate = async (e) => {
-        e.candidate || res(this.#connection.localDescription);
-      };
-
-      this.#connection.setRemoteDescription(offer);
-      this.#connection.ondatachannel = async (channel) => {
-        this.#receiveChannel = channel;
-        this.#receiveChannel.channel.onopen = this.#onConnect;
-        this.#receiveChannel.channel.onmessage = this.#onMessage;
-        this.#receiveChannel.channel.onclose = this.#onDisconnect;
-      };
-
-      const answer = await this.#connection.createAnswer();
-      this.#connection.setLocalDescription(answer);
-    });
-
+  /**
+   * Connect to a worker
+   * @param {*} answer (Only required if the transceiver is a manager) Answer to use for connection
+   */
   connect = async (answer) => {
-    this.#connection.setRemoteDescription(answer);
+    this.#transceiverType === TRANSCEIVER_TYPE_MANAGER &&
+      this.#connection.setRemoteDescription(answer);
   };
 
   sendMessage = async (message) => {
@@ -92,7 +141,7 @@ const config = {
   ],
 };
 
-const sender = new Transceiver(config);
+const sender = new Transceiver.Builder().setConfig(config).useManager().build();
 
 sender.setOnConnect(() => {
   console.log("connected");
@@ -121,7 +170,7 @@ sender.setOnDisconnect(() => {
 document.getElementById("sender__generate-offer").onclick = async () => {
   console.log("generating offer");
 
-  const offer = await sender.offer();
+  const offer = await sender.getConnectionInfo();
 
   document.getElementById("sender__offer").value = btoa(offer.sdp);
 };
@@ -147,7 +196,10 @@ document.getElementById("sender__message-send").onclick = async () => {
   document.getElementById("sender__message-content").value = "";
 };
 
-const receiver = new Transceiver(config);
+const receiver = new Transceiver.Builder()
+  .setConfig(config)
+  .useWorker()
+  .build();
 
 receiver.setOnConnect(() => {
   console.log("connected");
@@ -177,7 +229,7 @@ receiver.setOnDisconnect(() => {
 document.getElementById("receiver__generate-answer").onclick = async () => {
   console.log("generating answer");
 
-  const answer = await receiver.answer(
+  const answer = await receiver.getConnectionInfo(
     new RTCSessionDescription({
       type: "offer",
       sdp: atob(document.getElementById("receiver__offer").value),
