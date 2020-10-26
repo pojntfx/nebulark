@@ -2,6 +2,8 @@ class Transceiver {
   #config = {};
   #connection = undefined;
   #sendChannel = undefined;
+  #receiveChannel = undefined;
+  #onMessage = () => {};
 
   constructor(config) {
     this.#config = config;
@@ -34,8 +36,11 @@ class Transceiver {
       };
 
       this.#connection.setRemoteDescription(offer);
-      this.#connection.ondatachannel = async () => {
+      this.#connection.ondatachannel = async (channel) => {
         console.log("received data channel");
+
+        this.#receiveChannel = channel;
+        this.#receiveChannel.channel.onmessage = this.#onMessage;
       };
 
       const answer = await this.#connection.createAnswer();
@@ -49,6 +54,8 @@ class Transceiver {
   sendMessage = async (message) => {
     await this.#sendChannel.send(message);
   };
+
+  setOnMessage = (onMessage) => (this.#onMessage = onMessage);
 }
 
 const config = {
@@ -111,6 +118,15 @@ document.getElementById("sender__message-send").onclick = async () => {
 };
 
 const receiver = new Transceiver(config);
+
+receiver.setOnMessage((message) => {
+  console.log("received message", message);
+
+  const messageElement = document.createElement("ul");
+  messageElement.innerText = message.data;
+
+  document.getElementById("receiver_messages").appendChild(messageElement);
+});
 
 document.getElementById("receiver__generate-answer").onclick = async () => {
   console.log("generating answer");
