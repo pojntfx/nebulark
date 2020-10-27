@@ -127,6 +127,7 @@ function NetworkingExamples() {
           </li>
           <li>Copy answer to manager</li>
           <li>Connect to worker from manager</li>
+          <li>Try it out and send some messages back and forth!</li>
         </ol>
       </section>
 
@@ -177,30 +178,37 @@ function NetworkingExamples() {
           >
             Connect to worker
           </button>
-          <span>{managerConnected ? "✅ Connected" : "❌ Disconnected"}</span>
           <br />
-          <input
-            type="text"
-            placeholder="Message to send to worker"
-            value={managerMessageContent}
-            onChange={(e) => setManagerMessageContent(e.target.value)}
-          />
-          <button
-            onClick={() => {
-              setManagerMessageContent("");
+          {managerConnected ? (
+            <>
+              <span>✅ Connected</span>
 
-              manager.sendMessage(btoa(managerMessageContent));
-            }}
-          >
-            Send message to worker
-          </button>
-          <br />
-          <h3>Messages</h3>
-          <ul>
-            {managerMessages.map((message, i) => (
-              <li key={i}>{message}</li>
-            ))}
-          </ul>
+              <input
+                type="text"
+                placeholder="Message to send to worker"
+                value={managerMessageContent}
+                onChange={(e) => setManagerMessageContent(e.target.value)}
+              />
+              <button
+                onClick={() => {
+                  setManagerMessageContent("");
+
+                  manager.sendMessage(btoa(managerMessageContent));
+                }}
+              >
+                Send message to worker
+              </button>
+              <br />
+              <h3>Messages</h3>
+              <ul>
+                {managerMessages.map((message, i) => (
+                  <li key={i}>{message}</li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <span>❌ Disconnected</span>
+          )}
         </details>
       </section>
 
@@ -248,30 +256,37 @@ function NetworkingExamples() {
             cols="50"
           ></textarea>
           <br />
-          <span>{workerConnected ? "✅ Connected" : "❌ Disconnected"}</span>
-          <br />
-          <input
-            type="text"
-            placeholder="Message to send to manager"
-            value={workerMessageContent}
-            onChange={(e) => setWorkerMessageContent(e.target.value)}
-          />
-          <button
-            onClick={() => {
-              setWorkerMessageContent("");
+          {workerConnected ? (
+            <>
+              <span>✅ Connected</span>
 
-              worker.sendMessage(btoa(workerMessageContent));
-            }}
-          >
-            Send message to manager
-          </button>
-          <br />
-          <h3>Messages</h3>
-          <ul>
-            {workerMessages.map((message, i) => (
-              <li key={i}>{message}</li>
-            ))}
-          </ul>
+              <br />
+              <input
+                type="text"
+                placeholder="Message to send to manager"
+                value={workerMessageContent}
+                onChange={(e) => setWorkerMessageContent(e.target.value)}
+              />
+              <button
+                onClick={() => {
+                  setWorkerMessageContent("");
+
+                  worker.sendMessage(btoa(workerMessageContent));
+                }}
+              >
+                Send message to manager
+              </button>
+              <br />
+              <h3>Messages</h3>
+              <ul>
+                {workerMessages.map((message, i) => (
+                  <li key={i}>{message}</li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <span>❌ Disconnected</span>
+          )}
         </details>
       </section>
     </>
