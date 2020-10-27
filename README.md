@@ -44,7 +44,11 @@ The current implementation status:
 | 2A   | Go             | TinyGo    | x                       | x                     |
 | 2B   | Java           | TeaVM     | x                       | x                     |
 
-See the [examples](./examples) for more concrete implementations.
+See the [examples](./examples) for more concrete implementations or visit [nebulark.space/examples/compute](https://nebulark.space/examples/compute) to try them out in your browser.
+
+#### Networking
+
+Basic full-duplex peer-to-peer networking support without the need for a signaling server already works, however the latter will be added in the future to ease the initial connection process. Take a look at the [example code](./pages/examples/networking.js) or visit [nebulark.space/examples/networking](https://nebulark.space/examples/networking) to try it out in your browser.
 
 ## Installation
 
