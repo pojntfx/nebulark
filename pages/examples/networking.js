@@ -13,9 +13,15 @@ function NetworkingExamples() {
   const [receiverConnected, setReceiverConnected] = React.useState(false);
 
   const [senderOffer, setSenderOffer] = React.useState("");
+  const [receiverOffer, setReceiverOffer] = React.useState("");
+
   const [senderAnswer, setSenderAnswer] = React.useState("");
+  const [receiverAnswer, setReceiverAnswer] = React.useState("");
 
   const [senderMessageContent, setSenderMessageContent] = React.useState("");
+  const [receiverMessageContent, setReceiverMessageContent] = React.useState(
+    ""
+  );
 
   const config = {
     iceServers: [
@@ -137,7 +143,7 @@ function NetworkingExamples() {
             onClick={async () => {
               console.log("generating offer");
 
-              setSenderOffer(btoa(await sender.getConnectionInfo()));
+              setSenderOffer(btoa((await sender.getConnectionInfo()).sdp));
             }}
           >
             Generate offer
@@ -173,7 +179,7 @@ function NetworkingExamples() {
           >
             Connect to receiver
           </button>
-          <span>{senderConnected ? "Connected" : "Disconnected"}</span>
+          <span>{senderConnected ? "✅ Connected" : "❌ Disconnected"}</span>
           <br />
           <input
             type="text"
@@ -209,31 +215,65 @@ function NetworkingExamples() {
 
           <textarea
             placeholder="Sender's offer"
-            id="receiver__offer"
+            value={receiverOffer}
+            onChange={(e) => setReceiverOffer(e.target.value)}
             rows="5"
             cols="50"
           ></textarea>
           <br />
-          <button id="receiver__generate-answer">Generate answer</button>
+          <button
+            onClick={async () => {
+              console.log("generating answer");
+
+              setReceiverAnswer(
+                btoa(
+                  (
+                    await receiver.getConnectionInfo(
+                      new RTCSessionDescription({
+                        type: "offer",
+                        sdp: atob(receiverOffer),
+                      })
+                    )
+                  ).sdp
+                )
+              );
+            }}
+          >
+            Generate answer
+          </button>
           <br />
           <textarea
             placeholder="Receiver's answer"
-            id="receiver__answer"
+            value={receiverAnswer}
             readOnly
             rows="5"
             cols="50"
           ></textarea>
           <br />
+          <span>{receiverConnected ? "✅ Connected" : "❌ Disconnected"}</span>
+          <br />
           <input
             type="text"
             placeholder="Message to send to sender"
-            id="receiver__message-content"
+            value={receiverMessageContent}
+            onChange={(e) => setReceiverMessageContent(e.target.value)}
           />
-          <button id="receiver__message-send">Send message to sender</button>
-          <span id="receiver__connection_status">Disconnected</span>
+          <button
+            onClick={() => {
+              setReceiverMessageContent("");
+
+              receiver.sendMessage(btoa(receiverMessageContent));
+            }}
+          >
+            Send message to sender
+          </button>
           <br />
           <h3>Messages</h3>
-          <ul id="receiver_messages"></ul>
+          <ul>
+            {receiverMessages.map((message, i) => (
+              <li key={i}>{message}</li>
+            ))}
+          </ul>
         </details>
       </section>
     </>
