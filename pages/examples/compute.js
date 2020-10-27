@@ -260,6 +260,7 @@ function ComputeExamples() {
         {examplesRunning ? "Running All Examples ..." : "Run All Examples"}
       </button>
 
+      {/* Simple Examples */}
       <section id="simple-examples">
         <h2>Simple Examples</h2>
         <ul>
@@ -350,6 +351,7 @@ function ComputeExamples() {
         </ul>
       </section>
 
+      {/* JSON Examples */}
       <section id="json-examples">
         <h2>JSON Examples</h2>
         <ul>
