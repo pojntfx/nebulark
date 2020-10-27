@@ -14,6 +14,9 @@ function Home() {
           <li>
             <Link href="/examples/networking">Networking Examples</Link>
           </li>
+          <li>
+            <Link href="/examples/discovery">Discovery Examples</Link>
+          </li>
         </ul>
       </nav>
     </>

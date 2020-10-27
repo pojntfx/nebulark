@@ -191,6 +191,8 @@ function NetworkingExamples() {
               />
               <button
                 onClick={() => {
+                  console.log("sending message");
+
                   setManagerMessageContent("");
 
                   manager.sendMessage(btoa(managerMessageContent));
@@ -269,6 +271,8 @@ function NetworkingExamples() {
               />
               <button
                 onClick={() => {
+                  console.log("sending message");
+
                   setWorkerMessageContent("");
 
                   worker.sendMessage(btoa(workerMessageContent));
