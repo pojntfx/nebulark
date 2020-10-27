@@ -3,25 +3,23 @@ import React from "react";
 import Transceiver from "../../lib/transceiver";
 
 function NetworkingExamples() {
-  const [sender, setSender] = React.useState();
-  const [receiver, setReceiver] = React.useState();
+  const [manager, setManager] = React.useState();
+  const [worker, setWorker] = React.useState();
 
-  const [senderMessages, setSenderMessages] = React.useState([]);
-  const [receiverMessages, setReceiverMessages] = React.useState([]);
+  const [managerMessages, setManagerMessages] = React.useState([]);
+  const [workerMessages, setWorkerMessages] = React.useState([]);
 
-  const [senderConnected, setSenderConnected] = React.useState(false);
-  const [receiverConnected, setReceiverConnected] = React.useState(false);
+  const [managerConnected, setManagerConnected] = React.useState(false);
+  const [workerConnected, setWorkerConnected] = React.useState(false);
 
-  const [senderOffer, setSenderOffer] = React.useState("");
-  const [receiverOffer, setReceiverOffer] = React.useState("");
+  const [managerOffer, setManagerOffer] = React.useState("");
+  const [workerOffer, setWorkerOffer] = React.useState("");
 
-  const [senderAnswer, setSenderAnswer] = React.useState("");
-  const [receiverAnswer, setReceiverAnswer] = React.useState("");
+  const [managerAnswer, setManagerAnswer] = React.useState("");
+  const [workerAnswer, setWorkerAnswer] = React.useState("");
 
-  const [senderMessageContent, setSenderMessageContent] = React.useState("");
-  const [receiverMessageContent, setReceiverMessageContent] = React.useState(
-    ""
-  );
+  const [managerMessageContent, setManagerMessageContent] = React.useState("");
+  const [workerMessageContent, setWorkerMessageContent] = React.useState("");
 
   const config = {
     iceServers: [
@@ -54,51 +52,51 @@ function NetworkingExamples() {
   };
 
   React.useState(() => {
-    setSender(
+    setManager(
       new Transceiver.Builder()
         .setConfig(config)
         .useManager()
         .setOnConnect(() => {
           console.log("connected");
 
-          setSenderConnected(true);
+          setManagerConnected(true);
         })
         .setOnMessage((message) => {
           console.log("received message");
 
-          setSenderMessages((oldMessages) => [
+          setManagerMessages((oldMessages) => [
             ...oldMessages,
-            `[${new Date().toLocaleString()}] <receiver> ${atob(message.data)}`,
+            `[${new Date().toLocaleString()}] <worker> ${atob(message.data)}`,
           ]);
         })
         .setOnDisconnect(() => {
           console.log("disconnected");
 
-          setSenderConnected(false);
+          setManagerConnected(false);
         })
         .build()
     );
-    setReceiver(
+    setWorker(
       new Transceiver.Builder()
         .setConfig(config)
         .useWorker()
         .setOnConnect(() => {
           console.log("connected");
 
-          setReceiverConnected(true);
+          setWorkerConnected(true);
         })
         .setOnMessage((message) => {
           console.log("received message");
 
-          setReceiverMessages((oldMessages) => [
+          setWorkerMessages((oldMessages) => [
             ...oldMessages,
-            `[${new Date().toLocaleString()}] <sender> ${atob(message.data)}`,
+            `[${new Date().toLocaleString()}] <manager> ${atob(message.data)}`,
           ]);
         })
         .setOnDisconnect(() => {
           console.log("disconnected");
 
-          setReceiverConnected(false);
+          setWorkerConnected(false);
         })
         .build()
     );
@@ -116,107 +114,107 @@ function NetworkingExamples() {
 
         <em>
           Please ensure that you are in a <strong>secure context</strong> (i.e.
-          a HTTPS secured page or localhost), otherwise the examples below won't
-          work.
+          a HTTPS secured page or localhost), otherwise the examples below might
+          not work.
         </em>
 
         <ol>
-          <li>Generate offer on sender</li>
-          <li>Copy offer to receiver</li>
+          <li>Generate offer on manager</li>
+          <li>Copy offer to worker</li>
           <li>
-            Generate answer on receiver (on this page, on this page in another
+            Generate answer on worker (on this page, on this page in another
             tab, on another device, ...)
           </li>
-          <li>Copy answer to sender</li>
-          <li>Connect to receiver from sender</li>
+          <li>Copy answer to manager</li>
+          <li>Connect to worker from manager</li>
         </ol>
       </section>
 
-      {/* Sender */}
-      <section id="sender">
+      {/* Manager */}
+      <section id="manager">
         <details>
-          <summary>Sender</summary>
+          <summary>Manager</summary>
 
-          <h2>Sender</h2>
+          <h2>Manager</h2>
 
           <button
             onClick={async () => {
               console.log("generating offer");
 
-              setSenderOffer(btoa((await sender.getConnectionInfo()).sdp));
+              setManagerOffer(btoa((await manager.getConnectionInfo()).sdp));
             }}
           >
             Generate offer
           </button>
           <br />
           <textarea
-            placeholder="Sender's offer"
-            value={senderOffer}
+            placeholder="Manager's offer"
+            value={managerOffer}
             readOnly
             rows="5"
             cols="50"
           ></textarea>
           <br />
           <textarea
-            placeholder="Receiver's answer"
+            placeholder="Worker's answer"
             rows="5"
             cols="50"
-            value={senderAnswer}
-            onChange={(e) => setSenderAnswer(e.target.value)}
+            value={managerAnswer}
+            onChange={(e) => setManagerAnswer(e.target.value)}
           ></textarea>
           <br />
           <button
             onClick={() => {
               console.log("connecting");
 
-              sender.connect(
+              manager.connect(
                 new RTCSessionDescription({
                   type: "answer",
-                  sdp: atob(senderAnswer),
+                  sdp: atob(managerAnswer),
                 })
               );
             }}
           >
-            Connect to receiver
+            Connect to worker
           </button>
-          <span>{senderConnected ? "✅ Connected" : "❌ Disconnected"}</span>
+          <span>{managerConnected ? "✅ Connected" : "❌ Disconnected"}</span>
           <br />
           <input
             type="text"
-            placeholder="Message to send to receiver"
-            value={senderMessageContent}
-            onChange={(e) => setSenderMessageContent(e.target.value)}
+            placeholder="Message to send to worker"
+            value={managerMessageContent}
+            onChange={(e) => setManagerMessageContent(e.target.value)}
           />
           <button
             onClick={() => {
-              setSenderMessageContent("");
+              setManagerMessageContent("");
 
-              sender.sendMessage(btoa(senderMessageContent));
+              manager.sendMessage(btoa(managerMessageContent));
             }}
           >
-            Send message to receiver
+            Send message to worker
           </button>
           <br />
           <h3>Messages</h3>
           <ul>
-            {senderMessages.map((message, i) => (
+            {managerMessages.map((message, i) => (
               <li key={i}>{message}</li>
             ))}
           </ul>
         </details>
       </section>
 
-      {/* Receiver */}
-      <section id="receiver">
+      {/* Worker */}
+      <section id="worker">
         <details>
-          <summary>Receiver</summary>
+          <summary>Worker</summary>
 
-          <h2>Receiver</h2>
+          <h2>Worker</h2>
 
           <textarea
-            placeholder="Sender's offer"
-            value={receiverOffer}
-            onChange={(e) => setReceiverOffer(e.target.value)}
+            placeholder="Manager's offer"
+            value={workerOffer}
+            onChange={(e) => setWorkerOffer(e.target.value)}
             rows="5"
             cols="50"
           ></textarea>
@@ -225,13 +223,13 @@ function NetworkingExamples() {
             onClick={async () => {
               console.log("generating answer");
 
-              setReceiverAnswer(
+              setWorkerAnswer(
                 btoa(
                   (
-                    await receiver.getConnectionInfo(
+                    await worker.getConnectionInfo(
                       new RTCSessionDescription({
                         type: "offer",
-                        sdp: atob(receiverOffer),
+                        sdp: atob(workerOffer),
                       })
                     )
                   ).sdp
@@ -243,34 +241,34 @@ function NetworkingExamples() {
           </button>
           <br />
           <textarea
-            placeholder="Receiver's answer"
-            value={receiverAnswer}
+            placeholder="Worker's answer"
+            value={workerAnswer}
             readOnly
             rows="5"
             cols="50"
           ></textarea>
           <br />
-          <span>{receiverConnected ? "✅ Connected" : "❌ Disconnected"}</span>
+          <span>{workerConnected ? "✅ Connected" : "❌ Disconnected"}</span>
           <br />
           <input
             type="text"
-            placeholder="Message to send to sender"
-            value={receiverMessageContent}
-            onChange={(e) => setReceiverMessageContent(e.target.value)}
+            placeholder="Message to send to manager"
+            value={workerMessageContent}
+            onChange={(e) => setWorkerMessageContent(e.target.value)}
           />
           <button
             onClick={() => {
-              setReceiverMessageContent("");
+              setWorkerMessageContent("");
 
-              receiver.sendMessage(btoa(receiverMessageContent));
+              worker.sendMessage(btoa(workerMessageContent));
             }}
           >
-            Send message to sender
+            Send message to manager
           </button>
           <br />
           <h3>Messages</h3>
           <ul>
-            {receiverMessages.map((message, i) => (
+            {workerMessages.map((message, i) => (
               <li key={i}>{message}</li>
             ))}
           </ul>
