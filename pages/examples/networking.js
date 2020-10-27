@@ -7,8 +7,10 @@ function NetworkingExamples() {
   const [receiver, setReceiver] = React.useState();
 
   const [senderMessages, setSenderMessages] = React.useState([]);
+  const [receiverMessages, setReceiverMessages] = React.useState([]);
 
   const [senderConnected, setSenderConnected] = React.useState(false);
+  const [receiverConnected, setReceiverConnected] = React.useState(false);
 
   const [senderOffer, setSenderOffer] = React.useState("");
   const [senderAnswer, setSenderAnswer] = React.useState("");
@@ -70,6 +72,30 @@ function NetworkingExamples() {
         })
         .build()
     );
+    setReceiver(
+      new Transceiver.Builder()
+        .setConfig(config)
+        .useWorker()
+        .setOnConnect(() => {
+          console.log("connected");
+
+          setReceiverConnected(true);
+        })
+        .setOnMessage((message) => {
+          console.log("received message");
+
+          setReceiverMessages((oldMessages) => [
+            ...oldMessages,
+            `[${new Date().toLocaleString()}] <sender> ${atob(message.data)}`,
+          ]);
+        })
+        .setOnDisconnect(() => {
+          console.log("disconnected");
+
+          setReceiverConnected(false);
+        })
+        .build()
+    );
   }, []);
 
   return (
@@ -81,6 +107,12 @@ function NetworkingExamples() {
       {/* Instructions */}
       <section id="instructions">
         <h2>Instructions</h2>
+
+        <em>
+          Please ensure that you are in a <strong>secure context</strong> (i.e.
+          a HTTPS secured page or localhost), otherwise the examples below won't
+          work.
+        </em>
 
         <ol>
           <li>Generate offer on sender</li>
