@@ -5,6 +5,9 @@ import Bus from "../../lib/bus";
 function DiscoveryExamples() {
   const [bus, setBus] = React.useState();
 
+  const [swarmMultiaddr, setSwarmMultiaddr] = React.useState(
+    "/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star"
+  );
   const [secretKey, setSecretKey] = React.useState("");
   const [connected, setConnected] = React.useState(false);
 
@@ -25,12 +28,22 @@ function DiscoveryExamples() {
         <em>
           Please ensure that you are in a <strong>secure context</strong> (i.e.
           a HTTPS secured page or localhost), otherwise the examples below might
-          not work.
+          not work. Please also note that if you use the public WebRTC star
+          below, the initial connection establishment might take a very long
+          time. For more information, please check out the{" "}
+          <a href="https://github.com/pojntfx/nebulark#discovery">README</a>.
         </em>
       </section>
 
       <section id="broadcast-room">
         <h2>Network Connection</h2>
+        <input
+          type="text"
+          placeholder="Swarm multiaddr"
+          value={swarmMultiaddr}
+          onChange={(e) => setSwarmMultiaddr(e.target.value)}
+        />
+        <br />
         <input
           type="text"
           placeholder="Secret key"
@@ -39,7 +52,18 @@ function DiscoveryExamples() {
         />
         <button
           onClick={async () => {
-            const bus = new Bus("nebulark-discovery-examples", secretKey);
+            const bus = new Bus.Builder()
+              .setSwarmMultiaddr(swarmMultiaddr)
+              .setPrefix("nebulark-discovery-examples")
+              .setSecretKey(secretKey)
+              .setOnDiscoverPeer((peer) => console.log("discovered peer", peer))
+              .setOnConnectPeer((peer) =>
+                console.log("connected to peer", peer)
+              )
+              .setOnDisconnectPeer((peer) =>
+                console.log("disconnected from peer", peer)
+              )
+              .build();
 
             await bus.connect();
 
@@ -63,16 +87,20 @@ function DiscoveryExamples() {
             />
             <button
               onClick={async () => {
-                const channel = await bus.getChannel(roomName);
+                const channel = bus
+                  .ChannelBuilder()
+                  .setOnReceiveMessage(async (message) => {
+                    console.log("received message");
 
-                await channel.subscribe(async (message) => {
-                  console.log("received message");
+                    setMessages((oldMessages) => [
+                      ...oldMessages,
+                      new TextDecoder().decode(message.data),
+                    ]);
+                  })
+                  .setSuffix(roomName)
+                  .build();
 
-                  setMessages((oldMessages) => [
-                    ...oldMessages,
-                    new TextDecoder().decode(message.data),
-                  ]);
-                });
+                await channel.subscribe();
 
                 setChannel(channel);
                 setJoined(true);
