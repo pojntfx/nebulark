@@ -1,6 +1,6 @@
-<mxfile host="pojntfx.dev.alphahorizon.io" modified="2020-10-28T22:56:54.037Z" agent="5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36" etag="D1g_DxQtv2gn7FpA4aUI" version="13.6.5">
+<mxfile host="pojntfx.dev.alphahorizon.io" modified="2020-10-28T23:16:21.671Z" agent="5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36" etag="VXUcMqNoe8MPdDCBVG-c" version="13.6.5">
     <diagram id="6hGFLwfOUW9BJ-s0fimq" name="Page-1">
-        <mxGraphModel dx="1279" dy="1167" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="1869" dy="1706" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -52,20 +52,20 @@
                 <mxCell id="25" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="23">
                     <mxGeometry y="110" width="280" height="8" as="geometry"/>
                 </mxCell>
-                <mxCell id="26" value="- constructor(String, String, JsonObject)&#10;&#10;+ subscribe(Consumer&lt;Collection&lt;Characters&gt;&gt;)&#10;+ publish(Collection&lt;Character&gt;&gt;)&#10;+ unsubscribe()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="23">
+                <mxCell id="26" value="- constructor(String, String, JsonObject)&#10;&#10;+ subscribe(Consumer&lt;Collection&lt;Character&gt;&gt;)&#10;+ publish(Collection&lt;Character&gt;&gt;)&#10;+ unsubscribe()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="23">
                     <mxGeometry y="118" width="280" height="82" as="geometry"/>
                 </mxCell>
                 <mxCell id="28" value="PublishSubscribeConnectionBuilder" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="850" y="1150" width="320" height="260" as="geometry"/>
+                    <mxGeometry x="850" y="1150" width="340" height="260" as="geometry"/>
                 </mxCell>
                 <mxCell id="29" value="- prefix: String&#10;- suffix: String&#10;&#10;- secretKey: String&#10;&#10;- node: JsonObject" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="28">
-                    <mxGeometry y="26" width="320" height="94" as="geometry"/>
+                    <mxGeometry y="26" width="340" height="94" as="geometry"/>
                 </mxCell>
                 <mxCell id="30" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="28">
-                    <mxGeometry y="120" width="320" height="8" as="geometry"/>
+                    <mxGeometry y="120" width="340" height="8" as="geometry"/>
                 </mxCell>
                 <mxCell id="31" value="+ setPrefix(String): PublishSubscribeConnectionBuilder&#10;+ setSuffix(String): PublishSubscribeConnectionBuilder&#10;&#10;+ setSecretKey(String): PublishSubscribeConnectionBuilder&#10;&#10;+ setNode(JsonObject): PublishSubscribeConnectionBuilder&#10;&#10;+ build(): PublishSubscribeConnection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="28">
-                    <mxGeometry y="128" width="320" height="132" as="geometry"/>
+                    <mxGeometry y="128" width="340" height="132" as="geometry"/>
                 </mxCell>
                 <mxCell id="19" value="TransceiverBuilder" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" vertex="1" parent="1">
                     <mxGeometry x="40" y="1250" width="420" height="310" as="geometry"/>
@@ -78,6 +78,30 @@
                 </mxCell>
                 <mxCell id="22" value="+ addSwarmMultiAddress(String): TransceiverBuilder&#10;&#10;+ setPrefix(String): TransceiverBuilder&#10;+ setSecretKey(String): TransceiverBuilder&#10;&#10;+ setOnDiscoverPeer(Consumer&lt;JsonObject&gt;): TransceiverBuilder&#10;+ setOnConnectPeer(Consumer&lt;JsonObject&gt;): TransceiverBuilder&#10;+ setOnDisconnectPeer(Consumer&lt;JsonObject&gt;): TransceiverBuilder&#10;&#10;+ build(): Transceiver" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="19">
                     <mxGeometry y="158" width="420" height="152" as="geometry"/>
+                </mxCell>
+                <mxCell id="32" value="DirectConnection" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="1280" y="920" width="300" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" value="- secretKey: String&#10;&#10;- node: JsonObject" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="32">
+                    <mxGeometry y="26" width="300" height="54" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="32">
+                    <mxGeometry y="80" width="300" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" value="- constructor(String, JsonObject)&#10;&#10;+ receive(Consumer&lt;Collection&lt;Character&gt;&gt;)&#10;+ write(Collection&lt;Characters&gt;)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="32">
+                    <mxGeometry y="88" width="300" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" value="DirectConnectionBuilder" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="1280" y="1110" width="300" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="- secreyKey: String&#10;&#10;- node: JsonObject" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="36">
+                    <mxGeometry y="26" width="300" height="54" as="geometry"/>
+                </mxCell>
+                <mxCell id="38" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="36">
+                    <mxGeometry y="80" width="300" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="39" value="+ setSecretKey(String): DirectConnectionBuilder&#10;&#10;+ setNode(JsonObject): DirectConnectionBuilder&#10;&#10;+ build(): DirectConnection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="36">
+                    <mxGeometry y="88" width="300" height="82" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
