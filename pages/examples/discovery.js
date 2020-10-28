@@ -30,7 +30,8 @@ function DiscoveryExamples() {
           a HTTPS secured page or localhost), otherwise the examples below might
           not work. Please also note that if you use the public WebRTC star
           below, the initial connection establishment might take a very long
-          time. For more information, please check out the{" "}
+          time (multiple minutes) or maybe not even work at all. For more
+          information and solutions, please check out the{" "}
           <a href="https://github.com/pojntfx/nebulark#discovery">README</a>.
         </em>
       </section>
