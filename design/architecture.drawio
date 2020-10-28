@@ -1,0 +1,37 @@
+<mxfile host="pojntfx.dev.alphahorizon.io" modified="2020-10-28T21:58:13.969Z" agent="5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36" etag="_7B86SsqazDndTl8Lc5d" version="13.6.5">
+    <diagram id="6hGFLwfOUW9BJ-s0fimq" name="Page-1">
+        <mxGraphModel dx="1296" dy="964" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="6" value="VirtualMachine" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="40" width="500" height="560" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="- binary: []byte&#10;&#10;- wasmFs: JsonObject&#10;- wasi: JsonObject&#10;- vm: JsonObject&#10;&#10;- vmType: VirtualMachineType&#10;- goRuntime: JsonObject&#10;- teaVMImports JsonObject&#10;&#10;- imports: Map&lt;String, Function&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="6" vertex="1">
+                    <mxGeometry y="26" width="500" height="164" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="6" vertex="1">
+                    <mxGeometry y="190" width="500" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="- constructor([]byte, VirtualMachineType, Map&amp;lt;String, Function&amp;lt;JsonObject, JsonObject&amp;gt;&amp;gt;)&lt;br&gt;&lt;br&gt;&lt;u&gt;+ Builder(): VirtualMachineBuilder&lt;br&gt;&lt;/u&gt;&lt;br&gt;+ getStdout(): String&lt;br&gt;+ loadExports()&lt;br&gt;&lt;br&gt;+ start()&lt;br&gt;+ call(String, Strings...)&lt;br&gt;&lt;br&gt;+ construct()&lt;br&gt;&lt;br&gt;+ inputSetLength(Integer)&lt;br&gt;+ inputSet(Integer, Character)&lt;br&gt;&lt;br&gt;+ open()&lt;br&gt;+ ignite()&lt;br&gt;+ close()&lt;br&gt;&lt;br&gt;+ outputGetLength(): Integer&lt;br&gt;+ outputGet(Integer): Character&lt;br&gt;&lt;br&gt;+ deconstruct()&lt;br&gt;&lt;br&gt;+ run(JsonObject): JsonObject" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="6" vertex="1">
+                    <mxGeometry y="198" width="500" height="362" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;VirtualMachineType&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px ; text-align: left&quot;&gt;VM_TYPE_WASI&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px ; text-align: left&quot;&gt;VM_TYPE_TINYGO&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px ; text-align: left&quot;&gt;VM_TYPE_TEAVM&lt;/p&gt;" style="shape=rect;html=1;overflow=fill;whiteSpace=wrap;" parent="1" vertex="1">
+                    <mxGeometry x="570" y="40" width="200" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="VirtualMachineBuilder" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="630" width="440" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="- binary: []byte&#10;&#10;- vmType: VirtualMachineType&#10;&#10;- imports: Map&lt;String, Function&lt;JsonObject, JsonObject&gt;&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="11" vertex="1">
+                    <mxGeometry y="26" width="440" height="84" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="11" vertex="1">
+                    <mxGeometry y="110" width="440" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="+ setBinary([]byte): VirtualMachineBuilder&#10;&#10;+ useWASIRuntime(): VirtualMachineBuilder&#10;+ useTinyGoRuntime(): VirtualMachineBuilder&#10;+ useTeaVMRuntime(): VirtualMachineBuilder&#10;&#10;+ addImport(String, Function&lt;JsonObject, JsonObject&gt;&gt;): VirtualMachineBuilder&#10;&#10;+ build(): VirtualMachine" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="11" vertex="1">
+                    <mxGeometry y="118" width="440" height="142" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
