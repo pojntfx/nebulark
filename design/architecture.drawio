@@ -1,19 +1,19 @@
-<mxfile host="pojntfx.dev.alphahorizon.io" modified="2020-10-28T22:40:14.966Z" agent="5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36" etag="0Mo1tTv1_HgX_dRW4Bfc" version="13.6.5">
+<mxfile host="pojntfx.dev.alphahorizon.io" modified="2020-10-28T22:56:54.037Z" agent="5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36" etag="D1g_DxQtv2gn7FpA4aUI" version="13.6.5">
     <diagram id="6hGFLwfOUW9BJ-s0fimq" name="Page-1">
-        <mxGraphModel dx="868" dy="792" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="1279" dy="1167" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
                 <mxCell id="6" value="VirtualMachine" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
                     <mxGeometry x="40" y="40" width="500" height="560" as="geometry"/>
                 </mxCell>
-                <mxCell id="7" value="- binary: []byte&#10;&#10;- wasmFs: JsonObject&#10;- wasi: JsonObject&#10;- vm: JsonObject&#10;&#10;- vmType: VirtualMachineType&#10;- goRuntime: JsonObject&#10;- teaVMImports JsonObject&#10;&#10;- imports: Map&lt;String, Function&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="6" vertex="1">
+                <mxCell id="7" value="- binary: Collection&lt;Character&gt;&gt;&#10;&#10;- wasmFs: JsonObject&#10;- wasi: JsonObject&#10;- vm: JsonObject&#10;&#10;- vmType: VirtualMachineType&#10;- goRuntime: JsonObject&#10;- teaVMImports JsonObject&#10;&#10;- imports: Map&lt;String, Function&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="6" vertex="1">
                     <mxGeometry y="26" width="500" height="164" as="geometry"/>
                 </mxCell>
                 <mxCell id="8" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="6" vertex="1">
                     <mxGeometry y="190" width="500" height="8" as="geometry"/>
                 </mxCell>
-                <mxCell id="9" value="- constructor([]byte, VirtualMachineType, Map&amp;lt;String, Function&amp;lt;JsonObject, JsonObject&amp;gt;&amp;gt;)&lt;br&gt;&lt;br&gt;&lt;u&gt;+ Builder(): VirtualMachineBuilder&lt;br&gt;&lt;/u&gt;&lt;br&gt;+ getStdout(): String&lt;br&gt;+ loadExports()&lt;br&gt;&lt;br&gt;+ start()&lt;br&gt;+ call(String, Strings...)&lt;br&gt;&lt;br&gt;+ construct()&lt;br&gt;&lt;br&gt;+ inputSetLength(Integer)&lt;br&gt;+ inputSet(Integer, Character)&lt;br&gt;&lt;br&gt;+ open()&lt;br&gt;+ ignite()&lt;br&gt;+ close()&lt;br&gt;&lt;br&gt;+ outputGetLength(): Integer&lt;br&gt;+ outputGet(Integer): Character&lt;br&gt;&lt;br&gt;+ deconstruct()&lt;br&gt;&lt;br&gt;+ run(JsonObject): JsonObject" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="6" vertex="1">
+                <mxCell id="9" value="- constructor(Collection&amp;lt;Character&amp;gt;&amp;gt;, VirtualMachineType, Map&amp;lt;String, Function&amp;lt;JsonObject, JsonObject&amp;gt;&amp;gt;)&lt;br&gt;&lt;br&gt;&lt;u&gt;+ Builder(): VirtualMachineBuilder&lt;br&gt;&lt;/u&gt;&lt;br&gt;+ getStdout(): String&lt;br&gt;+ loadExports()&lt;br&gt;&lt;br&gt;+ start()&lt;br&gt;+ call(String, Strings...)&lt;br&gt;&lt;br&gt;+ construct()&lt;br&gt;&lt;br&gt;+ inputSetLength(Integer)&lt;br&gt;+ inputSet(Integer, Character)&lt;br&gt;&lt;br&gt;+ open()&lt;br&gt;+ ignite()&lt;br&gt;+ close()&lt;br&gt;&lt;br&gt;+ outputGetLength(): Integer&lt;br&gt;+ outputGet(Integer): Character&lt;br&gt;&lt;br&gt;+ deconstruct()&lt;br&gt;&lt;br&gt;+ run(JsonObject): JsonObject" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="6" vertex="1">
                     <mxGeometry y="198" width="500" height="362" as="geometry"/>
                 </mxCell>
                 <mxCell id="10" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;VirtualMachineType&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px ; text-align: left&quot;&gt;VM_TYPE_WASI&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px ; text-align: left&quot;&gt;VM_TYPE_TINYGO&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px ; text-align: left&quot;&gt;VM_TYPE_TEAVM&lt;/p&gt;" style="shape=rect;html=1;overflow=fill;whiteSpace=wrap;" parent="1" vertex="1">
@@ -22,17 +22,17 @@
                 <mxCell id="11" value="VirtualMachineBuilder" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
                     <mxGeometry x="40" y="630" width="440" height="260" as="geometry"/>
                 </mxCell>
-                <mxCell id="12" value="- binary: []byte&#10;&#10;- vmType: VirtualMachineType&#10;&#10;- imports: Map&lt;String, Function&lt;JsonObject, JsonObject&gt;&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="11" vertex="1">
+                <mxCell id="12" value="- binary: Collection&lt;Character&gt;&gt;&#10;&#10;- vmType: VirtualMachineType&#10;&#10;- imports: Map&lt;String, Function&lt;JsonObject, JsonObject&gt;&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="11" vertex="1">
                     <mxGeometry y="26" width="440" height="84" as="geometry"/>
                 </mxCell>
                 <mxCell id="13" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="11" vertex="1">
                     <mxGeometry y="110" width="440" height="8" as="geometry"/>
                 </mxCell>
-                <mxCell id="14" value="+ setBinary([]byte): VirtualMachineBuilder&#10;&#10;+ useWASIRuntime(): VirtualMachineBuilder&#10;+ useTinyGoRuntime(): VirtualMachineBuilder&#10;+ useTeaVMRuntime(): VirtualMachineBuilder&#10;&#10;+ addImport(String, Function&lt;JsonObject, JsonObject&gt;&gt;): VirtualMachineBuilder&#10;&#10;+ build(): VirtualMachine" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="11" vertex="1">
+                <mxCell id="14" value="+ setBinary(Collection&lt;Character&gt;&gt;): VirtualMachineBuilder&#10;&#10;+ useWASIRuntime(): VirtualMachineBuilder&#10;+ useTinyGoRuntime(): VirtualMachineBuilder&#10;+ useTeaVMRuntime(): VirtualMachineBuilder&#10;&#10;+ addImport(String, Function&lt;JsonObject, JsonObject&gt;&gt;): VirtualMachineBuilder&#10;&#10;+ build(): VirtualMachine" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="11" vertex="1">
                     <mxGeometry y="118" width="440" height="142" as="geometry"/>
                 </mxCell>
                 <mxCell id="15" value="Transceiver" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="40" y="920" width="670" height="270" as="geometry"/>
+                    <mxGeometry x="40" y="920" width="670" height="300" as="geometry"/>
                 </mxCell>
                 <mxCell id="16" value="- swarmMultiAddress: Collection&lt;String&gt;&#10;&#10;- prefix: String&#10;- secretKey: String&#10;&#10;- node: JsonObject&#10;&#10;- onDiscoverPeer: Consumer&lt;JsonObject&gt;&#10;- onConnectPeer: Consumer&lt;JsonObject&gt;&#10;- onDisconnectPeer: Consumer&lt;JsonObject&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="15">
                     <mxGeometry y="26" width="670" height="154" as="geometry"/>
@@ -40,11 +40,35 @@
                 <mxCell id="17" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="15">
                     <mxGeometry y="180" width="670" height="8" as="geometry"/>
                 </mxCell>
-                <mxCell id="18" value="- constructor(String, String, String, JsonObject, Consumer&amp;lt;JsonObject&amp;gt;, Consumer&amp;lt;JsonObject&amp;gt;, Consumer&amp;lt;JsonObject&amp;gt;)&lt;br&gt;&lt;br&gt;&lt;u&gt;+ Builder(): TransceiverBuilder&lt;br&gt;&lt;/u&gt;&lt;br&gt;+ connect()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="15">
-                    <mxGeometry y="188" width="670" height="82" as="geometry"/>
+                <mxCell id="18" value="- constructor(String, String, String, JsonObject, Consumer&amp;lt;JsonObject&amp;gt;, Consumer&amp;lt;JsonObject&amp;gt;, Consumer&amp;lt;JsonObject&amp;gt;)&lt;br&gt;&lt;br&gt;&lt;u&gt;+ Builder(): TransceiverBuilder&lt;br&gt;&lt;br&gt;+ PublishSubscribeConnectionBuilder(): PublishSubscribeConnectionBuilder&lt;br&gt;&lt;/u&gt;&lt;br&gt;+ connect()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="15">
+                    <mxGeometry y="188" width="670" height="112" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="PublishSubscribeConnection" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="850" y="920" width="280" height="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="- channelName: String&#10;&#10;- secretKey: String&#10;&#10;- node: JsonObject" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="23">
+                    <mxGeometry y="26" width="280" height="84" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="23">
+                    <mxGeometry y="110" width="280" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="- constructor(String, String, JsonObject)&#10;&#10;+ subscribe(Consumer&lt;Collection&lt;Characters&gt;&gt;)&#10;+ publish(Collection&lt;Character&gt;&gt;)&#10;+ unsubscribe()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="23">
+                    <mxGeometry y="118" width="280" height="82" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="PublishSubscribeConnectionBuilder" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="850" y="1150" width="320" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" value="- prefix: String&#10;- suffix: String&#10;&#10;- secretKey: String&#10;&#10;- node: JsonObject" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="28">
+                    <mxGeometry y="26" width="320" height="94" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="28">
+                    <mxGeometry y="120" width="320" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="31" value="+ setPrefix(String): PublishSubscribeConnectionBuilder&#10;+ setSuffix(String): PublishSubscribeConnectionBuilder&#10;&#10;+ setSecretKey(String): PublishSubscribeConnectionBuilder&#10;&#10;+ setNode(JsonObject): PublishSubscribeConnectionBuilder&#10;&#10;+ build(): PublishSubscribeConnection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="28">
+                    <mxGeometry y="128" width="320" height="132" as="geometry"/>
                 </mxCell>
                 <mxCell id="19" value="TransceiverBuilder" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="40" y="1220" width="420" height="310" as="geometry"/>
+                    <mxGeometry x="40" y="1250" width="420" height="310" as="geometry"/>
                 </mxCell>
                 <mxCell id="20" value="- swarmMultiAddresses: Collection&lt;String&gt;&#10;&#10;- prefix: String&#10;- secretKey: String&#10;&#10;- onDiscoverPeer: Consumer&lt;JsonObject&gt;&#10;- onConnectPeer: Consumer&lt;JsonObject&gt;&#10;- onDisconnectPeer: Consumer&lt;JsonObject&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="19">
                     <mxGeometry y="26" width="420" height="124" as="geometry"/>
