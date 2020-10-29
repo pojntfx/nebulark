@@ -1,92 +1,230 @@
-<mxfile host="pojntfx.dev.alphahorizon.io" modified="2020-10-29T00:58:54.110Z" agent="5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36" etag="4dPZOqa9PBvWuclcsMnX" version="13.6.5">
+<mxfile host="pojntfx.dev.alphahorizon.io" modified="2020-10-29T01:13:28.284Z" agent="5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36" etag="8Bm3HEqqSLQMC_dRSdDn" version="13.6.5">
     <diagram id="6hGFLwfOUW9BJ-s0fimq" name="Page-1">
-        <mxGraphModel dx="3619" dy="1305" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="5829" dy="3942" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="10" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;VirtualMachineType&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px ; text-align: left&quot;&gt;VM_TYPE_WASI&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px ; text-align: left&quot;&gt;VM_TYPE_TINYGO&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px ; text-align: left&quot;&gt;VM_TYPE_TEAVM&lt;/p&gt;" style="shape=rect;html=1;overflow=fill;whiteSpace=wrap;" parent="1" vertex="1">
-                    <mxGeometry x="510" y="495" width="200" height="90" as="geometry"/>
+                <mxCell id="84" value="«component»&lt;br&gt;&lt;b&gt;Storage Stack&lt;/b&gt;" style="html=1;dropTarget=0;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="30" y="1480" width="890" height="480" as="geometry"/>
+                </mxCell>
+                <mxCell id="85" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" vertex="1" parent="84">
+                    <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+                        <mxPoint x="-27" y="7" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="82" value="«component»&lt;br&gt;&lt;b&gt;Networking Stack&lt;/b&gt;" style="html=1;dropTarget=0;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="30" y="680" width="2260" height="730" as="geometry"/>
+                </mxCell>
+                <mxCell id="83" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" vertex="1" parent="82">
+                    <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+                        <mxPoint x="-27" y="7" as="offset"/>
+                    </mxGeometry>
                 </mxCell>
                 <mxCell id="40" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;DirectConnection&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ receive(Consumer&amp;lt;Collection&amp;lt;Character&amp;gt;&amp;gt;)&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ write(Collection&amp;lt;Character&amp;gt;)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="1480" y="1245" width="300" height="80" as="geometry"/>
+                    <mxGeometry x="1470" y="1165" width="300" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="41" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="32" target="40" edge="1">
                     <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="1380" y="1375" as="sourcePoint"/>
-                        <mxPoint x="1540" y="1375" as="targetPoint"/>
+                        <mxPoint x="1370" y="1295" as="sourcePoint"/>
+                        <mxPoint x="1530" y="1295" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="42" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;DirectConnectionBuilder&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ setSecretKey(String): DirectConnectionBuilder&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ setNode(JsonObject): DirectConnectionBuilder&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ build(): DirectConnection&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="1940" y="1220" width="300" height="130" as="geometry"/>
+                    <mxGeometry x="1930" y="1140" width="300" height="130" as="geometry"/>
                 </mxCell>
                 <mxCell id="43" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="36" target="42" edge="1">
                     <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="1690" y="1375" as="sourcePoint"/>
-                        <mxPoint x="1850" y="1375" as="targetPoint"/>
+                        <mxPoint x="1680" y="1295" as="sourcePoint"/>
+                        <mxPoint x="1840" y="1295" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="45" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;PublishSubscribeConnection&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ subscribe(Consumer&amp;lt;Collection&amp;lt;Character&amp;gt;&amp;gt;)&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ publish(Collection&amp;lt;Character&amp;gt;&amp;gt;)&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ unsubscribe()&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="1480" y="845" width="310" height="90" as="geometry"/>
+                    <mxGeometry x="1470" y="765" width="310" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="46" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="23" target="45" edge="1">
                     <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="1460" y="1185" as="sourcePoint"/>
-                        <mxPoint x="1620" y="1185" as="targetPoint"/>
+                        <mxPoint x="1450" y="1105" as="sourcePoint"/>
+                        <mxPoint x="1610" y="1105" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="47" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;PublishSubscribeConnectionBuilder&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ setPrefix(String): PublishSubscribeConnectionBuilder&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ setSuffix(String): PublishSubscribeConnectionBuilder&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ setSecretKey(String): PublishSubscribeConnectionBuilder&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ setNode(JsonObject): PublishSubscribeConnectionBuilder&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ build(): PublishSubscribeConnection&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="1940" y="810" width="340" height="160" as="geometry"/>
+                    <mxGeometry x="1930" y="730" width="340" height="160" as="geometry"/>
                 </mxCell>
                 <mxCell id="51" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="28" target="47" edge="1">
                     <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="1875" y="1165" as="sourcePoint"/>
-                        <mxPoint x="2035" y="1165" as="targetPoint"/>
+                        <mxPoint x="1865" y="1085" as="sourcePoint"/>
+                        <mxPoint x="2025" y="1085" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="52" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;TransceiverBuilder&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ addSwarmMultiAddress(String): TransceiverBuilder&lt;br style=&quot;padding: 0px ; margin: 0px&quot;&gt;&lt;br style=&quot;padding: 0px ; margin: 0px&quot;&gt;+ setPrefix(String): TransceiverBuilder&lt;br style=&quot;padding: 0px ; margin: 0px&quot;&gt;+ setSecretKey(String): TransceiverBuilder&lt;br style=&quot;padding: 0px ; margin: 0px&quot;&gt;&lt;br style=&quot;padding: 0px ; margin: 0px&quot;&gt;+ setOnDiscoverPeer(Consumer&amp;lt;JsonObject&amp;gt;): TransceiverBuilder&lt;br style=&quot;padding: 0px ; margin: 0px&quot;&gt;+ setOnConnectPeer(Consumer&amp;lt;JsonObject&amp;gt;): TransceiverBuilder&lt;br style=&quot;padding: 0px ; margin: 0px&quot;&gt;+ setOnDisconnectPeer(Consumer&amp;lt;JsonObject&amp;gt;): TransceiverBuilder&lt;br style=&quot;padding: 0px ; margin: 0px&quot;&gt;&lt;br style=&quot;padding: 0px ; margin: 0px&quot;&gt;+ build(): Transceiver&lt;br&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="920" y="970" width="413" height="200" as="geometry"/>
+                    <mxGeometry x="910" y="890" width="413" height="200" as="geometry"/>
                 </mxCell>
                 <mxCell id="sxHCqdWgwuU_68WpSeui-53" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;Transceiver&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;u&gt;+ Builder(): TransceiverBuilder&lt;br&gt;&lt;br&gt;+ PublishSubscribeConnectionBuilder(): PublishSubscribeConnectionBuilder&lt;br&gt;&lt;/u&gt;&lt;u&gt;+ DirectConnectionBuilder(): DirectConnectionBuilder&lt;br&gt;&lt;/u&gt;&lt;br&gt;+ connect()&lt;br&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="220" y="990" width="420" height="160" as="geometry"/>
-                </mxCell>
-                <mxCell id="sxHCqdWgwuU_68WpSeui-55" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;VirtualMachineBuilder&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;span&gt;+ setBinary(Collection&amp;lt;Character&amp;gt;&amp;gt;): VirtualMachineBuilder&lt;/span&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ useWASIRuntime(): VirtualMachineBuilder&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ useTinyGoRuntime(): VirtualMachineBuilder&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ useTeaVMRuntime(): VirtualMachineBuilder&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ addImport(String, Function&amp;lt;JsonObject, JsonObject&amp;gt;&amp;gt;): VirtualMachineBuilder&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ build(): VirtualMachine&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="760" y="300" width="440" height="195" as="geometry"/>
-                </mxCell>
-                <mxCell id="sxHCqdWgwuU_68WpSeui-58" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;span style=&quot;font-weight: 700&quot;&gt;VirtualMachine&lt;/span&gt;&lt;br&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;u&gt;+ Builder(): VirtualMachineBuilder&lt;br&gt;&lt;/u&gt;&lt;br&gt;+ getStdout(): String&lt;br&gt;+ loadExports()&lt;br&gt;&lt;br&gt;+ start()&lt;br&gt;+ call(String, Strings...)&lt;br&gt;&lt;br&gt;+ construct()&lt;br&gt;&lt;br&gt;+ inputSetLength(Integer)&lt;br&gt;+ inputSet(Integer, Character)&lt;br&gt;&lt;br&gt;+ open()&lt;br&gt;+ ignite()&lt;br&gt;+ close()&lt;br&gt;&lt;br&gt;+ outputGetLength(): Integer&lt;br&gt;+ outputGet(Integer): Character&lt;br&gt;&lt;br&gt;+ deconstruct()&lt;br&gt;&lt;br&gt;+ run(JsonObject): JsonObject&lt;br&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="275" y="205" width="190" height="380" as="geometry"/>
+                    <mxGeometry x="210" y="910" width="420" height="160" as="geometry"/>
                 </mxCell>
                 <mxCell id="fKdP36l-M5kC6lyTv1g1-52" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;Disk&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;u&gt;+ Builder(): DiskBuilder&lt;/u&gt;&lt;u&gt;&lt;br&gt;&lt;/u&gt;&lt;br&gt;+ connect()&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ mkdir(String)&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ stat(String) String&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ write(String, Collection&amp;lt;Character&amp;gt;)&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ ls(String): Collection&amp;lt;String&amp;gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ cp(String, String)&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ mv(String, String)&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ read(String): Collection&amp;lt;Character&amp;gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ rm(Collection&amp;lt;String&amp;gt;)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="140" y="1520" width="420" height="225" as="geometry"/>
+                    <mxGeometry x="50" y="1529" width="420" height="225" as="geometry"/>
                 </mxCell>
                 <mxCell id="fKdP36l-M5kC6lyTv1g1-57" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="fKdP36l-M5kC6lyTv1g1-53" target="fKdP36l-M5kC6lyTv1g1-52" edge="1">
                     <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="645" y="1900" as="sourcePoint"/>
-                        <mxPoint x="805" y="1900" as="targetPoint"/>
+                        <mxPoint x="555" y="1909" as="sourcePoint"/>
+                        <mxPoint x="715" y="1909" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="fKdP36l-M5kC6lyTv1g1-58" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;DiskBuilder&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ addSwarmMultiAddress(String): DiskBuilder&lt;br style=&quot;padding: 0px ; margin: 0px&quot;&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ setRepo(String): DiskBuilder&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ build(): Disk&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="710" y="1570" width="260" height="125" as="geometry"/>
+                    <mxGeometry x="620" y="1579" width="260" height="125" as="geometry"/>
                 </mxCell>
                 <mxCell id="fKdP36l-M5kC6lyTv1g1-61" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="fKdP36l-M5kC6lyTv1g1-59" target="fKdP36l-M5kC6lyTv1g1-58" edge="1">
                     <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="1115" y="1730" as="sourcePoint"/>
-                        <mxPoint x="1275" y="1730" as="targetPoint"/>
+                        <mxPoint x="1025" y="1739" as="sourcePoint"/>
+                        <mxPoint x="1185" y="1739" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="fKdP36l-M5kC6lyTv1g1-69" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;b&gt;Ion&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ vm: VirtualMachine&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ transceiver: Transceiver&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ disk: Disk&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;- constructor(VirtualMachine, Transceiver, Disk)&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;u&gt;+ Builder(): IonBuilder&lt;br&gt;&lt;/u&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ start()&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ joinNebula(String)&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ getLogs(): Collection&amp;lt;String&amp;gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ getConnectionStatus(): String&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ getId(): String&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ getStorageUsage(): Int&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ getProcessingState(): Boolean&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ getIonGraph(): Map&amp;lt;String, String&amp;gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="-960" y="720" width="340" height="290" as="geometry"/>
+                    <mxGeometry x="-1040" y="660" width="340" height="290" as="geometry"/>
                 </mxCell>
                 <mxCell id="fKdP36l-M5kC6lyTv1g1-70" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;b&gt;IonBuilder&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ vm: VirtualMachine&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ transceiver: Transceiver&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ disk: Disk&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;- setVirtualMachine(VirtualMachine): IonBuilder&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;- setTransceiver(Transceiver): IonBuilder&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;- setDisk(Disk): IonBuilder&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;- build(): Ion&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="-570" y="785" width="340" height="160" as="geometry"/>
+                    <mxGeometry x="-650" y="725" width="340" height="160" as="geometry"/>
                 </mxCell>
                 <mxCell id="fKdP36l-M5kC6lyTv1g1-71" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;b&gt;MissionControl&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;span&gt;+ transceiver: Transceiver&lt;/span&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ disk: Disk&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;- constructor(Transceiver, Disk)&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;u&gt;+ Builder(): MissionControlBuilder&lt;br&gt;&lt;/u&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ start()&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ createNebula(): String&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ uploadInput(Collection&amp;lt;Character&amp;gt;)&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ uploadSpark(Collection&amp;lt;Character&amp;gt;)&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ executeSpark(): String&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ cancelSpark(String)&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ getNebulaQRCode(): Collection&amp;lt;Character&amp;gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ getNebulaCode(): String&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ getNebulaLink(): String&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ getIons(): Collection&amp;lt;String&amp;gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ getNebulaStats(): Map&amp;lt;String, String&amp;gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="-960" y="1160" width="340" height="360" as="geometry"/>
+                    <mxGeometry x="-1040" y="1100" width="340" height="360" as="geometry"/>
                 </mxCell>
                 <mxCell id="fKdP36l-M5kC6lyTv1g1-72" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;b&gt;MissionControlBuilder&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;span&gt;+ transceiver: Transceiver&lt;/span&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ disk: Disk&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;span&gt;- setTransceiver(Transceiver): MissionControlBuilder&lt;/span&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;- setDisk(Disk): MissionControlBuilder&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;- build(): MissionControl&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="-570" y="1270" width="340" height="140" as="geometry"/>
+                    <mxGeometry x="-650" y="1210" width="340" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="55" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="15" target="sxHCqdWgwuU_68WpSeui-53">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="-330" y="1230" as="sourcePoint"/>
+                        <mxPoint x="-170" y="1230" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="56" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="19" target="52">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="1080" y="1380" as="sourcePoint"/>
+                        <mxPoint x="1240" y="1380" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="57" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="fKdP36l-M5kC6lyTv1g1-70" target="75">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="-170" y="820" as="sourcePoint"/>
+                        <mxPoint x="-60" y="430" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="58" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="fKdP36l-M5kC6lyTv1g1-70" target="82">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="-160" y="880" as="sourcePoint"/>
+                        <mxPoint x="70" y="1030" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="59" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="fKdP36l-M5kC6lyTv1g1-70" target="84">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="-160" y="960" as="sourcePoint"/>
+                        <mxPoint x="-80" y="1070" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="60" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="fKdP36l-M5kC6lyTv1g1-72" target="84">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="-150" y="1390" as="sourcePoint"/>
+                        <mxPoint x="120" y="1740" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="61" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="fKdP36l-M5kC6lyTv1g1-72" target="82">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="-180" y="1320" as="sourcePoint"/>
+                        <mxPoint x="230" y="1070" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="64" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="fKdP36l-M5kC6lyTv1g1-52" target="fKdP36l-M5kC6lyTv1g1-58">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="570" y="1549" as="sourcePoint"/>
+                        <mxPoint x="730" y="1549" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="65" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="sxHCqdWgwuU_68WpSeui-53" target="52">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="560" y="870" as="sourcePoint"/>
+                        <mxPoint x="720" y="870" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="66" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="52" target="45">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="1010" y="840" as="sourcePoint"/>
+                        <mxPoint x="1170" y="840" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="67" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="52" target="40">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="1080" y="690" as="sourcePoint"/>
+                        <mxPoint x="1240" y="690" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="68" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="45" target="47">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="1590" y="675" as="sourcePoint"/>
+                        <mxPoint x="1750" y="675" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="69" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="40" target="42">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="1810" y="1435" as="sourcePoint"/>
+                        <mxPoint x="1970" y="1435" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="70" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="fKdP36l-M5kC6lyTv1g1-71" target="fKdP36l-M5kC6lyTv1g1-72">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="-690" y="1280" as="sourcePoint"/>
+                        <mxPoint x="-1200" y="1240" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="71" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="fKdP36l-M5kC6lyTv1g1-69" target="fKdP36l-M5kC6lyTv1g1-70">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="-770" y="990" as="sourcePoint"/>
+                        <mxPoint x="-610" y="990" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="75" value="«component»&lt;br&gt;&lt;b&gt;Compute Stack&lt;/b&gt;" style="html=1;dropTarget=0;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="30" y="-90" width="1180" height="700" as="geometry"/>
+                </mxCell>
+                <mxCell id="76" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" vertex="1" parent="75">
+                    <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+                        <mxPoint x="-27" y="7" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="10" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;VirtualMachineType&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px ; text-align: left&quot;&gt;VM_TYPE_WASI&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px ; text-align: left&quot;&gt;VM_TYPE_TINYGO&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px ; text-align: left&quot;&gt;VM_TYPE_TEAVM&lt;/p&gt;" style="shape=rect;html=1;overflow=fill;whiteSpace=wrap;" parent="1" vertex="1">
+                    <mxGeometry x="500" y="225" width="200" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="sxHCqdWgwuU_68WpSeui-55" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;VirtualMachineBuilder&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;span&gt;+ setBinary(Collection&amp;lt;Character&amp;gt;&amp;gt;): VirtualMachineBuilder&lt;/span&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ useWASIRuntime(): VirtualMachineBuilder&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ useTinyGoRuntime(): VirtualMachineBuilder&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ useTeaVMRuntime(): VirtualMachineBuilder&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ addImport(String, Function&amp;lt;JsonObject, JsonObject&amp;gt;&amp;gt;): VirtualMachineBuilder&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ build(): VirtualMachine&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="750" y="30" width="440" height="195" as="geometry"/>
+                </mxCell>
+                <mxCell id="sxHCqdWgwuU_68WpSeui-58" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;span style=&quot;font-weight: 700&quot;&gt;VirtualMachine&lt;/span&gt;&lt;br&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;u&gt;+ Builder(): VirtualMachineBuilder&lt;br&gt;&lt;/u&gt;&lt;br&gt;+ getStdout(): String&lt;br&gt;+ loadExports()&lt;br&gt;&lt;br&gt;+ start()&lt;br&gt;+ call(String, Strings...)&lt;br&gt;&lt;br&gt;+ construct()&lt;br&gt;&lt;br&gt;+ inputSetLength(Integer)&lt;br&gt;+ inputSet(Integer, Character)&lt;br&gt;&lt;br&gt;+ open()&lt;br&gt;+ ignite()&lt;br&gt;+ close()&lt;br&gt;&lt;br&gt;+ outputGetLength(): Integer&lt;br&gt;+ outputGet(Integer): Character&lt;br&gt;&lt;br&gt;+ deconstruct()&lt;br&gt;&lt;br&gt;+ run(JsonObject): JsonObject&lt;br&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="265" y="-65" width="190" height="380" as="geometry"/>
+                </mxCell>
+                <mxCell id="53" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="6" target="sxHCqdWgwuU_68WpSeui-58">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="-130" y="500" as="sourcePoint"/>
+                        <mxPoint x="30" y="500" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="54" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="11" target="sxHCqdWgwuU_68WpSeui-55">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="810" y="505" as="sourcePoint"/>
+                        <mxPoint x="970" y="505" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="62" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="sxHCqdWgwuU_68WpSeui-58" target="10">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="620" y="-110" as="sourcePoint"/>
+                        <mxPoint x="780" y="-110" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="63" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="sxHCqdWgwuU_68WpSeui-58" target="sxHCqdWgwuU_68WpSeui-55">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="730" y="-40" as="sourcePoint"/>
+                        <mxPoint x="890" y="-40" as="targetPoint"/>
+                    </mxGeometry>
                 </mxCell>
                 <mxCell id="15" value="TransceiverLibP2P" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="60" y="1190" width="740" height="220" as="geometry"/>
+                    <mxGeometry x="50" y="1110" width="740" height="220" as="geometry"/>
                 </mxCell>
                 <mxCell id="16" value="- swarmMultiAddresses: Collection&lt;String&gt;&#10;&#10;- prefix: String&#10;- secretKey: String&#10;&#10;- node: JsonObject&#10;&#10;- onDiscoverPeer: Consumer&lt;JsonObject&gt;&#10;- onConnectPeer: Consumer&lt;JsonObject&gt;&#10;- onDisconnectPeer: Consumer&lt;JsonObject&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="15" vertex="1">
                     <mxGeometry y="26" width="740" height="154" as="geometry"/>
@@ -97,160 +235,22 @@
                 <mxCell id="18" value="- constructor(Collection&amp;lt;String&amp;gt;, String, String, JsonObject, Consumer&amp;lt;JsonObject&amp;gt;, Consumer&amp;lt;JsonObject&amp;gt;, Consumer&amp;lt;JsonObject&amp;gt;)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="15" vertex="1">
                     <mxGeometry y="188" width="740" height="32" as="geometry"/>
                 </mxCell>
-                <mxCell id="53" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="6" target="sxHCqdWgwuU_68WpSeui-58">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="-120" y="770" as="sourcePoint"/>
-                        <mxPoint x="40" y="770" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="54" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="11" target="sxHCqdWgwuU_68WpSeui-55">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="820" y="775" as="sourcePoint"/>
-                        <mxPoint x="980" y="775" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="55" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="15" target="sxHCqdWgwuU_68WpSeui-53">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="-320" y="1310" as="sourcePoint"/>
-                        <mxPoint x="-160" y="1310" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="56" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="19" target="52">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="1090" y="1460" as="sourcePoint"/>
-                        <mxPoint x="1250" y="1460" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="57" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="fKdP36l-M5kC6lyTv1g1-70" target="sxHCqdWgwuU_68WpSeui-58">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="-170" y="820" as="sourcePoint"/>
-                        <mxPoint x="-60" y="430" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="58" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="fKdP36l-M5kC6lyTv1g1-70" target="sxHCqdWgwuU_68WpSeui-53">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="-160" y="880" as="sourcePoint"/>
-                        <mxPoint x="70" y="1030" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="59" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="fKdP36l-M5kC6lyTv1g1-70" target="fKdP36l-M5kC6lyTv1g1-52">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="-160" y="960" as="sourcePoint"/>
-                        <mxPoint x="-80" y="1070" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="60" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="fKdP36l-M5kC6lyTv1g1-72" target="fKdP36l-M5kC6lyTv1g1-52">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="-150" y="1390" as="sourcePoint"/>
-                        <mxPoint x="-380" y="1610" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="61" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="fKdP36l-M5kC6lyTv1g1-72" target="sxHCqdWgwuU_68WpSeui-53">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="-180" y="1320" as="sourcePoint"/>
-                        <mxPoint x="230" y="1070" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="fKdP36l-M5kC6lyTv1g1-53" value="DiskIPFS" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="195" y="1780" width="310" height="150" as="geometry"/>
-                </mxCell>
-                <mxCell id="fKdP36l-M5kC6lyTv1g1-54" value="- swarmMultiAddresses: Collection&lt;String&gt;&#10;&#10;- node: JsonObject&#10;&#10;- repo: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="fKdP36l-M5kC6lyTv1g1-53" vertex="1">
-                    <mxGeometry y="26" width="310" height="84" as="geometry"/>
-                </mxCell>
-                <mxCell id="fKdP36l-M5kC6lyTv1g1-55" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="fKdP36l-M5kC6lyTv1g1-53" vertex="1">
-                    <mxGeometry y="110" width="310" height="8" as="geometry"/>
-                </mxCell>
-                <mxCell id="fKdP36l-M5kC6lyTv1g1-56" value="- constructor(Collection&lt;String&gt;, String, JsonObject)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="fKdP36l-M5kC6lyTv1g1-53" vertex="1">
-                    <mxGeometry y="118" width="310" height="32" as="geometry"/>
-                </mxCell>
-                <mxCell id="6" value="VirtualMachineWebAssembly" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-                    <mxGeometry x="60" y="630" width="620" height="230" as="geometry"/>
-                </mxCell>
-                <mxCell id="7" value="- binary: Collection&lt;Character&gt;&gt;&#10;&#10;- wasmFs: JsonObject&#10;- wasi: JsonObject&#10;- vm: JsonObject&#10;&#10;- vmType: VirtualMachineType&#10;- goRuntime: JsonObject&#10;- teaVMImports JsonObject&#10;&#10;- imports: Map&lt;String, Function&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="6" vertex="1">
-                    <mxGeometry y="26" width="620" height="164" as="geometry"/>
-                </mxCell>
-                <mxCell id="8" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="6" vertex="1">
-                    <mxGeometry y="190" width="620" height="8" as="geometry"/>
-                </mxCell>
-                <mxCell id="9" value="- constructor(Collection&amp;lt;Character&amp;gt;&amp;gt;, VirtualMachineType, Map&amp;lt;String, Function&amp;lt;JsonObject, JsonObject&amp;gt;&amp;gt;)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="6" vertex="1">
-                    <mxGeometry y="198" width="620" height="32" as="geometry"/>
-                </mxCell>
-                <mxCell id="62" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="sxHCqdWgwuU_68WpSeui-58" target="10">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="630" y="160" as="sourcePoint"/>
-                        <mxPoint x="790" y="160" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="63" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="sxHCqdWgwuU_68WpSeui-58" target="sxHCqdWgwuU_68WpSeui-55">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="740" y="230" as="sourcePoint"/>
-                        <mxPoint x="900" y="230" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="64" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="fKdP36l-M5kC6lyTv1g1-52" target="fKdP36l-M5kC6lyTv1g1-58">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="660" y="1540" as="sourcePoint"/>
-                        <mxPoint x="820" y="1540" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="11" value="VirtualMachineBuilderWebAssembly" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-                    <mxGeometry x="760" y="540" width="440" height="110" as="geometry"/>
-                </mxCell>
-                <mxCell id="12" value="- binary: Collection&lt;Character&gt;&gt;&#10;&#10;- vmType: VirtualMachineType&#10;&#10;- imports: Map&lt;String, Function&lt;JsonObject, JsonObject&gt;&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="11" vertex="1">
-                    <mxGeometry y="26" width="440" height="84" as="geometry"/>
-                </mxCell>
-                <mxCell id="fKdP36l-M5kC6lyTv1g1-59" value="DiskBuilderIPFS" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="690" y="1790" width="300" height="80" as="geometry"/>
-                </mxCell>
-                <mxCell id="fKdP36l-M5kC6lyTv1g1-60" value="- swarmMultiAddresses: Collection&lt;String&gt;&#10;&#10;- repo: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="fKdP36l-M5kC6lyTv1g1-59" vertex="1">
-                    <mxGeometry y="26" width="300" height="54" as="geometry"/>
-                </mxCell>
-                <mxCell id="65" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="sxHCqdWgwuU_68WpSeui-53" target="52">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="570" y="950" as="sourcePoint"/>
-                        <mxPoint x="730" y="950" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
                 <mxCell id="19" value="TransceiverBuilderLibP2P" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="920" y="1210" width="413" height="150" as="geometry">
+                    <mxGeometry x="910" y="1130" width="413" height="150" as="geometry">
                         <mxRectangle x="40" y="1250" width="140" height="26" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="20" value="- swarmMultiAddresses: Collection&lt;String&gt;&#10;&#10;- prefix: String&#10;- secretKey: String&#10;&#10;- onDiscoverPeer: Consumer&lt;JsonObject&gt;&#10;- onConnectPeer: Consumer&lt;JsonObject&gt;&#10;- onDisconnectPeer: Consumer&lt;JsonObject&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="19" vertex="1">
                     <mxGeometry y="26" width="413" height="124" as="geometry"/>
                 </mxCell>
-                <mxCell id="66" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="52" target="45">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="1020" y="920" as="sourcePoint"/>
-                        <mxPoint x="1180" y="920" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="67" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="52" target="40">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="1090" y="770" as="sourcePoint"/>
-                        <mxPoint x="1250" y="770" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="68" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="45" target="47">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="1600" y="755" as="sourcePoint"/>
-                        <mxPoint x="1760" y="755" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="69" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="40" target="42">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="1820" y="1515" as="sourcePoint"/>
-                        <mxPoint x="1980" y="1515" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
                 <mxCell id="28" value="PublishSubscribeConnectionBuilderLibP2P" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="1940" y="1010" width="340" height="120" as="geometry"/>
+                    <mxGeometry x="1930" y="930" width="340" height="120" as="geometry"/>
                 </mxCell>
                 <mxCell id="29" value="- prefix: String&#10;- suffix: String&#10;&#10;- secretKey: String&#10;&#10;- node: JsonObject" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="28" vertex="1">
                     <mxGeometry y="26" width="340" height="94" as="geometry"/>
                 </mxCell>
                 <mxCell id="23" value="PublishSubscribeConnectionLibP2P" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="1480" y="965" width="310" height="150" as="geometry"/>
+                    <mxGeometry x="1470" y="885" width="310" height="150" as="geometry"/>
                 </mxCell>
                 <mxCell id="24" value="- channelName: String&#10;&#10;- secretKey: String&#10;&#10;- node: JsonObject" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="23" vertex="1">
                     <mxGeometry y="26" width="310" height="84" as="geometry"/>
@@ -262,7 +262,7 @@
                     <mxGeometry y="118" width="310" height="32" as="geometry"/>
                 </mxCell>
                 <mxCell id="32" value="DirectConnectionLibP2P" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="1480" y="1355" width="300" height="120" as="geometry"/>
+                    <mxGeometry x="1470" y="1275" width="300" height="120" as="geometry"/>
                 </mxCell>
                 <mxCell id="33" value="- secretKey: String&#10;&#10;- node: JsonObject" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="32" vertex="1">
                     <mxGeometry y="26" width="300" height="54" as="geometry"/>
@@ -274,22 +274,46 @@
                     <mxGeometry y="88" width="300" height="32" as="geometry"/>
                 </mxCell>
                 <mxCell id="36" value="DirectConnectionBuilderLibP2P" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="1940" y="1385" width="300" height="80" as="geometry"/>
+                    <mxGeometry x="1930" y="1305" width="300" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="37" value="- secreyKey: String&#10;&#10;- node: JsonObject" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="36" vertex="1">
                     <mxGeometry y="26" width="300" height="54" as="geometry"/>
                 </mxCell>
-                <mxCell id="70" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="fKdP36l-M5kC6lyTv1g1-71" target="fKdP36l-M5kC6lyTv1g1-72">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="-610" y="1340" as="sourcePoint"/>
-                        <mxPoint x="-1120" y="1300" as="targetPoint"/>
-                    </mxGeometry>
+                <mxCell id="fKdP36l-M5kC6lyTv1g1-53" value="DiskIPFS" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="105" y="1789" width="310" height="150" as="geometry"/>
                 </mxCell>
-                <mxCell id="71" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="fKdP36l-M5kC6lyTv1g1-69" target="fKdP36l-M5kC6lyTv1g1-70">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="-690" y="1050" as="sourcePoint"/>
-                        <mxPoint x="-530" y="1050" as="targetPoint"/>
-                    </mxGeometry>
+                <mxCell id="fKdP36l-M5kC6lyTv1g1-54" value="- swarmMultiAddresses: Collection&lt;String&gt;&#10;&#10;- node: JsonObject&#10;&#10;- repo: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="fKdP36l-M5kC6lyTv1g1-53" vertex="1">
+                    <mxGeometry y="26" width="310" height="84" as="geometry"/>
+                </mxCell>
+                <mxCell id="fKdP36l-M5kC6lyTv1g1-55" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="fKdP36l-M5kC6lyTv1g1-53" vertex="1">
+                    <mxGeometry y="110" width="310" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="fKdP36l-M5kC6lyTv1g1-56" value="- constructor(Collection&lt;String&gt;, String, JsonObject)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="fKdP36l-M5kC6lyTv1g1-53" vertex="1">
+                    <mxGeometry y="118" width="310" height="32" as="geometry"/>
+                </mxCell>
+                <mxCell id="fKdP36l-M5kC6lyTv1g1-59" value="DiskBuilderIPFS" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="600" y="1799" width="300" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="fKdP36l-M5kC6lyTv1g1-60" value="- swarmMultiAddresses: Collection&lt;String&gt;&#10;&#10;- repo: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="fKdP36l-M5kC6lyTv1g1-59" vertex="1">
+                    <mxGeometry y="26" width="300" height="54" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="VirtualMachineWebAssembly" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="50" y="360" width="620" height="230" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="- binary: Collection&lt;Character&gt;&gt;&#10;&#10;- wasmFs: JsonObject&#10;- wasi: JsonObject&#10;- vm: JsonObject&#10;&#10;- vmType: VirtualMachineType&#10;- goRuntime: JsonObject&#10;- teaVMImports JsonObject&#10;&#10;- imports: Map&lt;String, Function&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="6" vertex="1">
+                    <mxGeometry y="26" width="620" height="164" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="6" vertex="1">
+                    <mxGeometry y="190" width="620" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="- constructor(Collection&amp;lt;Character&amp;gt;&amp;gt;, VirtualMachineType, Map&amp;lt;String, Function&amp;lt;JsonObject, JsonObject&amp;gt;&amp;gt;)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="6" vertex="1">
+                    <mxGeometry y="198" width="620" height="32" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="VirtualMachineBuilderWebAssembly" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="750" y="270" width="440" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="- binary: Collection&lt;Character&gt;&gt;&#10;&#10;- vmType: VirtualMachineType&#10;&#10;- imports: Map&lt;String, Function&lt;JsonObject, JsonObject&gt;&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="11" vertex="1">
+                    <mxGeometry y="26" width="440" height="84" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
