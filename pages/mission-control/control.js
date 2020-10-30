@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Ion from "../../components/ion";
 var QRCode = require("qrcode.react");
 
 function Control() {
@@ -40,7 +41,7 @@ function Control() {
         <QRCode value={qrCode} />
         <br></br>
         <QRCodeCaption href="https://google.com">https://nebulark.spark/{nebulaID}</QRCodeCaption>
-        
+        <Ion ionName="John's Phone" ionStatus={true} />
       </Body>
     </>
   );
