@@ -25,6 +25,18 @@ function Control() {
     font-size: 12px;
   `;
 
+  const Category = styled.h1`
+    font-size: 20px;
+    text-align: right;
+  `;
+
+  const Button = styled.button`
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 2px;
+  `
+
   // This data will be fetched from an API later on
   const nebulaID = "woody-wood-wood";
   const qrCode =
@@ -32,16 +44,24 @@ function Control() {
   const ions = "";
   const ionStatus = "";
 
+  function handleClick() {
+    console.error("Executing spark");
+  }
+
   return (
     <>
       <Body>
-        <Header> nebulark / {nebulaID} </Header>
+        <Header> nebulark / {nebulaID}</Header>
+        <Category>Setup</Category>
         <Divider />
 
         <QRCode value={qrCode} />
         <br></br>
         <QRCodeCaption href="https://google.com">https://nebulark.spark/{nebulaID}</QRCodeCaption>
         <Ion ionName="John's Phone" ionStatus={true} />
+        <Button onClick={handleClick}>
+          Execute
+        </Button>
       </Body>
     </>
   );
