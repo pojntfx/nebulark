@@ -5,12 +5,21 @@ import IPFS from "ipfs";
 import QRCode from "qrcode.react";
 
 function Control() {
+  const Header = styled.div`
+  `;
+
+  const LeftComponent = styled.div`
+  `;
+
+  const RightComponent = styled.div`
+  `;
+
   const Body = styled.body`
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
     color: #404240;
   `;
 
-  const Header = styled.h1`
+  const Nebula = styled.h1`
     font-size: 20px;
   `;
 
@@ -73,34 +82,40 @@ function Control() {
     });
 
     fileHash = file.cid.toString();
-    console.log(fileHash)
-
-    node.stop();
+    console.log("https://ipfs.io/ipfs/" + fileHash);
+    
+    //node.stop();
   }
 
   return (
     <>
       <Body>
-        <Header> nebulark / {nebulaID}</Header>
-        <Category>Setup</Category>
-        <Divider />
+        <Header>
+          <Nebula> nebulark / {nebulaID}</Nebula>
+          <Category>Setup</Category>
+          <Divider />
+        </Header>
 
-        <QRCode value={qrCode} />
-        <br></br>
-        <QRCodeCaption href="https://google.com">
-          https://nebulark.spark/{nebulaID}
-        </QRCodeCaption>
-        <Ion ionName="John's Phone" ionStatus={true} />
+        <LeftComponent>
+          <QRCode value={qrCode} />
+          <br></br>
+          <QRCodeCaption href="https://google.com">
+            https://nebulark.spark/{nebulaID}
+          </QRCodeCaption>
+          <Ion ionName="John's Phone" ionStatus={true} />
+        </LeftComponent>
 
-        <Button onClick={handleClick}>Execute</Button>
-        <h1>Your Image</h1>
-        <p>This image is stored on IPFS & The Etherium Blockchain!</p>
-        <img src="" alt="" />
-        <h2>Upload Image</h2>
-        <form onSubmit={onSubmit}>
-          <input type="file" onChange={captureFile} />
-          <input type="submit" />
-        </form>
+        <RightComponent>
+          <Button onClick={handleClick}>Execute</Button>
+          <h1>Your Image</h1>
+          <p>This image is stored on IPFS & The Etherium Blockchain!</p>
+          <img src="" alt="" />
+          <h2>Upload Image</h2>
+          <form onSubmit={onSubmit}>
+            <input type="file" onChange={captureFile} />
+            <input type="submit" />
+          </form>
+        </RightComponent>
       </Body>
     </>
   );
