@@ -3,10 +3,9 @@ import styled from "styled-components";
 import Ion from "../../components/ion";
 import IPFS from "ipfs";
 import QRCode from "qrcode.react";
+import Header from "../../components/header"
 
 function Control() {
-  const Header = styled.div`
-  `;
 
   const LeftComponent = styled.div`
   `;
@@ -90,11 +89,7 @@ function Control() {
   return (
     <>
       <Body>
-        <Header>
-          <Nebula> nebulark / {nebulaID}</Nebula>
-          <Category>Setup</Category>
-          <Divider />
-        </Header>
+        <Header nebulaID={nebulaID} />
 
         <LeftComponent>
           <QRCode value={qrCode} />
