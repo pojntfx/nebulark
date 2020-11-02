@@ -14,7 +14,6 @@ var fileHash = null;
 
 function SparkDashboard() {
   const [string, setString] = React.useState("");
-  const [input, setInput] = React.useState("");
 
   function onSubmitJSON(event) {
     event.preventDefault();
@@ -37,8 +36,6 @@ function SparkDashboard() {
     reader.onloadend = () => {
       uint8View = new Uint8Array(reader.result);
     };
-
-    
   }
 
   function captureFileJSON(event) {
@@ -49,10 +46,8 @@ function SparkDashboard() {
 
     reader.readAsArrayBuffer(file);
     reader.onloadend = () => {
-      uint8View = new Uint8Array(reader.result);
+      setString(new TextDecoder().decode(new Uint8Array(reader.result)));
     };
-
-    onSubmitJSON(event)
   }
 
   async function onSubmit(event) {
@@ -66,7 +61,7 @@ function SparkDashboard() {
     fileHash = file.cid.toString();
     console.log("https://ipfs.io/ipfs/" + fileHash);
   }
-  var test = "Hello"
+  var test = "Hello";
   return (
     <>
       <Button onClick={handleClick}>Execute</Button>
@@ -83,8 +78,12 @@ function SparkDashboard() {
         <input type="text" value={string} onChange={(event) => setString(event.target.value)}></input>
       </form> */}
 
-      <input type="file" onChange={captureFileJSON} />
-      <input type="text" value={string} onChange={(event) => setString(event.target.value)}></input>
+      <input type="file" onChange={(event) => captureFileJSON(event)}></input>
+      <input
+        type="text"
+        value={string}
+        onChange={(event) => setString(event.target.value)}
+      ></input>
     </>
   );
 }
