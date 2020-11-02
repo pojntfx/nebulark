@@ -1,14 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import Ion from "../../components/ion";
 import IPFS from "ipfs";
-import QRCode from "qrcode.react";
+import IonDashboard from "../../components/ionDashboard"
 import Header from "../../components/header"
 
 function Control() {
-
-  const LeftComponent = styled.div`
-  `;
 
   const RightComponent = styled.div`
   `;
@@ -47,8 +43,7 @@ function Control() {
   `;
 
   const nebulaID = "woody-wood-wood";
-  const qrCode =
-    "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstleyVEVO";
+  
   const ions = "";
   const ionStatus = "";
 
@@ -91,14 +86,7 @@ function Control() {
       <Body>
         <Header nebulaID={nebulaID} />
 
-        <LeftComponent>
-          <QRCode value={qrCode} />
-          <br></br>
-          <QRCodeCaption href="https://google.com">
-            https://nebulark.spark/{nebulaID}
-          </QRCodeCaption>
-          <Ion ionName="John's Phone" ionStatus={true} />
-        </LeftComponent>
+        <IonDashboard nebulaID={nebulaID} />
 
         <RightComponent>
           <Button onClick={handleClick}>Execute</Button>
