@@ -28,12 +28,12 @@ function Ion({ ionStatus, ionName }) {
   return (
     <>
       <div className="main">
-          <UnorderedList>
-            <li>
-              <StatusCircle />
-            </li>
-            <li>{ionName}</li>
-          </UnorderedList>
+        <UnorderedList>
+          <li>
+            <StatusCircle />
+          </li>
+          <li>{ionName}</li>
+        </UnorderedList>
       </div>
     </>
   );

@@ -4,12 +4,12 @@ import Ion from "./ion";
 import QRCode from "qrcode.react";
 
 const QRCodeCaption = styled.a`
-    color: #404240;
-    font-size: 12px;
-  `;
+  color: #404240;
+  font-size: 12px;
+`;
 
-  const qrCode =
-    "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstleyVEVO";
+const qrCode =
+  "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstleyVEVO";
 
 function IonDashboard({ nebulaID }) {
   return (
