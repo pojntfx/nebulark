@@ -12,37 +12,61 @@ const Button = styled.button`
 var uint8View = [];
 var fileHash = null;
 
-function handleClick() {
-  alert("Executing spark");
-}
-
-function captureFile(event) {
-  event.preventDefault();
-
-  const file = event.target.files[0];
-  const reader = new window.FileReader();
-
-  reader.readAsArrayBuffer(file);
-  reader.onloadend = () => {
-    uint8View = new Uint8Array(reader.result);
-  };
-}
-
-async function onSubmit(event) {
-  event.preventDefault();
-
-  const node = await IPFS.create();
-  const file = await node.add({
-    path: "hello.txt",
-    content: uint8View,
-  });
-  fileHash = file.cid.toString();
-  console.log("https://ipfs.io/ipfs/" + fileHash);
-
-  //node.stop();
-}
-
 function SparkDashboard() {
+  const [string, setString] = React.useState("");
+  const [input, setInput] = React.useState("");
+
+  function onSubmitJSON(event) {
+    event.preventDefault();
+    setString(new TextDecoder("utf-8").decode(uint8View));
+    console.log(string);
+    console.log("DONE");
+  }
+
+  function handleClick() {
+    alert("Executing spark");
+  }
+
+  function captureFile(event) {
+    event.preventDefault();
+
+    const file = event.target.files[0];
+    const reader = new window.FileReader();
+
+    reader.readAsArrayBuffer(file);
+    reader.onloadend = () => {
+      uint8View = new Uint8Array(reader.result);
+    };
+
+    
+  }
+
+  function captureFileJSON(event) {
+    event.preventDefault();
+
+    const file = event.target.files[0];
+    const reader = new window.FileReader();
+
+    reader.readAsArrayBuffer(file);
+    reader.onloadend = () => {
+      uint8View = new Uint8Array(reader.result);
+    };
+
+    onSubmitJSON(event)
+  }
+
+  async function onSubmit(event) {
+    event.preventDefault();
+
+    const node = await IPFS.create();
+    const file = await node.add({
+      path: "hello.txt",
+      content: uint8View,
+    });
+    fileHash = file.cid.toString();
+    console.log("https://ipfs.io/ipfs/" + fileHash);
+  }
+  var test = "Hello"
   return (
     <>
       <Button onClick={handleClick}>Execute</Button>
@@ -52,6 +76,15 @@ function SparkDashboard() {
         <input type="file" onChange={captureFile} />
         <input type="submit" />
       </form>
+
+      {/* <form onSubmit={onSubmitJSON}>
+        <input type="file" onChange={captureFile} />
+        <input type="submit" />
+        <input type="text" value={string} onChange={(event) => setString(event.target.value)}></input>
+      </form> */}
+
+      <input type="file" onChange={captureFileJSON} />
+      <input type="text" value={string} onChange={(event) => setString(event.target.value)}></input>
     </>
   );
 }
