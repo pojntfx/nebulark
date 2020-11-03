@@ -9,6 +9,13 @@ const Button = styled.button`
   border-radius: 2px;
 `;
 
+const TextArea = styled.textarea`
+  width: 200px;
+  height: 50px;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+`;
+
 function SparkDashboard() {
   const [string, setString] = React.useState("");
   const [readerResult, setReaderResult] = React.useState();
@@ -29,6 +36,9 @@ function SparkDashboard() {
       content: new Uint8Array(new TextEncoder().encode(string)),
     });
     fileHashJSON = fileJSON.cid.toString();
+
+    console.log(fileHash);
+    console.log(fileHashJSON);
   }
 
   async function captureFile(event) {
@@ -60,11 +70,12 @@ function SparkDashboard() {
       <input type="file" onChange={(event) => captureFile(event)}></input>
       <br />
       <input type="file" onChange={(event) => captureFileJSON(event)}></input>
-      <input
+      <br/>
+      <TextArea
         type="text"
         value={string}
         onChange={(event) => setString(event.target.value)}
-      ></input>
+      ></TextArea>
       <br />
 
       <Button onClick={handleExecute}>Execute</Button>
