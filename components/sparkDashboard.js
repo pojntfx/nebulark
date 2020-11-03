@@ -12,10 +12,21 @@ const Button = styled.button`
 var fileHash = null;
 
 function SparkDashboard() {
-  const [string, setString] = React.useState("");
 
-  function handleClick() {
-    alert("Executing spark");
+  const [string, setString] = React.useState("");
+  const [readerResult, setReaderResult] = React.useState();
+
+  async function handleExecute() {
+    
+    console.log(readerResult);
+    const node = await IPFS.create();
+    const file = await node.add({
+      path: "hello.txt",
+      content: new Uint8Array(readerResult),
+    });
+    fileHash = file.cid.toString();
+    console.log("https://ipfs.io/ipfs/" + fileHash);
+
   }
 
   async function captureFile(event) {
@@ -26,13 +37,14 @@ function SparkDashboard() {
 
     reader.readAsArrayBuffer(file);
     reader.onloadend = async () => {
-      const node = await IPFS.create();
-      const file = await node.add({
-        path: "hello.txt",
-        content: new Uint8Array(reader.result),
-      });
-      fileHash = file.cid.toString();
-      console.log("https://ipfs.io/ipfs/" + fileHash);
+      setReaderResult(reader.result);
+      // const node = await IPFS.create();
+      // const file = await node.add({
+      //   path: "hello.txt",
+      //   content: new Uint8Array(reader.result),
+      // });
+      // fileHash = file.cid.toString();
+      // console.log("https://ipfs.io/ipfs/" + fileHash);
     };
   }
 
@@ -60,7 +72,7 @@ function SparkDashboard() {
       ></input>
       <br />
 
-      <Button onClick={handleClick}>Execute</Button>
+      <Button onClick={handleExecute}>Execute</Button>
     </>
   );
 }
