@@ -9,33 +9,26 @@ const Button = styled.button`
   border-radius: 2px;
 `;
 
-var fileHash = null;
-var fileHashJSON = null;
-
 function SparkDashboard() {
-
   const [string, setString] = React.useState("");
   const [readerResult, setReaderResult] = React.useState();
 
+  var fileHash = null;
+  var fileHashJSON = null;
+
   async function handleExecute() {
-    
-    console.log(readerResult);
     const node = await IPFS.create();
     const file = await node.add({
       path: "hello.txt",
       content: new Uint8Array(readerResult),
     });
     fileHash = file.cid.toString();
-    console.log("https://ipfs.io/ipfs/" + fileHash);
 
-    console.log(new TextEncoder().encode(string))
     const fileJSON = await node.add({
       path: "hello.txt",
       content: new Uint8Array(new TextEncoder().encode(string)),
     });
     fileHashJSON = fileJSON.cid.toString();
-    console.log("https://ipfs.io/ipfs/" + fileHashJSON);
-
   }
 
   async function captureFile(event) {
@@ -47,13 +40,6 @@ function SparkDashboard() {
     reader.readAsArrayBuffer(file);
     reader.onloadend = async () => {
       setReaderResult(reader.result);
-      // const node = await IPFS.create();
-      // const file = await node.add({
-      //   path: "hello.txt",
-      //   content: new Uint8Array(reader.result),
-      // });
-      // fileHash = file.cid.toString();
-      // console.log("https://ipfs.io/ipfs/" + fileHash);
     };
   }
 
