@@ -10,6 +10,7 @@ const Button = styled.button`
 `;
 
 var fileHash = null;
+var fileHashJSON = null;
 
 function SparkDashboard() {
 
@@ -26,6 +27,14 @@ function SparkDashboard() {
     });
     fileHash = file.cid.toString();
     console.log("https://ipfs.io/ipfs/" + fileHash);
+
+    console.log(new TextEncoder().encode(string))
+    const fileJSON = await node.add({
+      path: "hello.txt",
+      content: new Uint8Array(new TextEncoder().encode(string)),
+    });
+    fileHashJSON = fileJSON.cid.toString();
+    console.log("https://ipfs.io/ipfs/" + fileHashJSON);
 
   }
 
