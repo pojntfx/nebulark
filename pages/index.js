@@ -21,8 +21,8 @@ function Home() {
             <Link href="/mission-control/control">Mission Control</Link>
           </li>
           <li>
-            <Link href="/spark-dashboard/sparkDashboard">Spark Dashboard</Link>
-          </li>
+            <Link href="/spark-dashboard/dashboard">Spark Dashboard</Link>
+          </li> 
         </ul>
       </nav>
     </>
