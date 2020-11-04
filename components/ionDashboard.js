@@ -8,18 +8,32 @@ const QRCodeCaption = styled.a`
   font-size: 12px;
 `;
 
+const QRCodeStyled = styled(QRCode)`
+  margin-top: 25px;
+  
+`;
+
+const Div = styled.div`
+  position: relative;
+  margin-left: 40px;
+`;
+
 const qrCode =
   "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstleyVEVO";
 
-function IonDashboard({ nebulaID }) {
+function IonDashboard({ nebulaID, ...otherProps }) {
   return (
     <>
-      <QRCode value={qrCode} />
-      <br></br>
-      <QRCodeCaption href="https://google.com">
-        https://nebulark.spark/{nebulaID}
-      </QRCodeCaption>
-      <Ion ionName="John's Phone" ionStatus={true} />
+      <div {...otherProps}>
+        <Div>
+          <QRCodeStyled size={190} value={qrCode} />
+          <br></br>
+          <QRCodeCaption href="https://google.com">
+            https://nebulark.spark/{nebulaID}
+          </QRCodeCaption>
+          <Ion ionName="John's Phone" ionStatus={true} />
+        </Div>
+      </div>
     </>
   );
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-function Ion({ ionStatus, ionName }) {
+function Ion({ ionStatus, ionName, ...otherProps }) {
   // We get following data from the parent component
   var statusColor = "";
 
@@ -27,13 +27,15 @@ function Ion({ ionStatus, ionName }) {
 
   return (
     <>
-      <div className="main">
-        <UnorderedList>
-          <li>
-            <StatusCircle />
-          </li>
-          <li>{ionName}</li>
-        </UnorderedList>
+      <div {...otherProps}>
+        <div className="main">
+          <UnorderedList>
+            <li>
+              <StatusCircle />
+            </li>
+            <li>{ionName}</li>
+          </UnorderedList>
+        </div>
       </div>
     </>
   );
