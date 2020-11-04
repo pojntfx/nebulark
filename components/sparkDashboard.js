@@ -3,43 +3,46 @@ import styled from "styled-components";
 import IPFS from "ipfs";
 
 const Button = styled.button`
-  background-color: green;
-  color: white;
-  border: none;
-  border-radius: 2px;
-  height: 30px;
-  width: 80px;
-  margin-left: -434px;
-  margin-top: 12px;
-`;
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 2px;
+    height: 30px;
+    width: 80px;
+    margin-left: 346px;
+    margin-top: 12px;
+  `;
 
-const TextArea = styled.textarea`
-  width: 420px;
-  height: 200px;
-  margin-left: -780px;
-`;
+  const TextArea = styled.textarea`
+    width: 420px;
+    height: 200px;
+    margin-left: 0px;
+    resize: none;
+  `;
 
-const InputFile = styled.input`
-  margin: -100px;
-  margin-left: -780px;
-`;
+  const InputFile = styled.input`
+    margin: -100px;
+    margin-left: 0px;
+  `;
 
-const InputJSON = styled.input`
-  margin-left: -780px;
-  margin-bottom: 30px;
-`;
+  const InputJSON = styled.input`
+    margin-left: 0px;
+    margin-bottom: 30px;
+  `;
 
-const H1 = styled.h1`
-  margin-left: -780px;
-  margin-top: 50px;
-  margin-bottom: 30px;
-`;
+  const H1 = styled.h1`
+    margin-left: 0px;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    font-size: 26px;
+  `;
 
-const Div = styled.div`
-  margin-top: -125px;
-`;
-
+  const Div = styled.div`
+    margin-top: -125px;
+  `;
+  
 function SparkDashboard({ ...otherProps }) {
+
   const [string, setString] = React.useState("");
   const [readerResult, setReaderResult] = React.useState();
 
@@ -79,12 +82,12 @@ function SparkDashboard({ ...otherProps }) {
   function captureFileJSON(event) {
     event.preventDefault();
 
-    const file = event.target.files[0];
-    const reader = new window.FileReader();
+    const fileJSON = event.target.files[0];
+    const readerJSON = new window.FileReader();
 
-    reader.readAsArrayBuffer(file);
-    reader.onloadend = () => {
-      setString(new TextDecoder().decode(new Uint8Array(reader.result)));
+    readerJSON.readAsArrayBuffer(fileJSON);
+    readerJSON.onloadend = () => {
+      setString(new TextDecoder().decode(new Uint8Array(readerJSON.result)));
     };
   }
 
