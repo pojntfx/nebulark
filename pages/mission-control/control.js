@@ -30,7 +30,7 @@ const StyledVerticalLine = styled.span`
   border-left: 5px solid #404240;
   height: 500px;
   border-radius: 2px;
-  margin-left: 300px;
+  margin-left: 285px;
   margin-top: -240px;
 
   @media (max-width: 768px) {
