@@ -3,6 +3,7 @@ import styled from "styled-components";
 import IonDashboard from "../../components/ionDashboard";
 import Header from "../../components/header";
 import SparkDashboard from "../../components/sparkDashboard";
+import { Helmet } from "react-helmet";
 
 const Body = styled.body`
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -15,8 +16,13 @@ const StyledHeader = styled(Header)``;
 const StyledIonDashboard = styled(IonDashboard)``;
 
 const StyledSparkDashboard = styled(SparkDashboard)`
-  float: right;
-  margin-top: -10em;
+  margin-left: 375px;
+  margin-top: -35em;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    margin-top: 12em;
+  }
 `;
 
 const StyledVerticalLine = styled.span`
@@ -26,14 +32,18 @@ const StyledVerticalLine = styled.span`
   border-radius: 2px;
   margin-left: 300px;
   margin-top: -230px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const Div = styled.div`
-  max-width: 1150px;
-  margin: 50px 200px 50px auto;
-  padding: 0 50px 0px 0;
+  max-width: 768px;
+  margin: 50px auto;
+  padding: 0 100px 0px 0;
   position: relative;
-  min-width: 1150px;
+  min-width: 768px;
 `;
 
 function Control() {
@@ -41,6 +51,14 @@ function Control() {
 
   return (
     <>
+      <Helmet>
+        <meta
+          name="viewport"
+          content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+        />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="HandheldFriendly" content="true" />
+      </Helmet>
       <Body>
         <StyledHeader nebulaID={nebulaID} />
 

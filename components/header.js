@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-function Header({ nebulaID, ...otherProps }) {
-  const Nebula = styled.h1`
+const Nebula = styled.h1`
     font-size: 20px;
   `;
 
@@ -17,7 +16,14 @@ function Header({ nebulaID, ...otherProps }) {
     font-size: 20px;
     text-align: right;
     margin-top: -1.8em;
+
+    @media (max-width: 420px) {
+      display: none;
+    }
   `;
+  
+function Header({ nebulaID, ...otherProps }) {
+  
   return (
     <div {...otherProps}>
       <Nebula> nebulark / {nebulaID}</Nebula>
