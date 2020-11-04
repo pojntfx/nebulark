@@ -38,9 +38,9 @@ const Button = styled.button`
   `;
 
   const Div = styled.div`
-    margin-top: -125px;
+    margin-top: -10px;
   `;
-  
+
 function SparkDashboard({ ...otherProps }) {
 
   const [string, setString] = React.useState("");

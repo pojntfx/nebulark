@@ -12,6 +12,11 @@ const QRCodeStyled = styled(QRCode)`
   margin-top: 25px;
 `;
 
+const StyledIon = styled(Ion)`
+  margin-top: 10px;
+`;
+
+
 const qrCode =
   "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstleyVEVO";
 
@@ -25,7 +30,7 @@ function IonDashboard({ nebulaID, ...otherProps }) {
           <QRCodeCaption href="https://google.com">
             https://nebulark.spark/{nebulaID}
           </QRCodeCaption>
-          <Ion ionName="John's Phone" ionStatus={true} />
+          <StyledIon ionName="John's Phone" ionStatus={true} />
         
       </div>
     </>
