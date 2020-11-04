@@ -3,46 +3,53 @@ import styled from "styled-components";
 import IPFS from "ipfs";
 
 const Button = styled.button`
-    background-color: green;
-    color: white;
-    border: none;
-    border-radius: 2px;
-    height: 30px;
-    width: 80px;
-    margin-left: 346px;
-    margin-top: 12px;
-  `;
+  background-color: green;
+  color: white;
+  border: none;
+  border-radius: 2px;
+  height: 30px;
+  width: 80px;
+  margin-left: 346px;
+  margin-top: 12px;
 
-  const TextArea = styled.textarea`
-    width: 420px;
-    height: 200px;
-    margin-left: 0px;
-    resize: none;
-  `;
+  @media (max-width: 360px) {
+    margin-left: 286px;
+  }
+`;
 
-  const InputFile = styled.input`
-    margin: -100px;
-    margin-left: 0px;
-  `;
+const TextArea = styled.textarea`
+  width: 420px;
+  height: 200px;
+  margin-left: 0px;
+  resize: none;
+  
+  @media (max-width: 360px) {
+    width: 360px;
+  }
+`;
 
-  const InputJSON = styled.input`
-    margin-left: 0px;
-    margin-bottom: 30px;
-  `;
+const InputFile = styled.input`
+  margin: -100px;
+  margin-left: 0px;
+`;
 
-  const H1 = styled.h1`
-    margin-left: 0px;
-    margin-top: 50px;
-    margin-bottom: 30px;
-    font-size: 26px;
-  `;
+const InputJSON = styled.input`
+  margin-left: 0px;
+  margin-bottom: 30px;
+`;
 
-  const Div = styled.div`
-    margin-top: -10px;
-  `;
+const H1 = styled.h1`
+  margin-left: 0px;
+  margin-top: 50px;
+  margin-bottom: 30px;
+  font-size: 26px;
+`;
+
+const Div = styled.div`
+  margin-top: 0px;
+`;
 
 function SparkDashboard({ ...otherProps }) {
-
   const [string, setString] = React.useState("");
   const [readerResult, setReaderResult] = React.useState();
 
