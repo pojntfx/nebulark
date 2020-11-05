@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Accordion from "./accordion";
 
 function RecentSpark() {
   const sparkName = "my-spark-1";
@@ -40,10 +41,6 @@ function RecentSpark() {
     border-radius: 2px;
   `;
 
-  function clickHandler() {
-    console.log("Button was clicked");
-  }
-
   return (
     <>
       <Wrapper>
@@ -53,7 +50,7 @@ function RecentSpark() {
           <li>{ionNumber} Ions</li>
           <li>7 mins</li>
           <li>
-            <button onClick={clickHandler}>More</button>
+            <Accordion title="More" content="Here are the logs and the output!" />
           </li>
         </ul>
       </Wrapper>

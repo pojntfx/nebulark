@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Accordion from "./accordion";
 
 function RunningSpark() {
   const sparkName = "my-spark-1";
@@ -40,10 +41,6 @@ function RunningSpark() {
     border-radius: 2px;
   `;
 
-  function clickHandler() {
-    console.log("Button was clicked");
-  }
-
   return (
     <>
       <Wrapper>
@@ -53,7 +50,7 @@ function RunningSpark() {
           <li>{ionNumber} Ions</li>
           <li>7 mins</li>
           <li>
-            <button onClick={clickHandler}>Cancel</button>
+            <Accordion title="Cancel" content="Are you sure you want to cancel the running spark?" />  
           </li>
         </ul>
       </Wrapper>
