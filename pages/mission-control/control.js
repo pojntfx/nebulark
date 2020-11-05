@@ -6,9 +6,11 @@ import SparkDashboard from "../../components/sparkDashboard";
 import { Helmet } from "react-helmet";
 
 const Body = styled.body`
-  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  color: #404240;
-  position: relative;
+  * {
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    color: #404240;
+    position: relative;
+  }
 `;
 
 const StyledHeader = styled(Header)``;

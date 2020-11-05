@@ -1,11 +1,21 @@
 import React from "react";
 import RunningSpark from "./runningSpark";
+import styled from "styled-components";
+import RecentSpark from "./recentSpark";
+
+const Wrapper = styled.section`
+  
+`;
 
 function SparkStats() {
   return (
     <>
-      <h1>Hello World!</h1>
-      <RunningSpark />
+      <Wrapper>
+        <h1>Running Sparks</h1>
+        <RunningSpark />
+        <h1>Recent Sparks</h1>
+        <RecentSpark />
+      </Wrapper>
     </>
   );
 }
