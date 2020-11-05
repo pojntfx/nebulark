@@ -4,7 +4,7 @@ import Header from "../../components/header";
 import NebulaStats from "../../components/nebulaStats";
 import SparkStats from "../../components/sparkStats";
 import styled from "styled-components";
-import Example from "../../components/accordion"
+import Accordion from "../../components/accordion"
 
 const Wrapper = styled.section`
   * {
@@ -34,7 +34,7 @@ function SparkDashboard() {
 
         <SparkStats />
 
-        <Example />
+        <Accordion title="What is your return policy?" content="Lorem Ipsum dolor sit amet."/>
       </Wrapper>
     </>
   );
