@@ -4,12 +4,10 @@ import Header from "../../components/header";
 import NebulaStats from "../../components/nebulaStats";
 import SparkStats from "../../components/sparkStats";
 import styled from "styled-components";
-import Accordion from "../../components/accordion"
 
 const Wrapper = styled.section`
   * {
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-    color: #404240;
     position: relative;
   }
 `;
@@ -34,7 +32,6 @@ function SparkDashboard() {
 
         <SparkStats />
 
-        <Accordion title="What is your return policy?" content="Lorem Ipsum dolor sit amet."/>
       </Wrapper>
     </>
   );

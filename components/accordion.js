@@ -14,17 +14,13 @@ const Accordion__section = styled.div`
   flex-direction: column;
 `;
 
-const Accordion__button = styled.button``;
-
-const Accordion__title = styled.p`
-  background-color: #eee;
-  color: #444;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
+const Accordion__button = styled.button`
+  background-color: red;
+  border-radius: 2px;
   border: none;
-  outline: none;
-  transition: background-color 0.6s ease;
+  width: 80px;
+  height: 20px;
+  color: white;
 `;
 
 const Accordion__content = styled.div`
@@ -34,36 +30,40 @@ const Accordion__content = styled.div`
 `;
 
 const Accordion__text = styled.div`
+  position: relative;
   font-weight: 400;
   font-size: 14px;
   padding: 18px;
+  height: 600px;
+  width: 200px;
 `;
 
 function Accordion(props) {
+  const [setActive, setActiveState] = useState("");
+  const [setHeight, setHeightState] = useState("0px");
+  const [setRotate, setRotateStatet] = useState("accordion_icon");
 
-    const[setActive, setActiveState] = useState("");
-    const[setHeight, setHeightState] = useState("0px")
-    const[setRotate, setRotateStatet] = useState("accordion_icon");
- 
-    const content = useRef(null);
+  const content = useRef(null);
 
-    function toggleAccordion() {
-        setActiveState(setActive === "" ? "active" : "");
-        setHeightState(setActive === "active" ? "0px" : `${content.current.scrollHeight}px`);
+  function toggleAccordion() {
+    setActiveState(setActive === "" ? "active" : "");
+    setHeightState(
+      setActive === "active" ? "0px" : `${content.current.scrollHeight}px`
+    );
 
-        setRotateStatet(
-            setActive == "active" ? "accordion__icon" : "accordion_icon rotate"
-            )
-        console.log(content.current.scrollHeight);
-    }
+    setRotateStatet(
+      setActive == "active" ? "accordion__icon" : "accordion_icon rotate"
+    );
+    console.log(content.current.scrollHeight);
+  }
 
   return (
     <Wrapper>
       <Accordion__section>
-        <Accordion__button  onClick={toggleAccordion}>
-          <Accordion__title>{props.title}</Accordion__title>
+        <Accordion__button onClick={toggleAccordion}>
+          {props.title}
         </Accordion__button>
-        <Accordion__content ref={content} style={{maxHeight: `${setHeight}`}}>
+        <Accordion__content ref={content} style={{ maxHeight: `${setHeight}` }}>
           <Accordion__text
             dangerouslySetInnerHTML={{ __html: props.content }}
           />
