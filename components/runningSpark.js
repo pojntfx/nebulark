@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import Accordion from "./accordion";
 
@@ -41,6 +41,23 @@ function RunningSpark() {
     border-radius: 2px;
   `;
 
+  const Accordion__content = styled.div`
+  background-color: white;
+  overflow: hidden;
+  transition: max-height 0.6s ease;
+`;
+
+const Accordion__text = styled.div`
+  position: relative;
+  font-weight: 400;
+  font-size: 14px;
+  padding: 18px;
+  height: 200px;
+  width: 200px;
+`;
+
+const content = useRef(null);
+
   return (
     <>
       <Wrapper>
@@ -54,6 +71,9 @@ function RunningSpark() {
           </li>
         </ul>
       </Wrapper>
+      <Accordion__content>
+          <Accordion__text>Content</Accordion__text>
+        </Accordion__content>
       <Divider />
     </>
   );
