@@ -31,7 +31,6 @@ function SparkDashboard() {
         <NebulaStats />
 
         <SparkStats />
-
       </Wrapper>
     </>
   );

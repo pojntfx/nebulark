@@ -94,6 +94,10 @@ function toggleAccordion() {
   );
   console.log(content.current.scrollHeight);
 }
+  
+  function cancelSpark(e) {
+    console.log("OK")
+  }
 
   return (
     <>
@@ -106,7 +110,7 @@ function toggleAccordion() {
           <li>
           <AccordionWrapper>
       <Accordion__section>
-        <Accordion__button onClick={toggleAccordion}>
+        <Accordion__button onClick={(e) => { if (window.confirm(`Are your sure you want to cancel spark ${sparkName}?`)) cancelSpark(e) } }>
           Cancel
         </Accordion__button>
         {/* <Accordion__content ref={content} style={{ maxHeight: `${setHeight}` }}>
@@ -119,9 +123,6 @@ function toggleAccordion() {
           </li>
         </ul>
       </Wrapper>
-      <Accordion__content ref={content} style={{ maxHeight: `${setHeight}` }}>
-          <Accordion__text>Do you really want to stop this spark?</Accordion__text>
-      </Accordion__content>
       <Divider />
     </>
   );
