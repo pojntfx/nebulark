@@ -122,6 +122,7 @@ function toggleAccordion() {
       <Accordion__content ref={content} style={{ maxHeight: `${setHeight}` }}>
           <Accordion__text>Do you really want to stop this spark?</Accordion__text>
       </Accordion__content>
+      <Divider />
     </>
   );
 }
