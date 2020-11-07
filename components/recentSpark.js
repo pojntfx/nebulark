@@ -91,6 +91,7 @@ function RecentSpark() {
 
   const content = useRef(null);
   const outputContent = useRef(null);
+  const outputLogs = useRef(null);
 
   function toggleAccordion() {
     setActiveState(setActive === "" ? "active" : "");
@@ -99,8 +100,14 @@ function RecentSpark() {
     );
   }
 
-  function copyToClipboard(e) {
+  function copyOutputToClipboard(e) {
     outputContent.current.select();
+    document.execCommand("copy");
+    e.target.focus();
+  }
+
+  function copyLogsToClipboard(e) {
+    outputLogs.current.select();
     document.execCommand("copy");
     e.target.focus();
   }
@@ -128,13 +135,16 @@ function RecentSpark() {
         <Accordion__text>
           <OutputWrapper>
             <h1>Output</h1>
-            <button onClick={copyToClipboard}>Copy</button>
+            <button onClick={copyOutputToClipboard}>Copy</button>
           </OutputWrapper>
           <textarea ref={outputContent} readOnly>
             {output}
           </textarea>
-          <h1>Logs</h1>
-          <textarea readOnly>{logs}</textarea>
+          <OutputWrapper>
+            <h1>Logs</h1>
+            <button onClick={copyLogsToClipboard}>Copy</button>
+          </OutputWrapper>
+          <textarea ref={outputLogs} readOnly>{logs}</textarea>
         </Accordion__text>
       </Accordion__content>
       <Divider />
