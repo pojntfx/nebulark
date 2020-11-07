@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.section`
+const AccordionWrapper = styled.section`
   * {
     box-sizing: border-box;
     margin: 0;
@@ -58,18 +58,18 @@ function Accordion(props) {
   }
 
   return (
-    <Wrapper>
+    <AccordionWrapper>
       <Accordion__section>
         <Accordion__button onClick={toggleAccordion}>
           {props.title}
         </Accordion__button>
-        <Accordion__content ref={content} style={{ maxHeight: `${setHeight}` }}>
+        {/* <Accordion__content ref={content} style={{ maxHeight: `${setHeight}` }}>
           <Accordion__text
             dangerouslySetInnerHTML={{ __html: props.content }}
           />
-        </Accordion__content>
+        </Accordion__content> */}
       </Accordion__section>
-    </Wrapper>
+    </AccordionWrapper>
   );
 }
 

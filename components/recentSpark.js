@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Accordion from "./accordion";
+//import Accordion from "./accordion";
 
 function RecentSpark() {
   const sparkName = "my-spark-1";
@@ -49,9 +49,9 @@ function RecentSpark() {
           <li>{sparkName}</li>
           <li>{ionNumber} Ions</li>
           <li>7 mins</li>
-          <li>
-            <Accordion title="More" content="Here are the logs and the output!" />
-          </li>
+          {/* <li>
+            <Accordion title="More" content="Here are the logs and the output!" /> 
+          </li> */}
         </ul>
       </Wrapper>
       <Divider />
