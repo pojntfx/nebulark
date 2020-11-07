@@ -41,7 +41,7 @@ function RecentSpark() {
     font-weight: 400;
     font-size: 14px;
     padding: 18px;
-    height: 300px;
+    height: 200px;
 
     textarea {
       resize: none;
@@ -74,7 +74,7 @@ function RecentSpark() {
 
   const OutputWrapper = styled.div`
     display: flex;
-    justify-content: space-between;
+    
 
     button {
       width: 45px;
@@ -83,10 +83,21 @@ function RecentSpark() {
       background-color: #4287f5;
       border: none;
       border-radius: 2px;
+      margin-right: 4px;
+      margin-bottom: 2px;
     }
 
     #download {
       width: 75px;
+    }
+
+    em {
+      font-style: normal;
+      margin-right: 240px;
+    }
+
+    #outputLogs {
+      margin-right: 251px;
     }
   `;
 
@@ -160,7 +171,7 @@ function RecentSpark() {
       <Accordion__content ref={content} style={{ maxHeight: `${setHeight}` }}>
         <Accordion__text>
           <OutputWrapper>
-            <h1>Output</h1>
+            <em>Output</em>
             <button onClick={copyOutputToClipboard}>Copy</button>
             <button id="download" onClick={downloadJsonFile}>Download</button>
           </OutputWrapper>
@@ -168,7 +179,7 @@ function RecentSpark() {
             {output}
           </textarea>
           <OutputWrapper>
-            <h1>Logs</h1>
+            <em id="outputLogs">Logs</em>
             <button onClick={copyLogsToClipboard}>Copy</button>
             <button id="download" onClick={downloadLogFile}>Download</button>
           </OutputWrapper>
