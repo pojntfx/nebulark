@@ -4,8 +4,8 @@ import styled from "styled-components";
 function RecentSpark() {
   const sparkName = "my-spark-1";
   const ionNumber = 4;
-  const output = '{"sum": 3}'
-  const logs = '200: OK'
+  const output = '{"sum": 3}';
+  const logs = "200: OK";
 
   const Wrapper = styled.section`
     ul {
@@ -72,16 +72,37 @@ function RecentSpark() {
     color: white;
   `;
 
+  const OutputWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      width: 45px;
+      height: 20px;
+      color: white;
+      background-color: #4287f5;
+      border: none;
+      border-radius: 2px;
+    }
+  `;
+
   const [setActive, setActiveState] = useState("");
   const [setHeight, setHeightState] = useState("0px");
 
   const content = useRef(null);
+  const outputContent = useRef(null);
 
   function toggleAccordion() {
     setActiveState(setActive === "" ? "active" : "");
     setHeightState(
       setActive === "active" ? "0px" : `${content.current.scrollHeight}px`
     );
+  }
+
+  function copyToClipboard(e) {
+    outputContent.current.select();
+    document.execCommand("copy");
+    e.target.focus();
   }
 
   return (
@@ -105,8 +126,13 @@ function RecentSpark() {
       </Wrapper>
       <Accordion__content ref={content} style={{ maxHeight: `${setHeight}` }}>
         <Accordion__text>
-          <h1>Output</h1>
-          <textarea readOnly>{output}</textarea>
+          <OutputWrapper>
+            <h1>Output</h1>
+            <button onClick={copyToClipboard}>Copy</button>
+          </OutputWrapper>
+          <textarea ref={outputContent} readOnly>
+            {output}
+          </textarea>
           <h1>Logs</h1>
           <textarea readOnly>{logs}</textarea>
         </Accordion__text>
