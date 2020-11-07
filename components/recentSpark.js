@@ -112,6 +112,28 @@ function RecentSpark() {
     e.target.focus();
   }
 
+  function downloadJsonFile() {
+    const element = document.createElement("a");
+    const file = new Blob([document.getElementById("output").value], {
+      type: "text/plain",
+    });
+    element.href = URL.createObjectURL(file);
+    element.download = `${sparkName}-output.json`;
+    document.body.appendChild(element);
+    element.click();
+  }
+
+  function downloadLogFile() {
+    const element = document.createElement("a");
+    const file = new Blob([document.getElementById("logs").value], {
+      type: "text/plain",
+    });
+    element.href = URL.createObjectURL(file);
+    element.download = `${sparkName}-logs.txt`;
+    document.body.appendChild(element);
+    element.click();
+  }
+
   return (
     <>
       <Wrapper>
@@ -136,15 +158,19 @@ function RecentSpark() {
           <OutputWrapper>
             <h1>Output</h1>
             <button onClick={copyOutputToClipboard}>Copy</button>
+            <button onClick={downloadJsonFile}>Download</button>
           </OutputWrapper>
-          <textarea ref={outputContent} readOnly>
+          <textarea id="output" ref={outputContent} readOnly>
             {output}
           </textarea>
           <OutputWrapper>
             <h1>Logs</h1>
             <button onClick={copyLogsToClipboard}>Copy</button>
+            <button onClick={downloadLogFile}>Download</button>
           </OutputWrapper>
-          <textarea ref={outputLogs} readOnly>{logs}</textarea>
+          <textarea id="logs" ref={outputLogs} readOnly>
+            {logs}
+          </textarea>
         </Accordion__text>
       </Accordion__content>
       <Divider />
