@@ -84,6 +84,10 @@ function RecentSpark() {
       border: none;
       border-radius: 2px;
     }
+
+    #download {
+      width: 75px;
+    }
   `;
 
   const [setActive, setActiveState] = useState("");
@@ -158,7 +162,7 @@ function RecentSpark() {
           <OutputWrapper>
             <h1>Output</h1>
             <button onClick={copyOutputToClipboard}>Copy</button>
-            <button onClick={downloadJsonFile}>Download</button>
+            <button id="download" onClick={downloadJsonFile}>Download</button>
           </OutputWrapper>
           <textarea id="output" ref={outputContent} readOnly>
             {output}
@@ -166,7 +170,7 @@ function RecentSpark() {
           <OutputWrapper>
             <h1>Logs</h1>
             <button onClick={copyLogsToClipboard}>Copy</button>
-            <button onClick={downloadLogFile}>Download</button>
+            <button id="download" onClick={downloadLogFile}>Download</button>
           </OutputWrapper>
           <textarea id="logs" ref={outputLogs} readOnly>
             {logs}
