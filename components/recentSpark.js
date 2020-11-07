@@ -4,6 +4,8 @@ import styled from "styled-components";
 function RecentSpark() {
   const sparkName = "my-spark-1";
   const ionNumber = 4;
+  const output = '{"sum": 3}'
+  const logs = '200: OK'
 
   const Wrapper = styled.section`
     ul {
@@ -39,7 +41,13 @@ function RecentSpark() {
     font-weight: 400;
     font-size: 14px;
     padding: 18px;
-    height: 200px;
+    height: 300px;
+
+    textarea {
+      resize: none;
+      width: 400px;
+      height: 60px;
+    }
   `;
 
   const AccordionWrapper = styled.section`
@@ -96,7 +104,12 @@ function RecentSpark() {
         </ul>
       </Wrapper>
       <Accordion__content ref={content} style={{ maxHeight: `${setHeight}` }}>
-        <Accordion__text>Output and Logs WIP</Accordion__text>
+        <Accordion__text>
+          <h1>Output</h1>
+          <textarea readOnly>{output}</textarea>
+          <h1>Logs</h1>
+          <textarea readOnly>{logs}</textarea>
+        </Accordion__text>
       </Accordion__content>
       <Divider />
     </>
