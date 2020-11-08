@@ -51,7 +51,7 @@ function RecentSpark() {
     font-weight: 400;
     padding: 18px;
     height: 200px;
-
+    margin-left: 44px;
     textarea {
       resize: none;
       width: 400px;
@@ -83,7 +83,6 @@ function RecentSpark() {
 
   const OutputWrapper = styled.div`
     display: flex;
-    
 
     button {
       width: 45px;
@@ -114,6 +113,14 @@ function RecentSpark() {
     margin-top: 25px;
   `;
 
+  const Wrap = styled.section`
+    margin-left: -6px;
+  `;
+
+  const Wrapo = styled.section`
+    margin-left: -4px;
+  `;
+
   const [setActive, setActiveState] = useState("");
   const [setHeight, setHeightState] = useState("0px");
   const [setButton, setButtonState] = useState("More");
@@ -127,8 +134,7 @@ function RecentSpark() {
   useEffect(() => {
     setPluralIonState(ionNumber === 1 ? "" : "s");
     setPluralMinState(minutes === 1 ? "" : "s");
-  })
-  
+  });
 
   function toggleAccordion() {
     setActiveState(setActive === "" ? "active" : "");
@@ -174,47 +180,60 @@ function RecentSpark() {
 
   return (
     <>
-    <Wrapp>
-    <Wrapper>
-        <ul>
-          <li><img src="/success.svg"></img></li>
-          <li>{sparkName}</li>
-          <li>{ionNumber} Ion{setPluralIon}</li>
-          <li>{minutes} min{setPluralMin}</li>
-          <li>
-            <AccordionWrapper>
-              <Accordion__section>
-                <Accordion__button onClick={toggleAccordion}>
-                  {setButton}
-                </Accordion__button>
-              </Accordion__section>
-            </AccordionWrapper>
-          </li>
-        </ul>
-      </Wrapper>
-      <Accordion__content ref={content} style={{ maxHeight: `${setHeight}` }}>
-        <Accordion__text>
-          <OutputWrapper>
-            <em>Output</em>
-            <button onClick={copyOutputToClipboard}>Copy</button>
-            <button id="download" onClick={downloadJsonFile}>Download</button>
-          </OutputWrapper>
-          <textarea id="output" ref={outputContent} readOnly>
-            {output}
-          </textarea>
-          <OutputWrapper>
-            <em id="outputLogs">Logs</em>
-            <button onClick={copyLogsToClipboard}>Copy</button>
-            <button id="download" onClick={downloadLogFile}>Download</button>
-          </OutputWrapper>
-          <textarea id="logs" ref={outputLogs} readOnly>
-            {logs}
-          </textarea>
-        </Accordion__text>
-      </Accordion__content>
-      <Divider />
-    </Wrapp>
-      
+      <Wrapp>
+        <Wrapper>
+          <ul>
+            <li>
+              <img src="/success.svg"></img>
+            </li>
+            <li>{sparkName}</li>
+            <li>
+              {ionNumber} Ion{setPluralIon}
+            </li>
+            <li>
+              {minutes} min{setPluralMin}
+            </li>
+            <li>
+              <AccordionWrapper>
+                <Accordion__section>
+                  <Accordion__button onClick={toggleAccordion}>
+                    {setButton}
+                  </Accordion__button>
+                </Accordion__section>
+              </AccordionWrapper>
+            </li>
+          </ul>
+        </Wrapper>
+        <Accordion__content ref={content} style={{ maxHeight: `${setHeight}` }}>
+          <Accordion__text>
+            <OutputWrapper>
+              <em>Output</em>
+              <Wrap>
+                <button onClick={copyOutputToClipboard}>Copy</button>
+                <button id="download" onClick={downloadJsonFile}>
+                  Download
+                </button>
+              </Wrap>
+            </OutputWrapper>
+            <textarea id="output" ref={outputContent} readOnly>
+              {output}
+            </textarea>
+            <OutputWrapper>
+              <em id="outputLogs">Logs</em>
+              <Wrapo>
+                <button onClick={copyLogsToClipboard}>Copy</button>
+                <button id="download" onClick={downloadLogFile}>
+                  Download
+                </button>
+              </Wrapo>
+            </OutputWrapper>
+            <textarea id="logs" ref={outputLogs} readOnly>
+              {logs}
+            </textarea>
+          </Accordion__text>
+        </Accordion__content>
+        <Divider />
+      </Wrapp>
     </>
   );
 }
