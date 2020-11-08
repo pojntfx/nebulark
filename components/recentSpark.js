@@ -31,7 +31,7 @@ function RecentSpark() {
   `;
 
   const Divider = styled.hr`
-    background-color: #404040;
+    background-color: #404240;
     height: 3px;
     border: none;
     border-radius: 2px;
@@ -89,7 +89,7 @@ function RecentSpark() {
       width: 45px;
       height: 20px;
       color: white;
-      background-color: #4287f5;
+      background-color: #404240;
       border: none;
       border-radius: 2px;
       margin-right: 4px;

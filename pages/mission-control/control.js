@@ -18,7 +18,7 @@ const StyledHeader = styled(Header)``;
 const StyledIonDashboard = styled(IonDashboard)``;
 
 const StyledSparkDashboard = styled(SparkDashboard)`
-  margin-left: 375px;
+  margin-left: 390px;
   margin-top: -35em;
 
   @media (max-width: 768px) {
@@ -32,7 +32,7 @@ const StyledVerticalLine = styled.span`
   border-left: 5px solid #404240;
   height: 500px;
   border-radius: 2px;
-  margin-left: 285px;
+  margin-left: 301px;
   margin-top: -240px;
 
   @media (max-width: 768px) {
@@ -41,9 +41,9 @@ const StyledVerticalLine = styled.span`
 `;
 
 const Div = styled.div`
-  max-width: 768px;
+  max-width: 900px;
   margin: 50px auto;
-  padding: 0 100px 0px 0;
+  padding: 0 0px 0px 0;
   position: relative;
   min-width: 768px;
 `;
