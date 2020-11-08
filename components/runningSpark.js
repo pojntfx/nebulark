@@ -1,9 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 
 function RunningSpark() {
   const sparkName = "my-spark-1";
   const ionNumber = 4;
+  const minutes = 1;
 
   const Wrapper = styled.section`
     ul {
@@ -50,11 +51,19 @@ function RunningSpark() {
     color: white;
   `;
 
+  const [setPluralIon, setPluralIonState] = useState("s");
+  const [setPluralMin, setPluralMinState] = useState("s");
+
   const content = useRef(null);
 
   function cancelSpark(e) {
     console.log("OK");
   }
+
+  useEffect(() => {
+    setPluralIonState(ionNumber === 1 ? "" : "s");
+    setPluralMinState(minutes === 1 ? "" : "s");
+  })
 
   return (
     <>
@@ -62,8 +71,8 @@ function RunningSpark() {
         <ul>
           <li>loadingbar</li>
           <li>{sparkName}</li>
-          <li>{ionNumber} Ions</li>
-          <li>7 mins</li>
+          <li>{ionNumber} Ion{setPluralIon}</li>
+          <li>{minutes} min{setPluralMin}</li>
           <li>
             <AccordionWrapper>
               <Accordion__section>
