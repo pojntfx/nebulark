@@ -10,7 +10,9 @@ function RunningSpark() {
     ul {
       display: flex;
       list-style-type: none;
-      justify-content: space-between;
+    }
+    li {
+      margin-right: 40px;
     }
     button {
       background-color: red;
@@ -31,6 +33,8 @@ function RunningSpark() {
     height: 3px;
     border: none;
     border-radius: 2px;
+    max-width: 500px;
+    margin-left: 0px;
   `;
 
   const AccordionWrapper = styled.section`

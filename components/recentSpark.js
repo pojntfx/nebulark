@@ -12,7 +12,9 @@ function RecentSpark() {
     ul {
       display: flex;
       list-style-type: none;
-      justify-content: space-between;
+    }
+    li {
+      margin-right: 40px;
     }
     button {
       background-color: red;
@@ -33,6 +35,9 @@ function RecentSpark() {
     height: 3px;
     border: none;
     border-radius: 2px;
+    max-width: 500px;
+    margin-left: 0px;
+    margin-top: 0px;
   `;
 
   const Accordion__content = styled.div`
@@ -44,7 +49,6 @@ function RecentSpark() {
   const Accordion__text = styled.div`
     position: relative;
     font-weight: 400;
-    font-size: 14px;
     padding: 18px;
     height: 200px;
 
@@ -104,6 +108,10 @@ function RecentSpark() {
     #outputLogs {
       margin-right: 251px;
     }
+  `;
+
+  const Wrapp = styled.section`
+    margin-top: 25px;
   `;
 
   const [setActive, setActiveState] = useState("");
@@ -166,7 +174,8 @@ function RecentSpark() {
 
   return (
     <>
-      <Wrapper>
+    <Wrapp>
+    <Wrapper>
         <ul>
           <li><img src="/success.svg"></img></li>
           <li>{sparkName}</li>
@@ -204,6 +213,8 @@ function RecentSpark() {
         </Accordion__text>
       </Accordion__content>
       <Divider />
+    </Wrapp>
+      
     </>
   );
 }
