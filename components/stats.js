@@ -8,7 +8,7 @@ const Wrapper = styled.section`
     list-style-type: none;
     margin: 0;
     padding: 0;
-    margin-bottom: 80px;
+    margin-bottom: 127.5px;
     margin-top: 60px;
   }
   li {

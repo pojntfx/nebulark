@@ -21,7 +21,7 @@ const StyledVerticalLine = styled.span`
   height: 500px;
   border-radius: 2px;
   margin-left: 301px;
-  margin-top: -192.5px;
+  margin-top: -240px;
 
   @media (max-width: 768px) {
     display: none;
