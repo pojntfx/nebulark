@@ -22,6 +22,10 @@ function RecentSpark() {
       height: 20px;
       color: white;
     }
+    img {
+      height: 25px;
+      width: 25px;
+    }
   `;
 
   const Divider = styled.hr`
@@ -164,7 +168,7 @@ function RecentSpark() {
     <>
       <Wrapper>
         <ul>
-          <li>loadingbar</li>
+          <li><img src="/success.svg"></img></li>
           <li>{sparkName}</li>
           <li>{ionNumber} Ion{setPluralIon}</li>
           <li>{minutes} min{setPluralMin}</li>
