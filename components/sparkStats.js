@@ -6,6 +6,11 @@ import RecentSpark from "./recentSpark";
 const Wrapper = styled.section`
   margin-left: 390px;
   margin-top: -528px;  
+
+  @media (max-width: 768px) {
+    margin-top: 240px;
+    margin-left: 0;
+  }
 `;
 
 
