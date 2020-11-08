@@ -9,13 +9,20 @@ const Wrapper = styled.section`
   margin-left: 14px;
 `;
 
+const Div = styled.div`
+  margin-left: 1px;
+`;
+
 function NebulaStats() {
   return (
     <>
       <Wrapper>
         <h1>NebulaStats</h1>
         <Stats />
-        <Ion ionName="Jakob's MoBilTelEfOn" ionStatus={true} />
+        <Div>
+        <Ion ionName="John's Phone" ionStatus={true} />
+        </Div>
+        
       </Wrapper>
     </>
   );

@@ -47,6 +47,11 @@ const H1 = styled.h1`
 
 const Div = styled.div`
   margin-top: 0px;
+
+  @media (max-width: 768px) {
+    margin-top: -161px;
+    margin-left: 13px;
+  }
 `;
 
 function SparkDashboard({ ...otherProps }) {
