@@ -9,7 +9,10 @@ const Wrapper = styled.section`
   * {
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
     position: relative;
+    color: #404240;
   }
+
+  margin: 8px;
 `;
 
 const StyledVerticalLine = styled.span`
@@ -17,8 +20,8 @@ const StyledVerticalLine = styled.span`
   border-left: 5px solid #404240;
   height: 500px;
   border-radius: 2px;
-  margin-left: 285px;
-  margin-top: -195px;
+  margin-left: 301px;
+  margin-top: -192.5px;
 
   @media (max-width: 768px) {
     display: none;
@@ -61,7 +64,7 @@ function SparkDashboard() {
       </Helmet>
 
       <Wrapper>
-        <Header nebulaID={nebulaID} category="Dashboard"/>
+        <Header nebulaID={nebulaID} category="Setup"/>
 
         <Div>
           <StyledNebulaStats />

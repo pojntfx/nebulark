@@ -4,8 +4,8 @@ import styled from "styled-components";
 import RecentSpark from "./recentSpark";
 
 const Wrapper = styled.section`
-  margin-left: 350px;
-  margin-top: -522px;  
+  margin-left: 390px;
+  margin-top: -528px;  
 `;
 
 

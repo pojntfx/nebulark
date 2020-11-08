@@ -29,7 +29,7 @@ function RunningSpark() {
   `;
 
   const Divider = styled.hr`
-    background-color: #404040;
+    background-color: #404240;
     height: 3px;
     border: none;
     border-radius: 2px;
