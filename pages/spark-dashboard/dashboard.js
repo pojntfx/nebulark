@@ -41,8 +41,8 @@ const StyledSparkStats= styled(SparkStats)`
   margin-top: 11em;
   
   @media (max-width: 768px) {
-    margin-left: 0;
-    margin-top: 12em;
+    margin-left: 0px;
+    margin-top: 400px;
   }
 `;
 

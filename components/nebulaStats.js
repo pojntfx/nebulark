@@ -8,6 +8,7 @@ const Wrapper = styled.section`
   margin-top: 70px;
   margin-left: 14px;
 `;
+
 function NebulaStats() {
   return (
     <>
