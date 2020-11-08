@@ -1,11 +1,12 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 
 function RecentSpark() {
   const sparkName = "my-spark-1";
-  const ionNumber = 4;
+  const ionNumber = 1;
   const output = '{"sum": 3}';
   const logs = "200: OK";
+  const minutes = 2;
 
   const Wrapper = styled.section`
     ul {
@@ -103,16 +104,26 @@ function RecentSpark() {
 
   const [setActive, setActiveState] = useState("");
   const [setHeight, setHeightState] = useState("0px");
+  const [setButton, setButtonState] = useState("More");
+  const [setPluralIon, setPluralIonState] = useState("s");
+  const [setPluralMin, setPluralMinState] = useState("s");
 
   const content = useRef(null);
   const outputContent = useRef(null);
   const outputLogs = useRef(null);
+
+  useEffect(() => {
+    setPluralIonState(ionNumber === 1 ? "" : "s");
+    setPluralMinState(minutes === 1 ? "" : "s");
+  })
+  
 
   function toggleAccordion() {
     setActiveState(setActive === "" ? "active" : "");
     setHeightState(
       setActive === "active" ? "0px" : `${content.current.scrollHeight}px`
     );
+    setButtonState(setActive === "active" ? "More" : "Less");
   }
 
   function copyOutputToClipboard(e) {
@@ -155,13 +166,13 @@ function RecentSpark() {
         <ul>
           <li>loadingbar</li>
           <li>{sparkName}</li>
-          <li>{ionNumber} Ions</li>
-          <li>7 mins</li>
+          <li>{ionNumber} Ion{setPluralIon}</li>
+          <li>{minutes} min{setPluralMin}</li>
           <li>
             <AccordionWrapper>
               <Accordion__section>
                 <Accordion__button onClick={toggleAccordion}>
-                  More
+                  {setButton}
                 </Accordion__button>
               </Accordion__section>
             </AccordionWrapper>
