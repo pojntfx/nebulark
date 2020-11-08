@@ -20,6 +20,10 @@ function RunningSpark() {
       height: 20px;
       color: white;
     }
+    img {
+      height: 25px;
+      width: 25px;
+    }
   `;
 
   const Divider = styled.hr`
@@ -54,8 +58,6 @@ function RunningSpark() {
   const [setPluralIon, setPluralIonState] = useState("s");
   const [setPluralMin, setPluralMinState] = useState("s");
 
-  const content = useRef(null);
-
   function cancelSpark(e) {
     console.log("OK");
   }
@@ -69,7 +71,7 @@ function RunningSpark() {
     <>
       <Wrapper>
         <ul>
-          <li>loadingbar</li>
+          <li><img src="/loadingSpinner.svg"></img></li>
           <li>{sparkName}</li>
           <li>{ionNumber} Ion{setPluralIon}</li>
           <li>{minutes} min{setPluralMin}</li>
