@@ -12,6 +12,40 @@ const Wrapper = styled.section`
   }
 `;
 
+const StyledVerticalLine = styled.span`
+  display: inline-block;
+  border-left: 5px solid #404240;
+  height: 500px;
+  border-radius: 2px;
+  margin-left: 285px;
+  margin-top: -195px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const Div = styled.div`
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 0 0px 0px 0;
+  position: relative;
+  min-width: 768px;
+`;
+
+const StyledSparkStats= styled(SparkStats)`
+  margin-left: 375px;
+  margin-top: 11em;
+  
+  @media (max-width: 768px) {
+    margin-left: 0;
+    margin-top: 12em;
+  }
+`;
+
+const StyledNebulaStats = styled(NebulaStats)`
+`;
+
 function SparkDashboard() {
   const nebulaID = "woody-wood-wood";
 
@@ -25,12 +59,17 @@ function SparkDashboard() {
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta name="HandheldFriendly" content="true" />
       </Helmet>
+
       <Wrapper>
-        <Header nebulaID={nebulaID} />
+        <Header nebulaID={nebulaID} category="Dashboard"/>
 
-        <NebulaStats />
+        <Div>
+          <StyledNebulaStats />
 
-        <SparkStats />
+          <StyledVerticalLine />
+
+          <StyledSparkStats />
+        </Div>
       </Wrapper>
     </>
   );

@@ -22,12 +22,12 @@ const Nebula = styled.h1`
     }
   `;
   
-function Header({ nebulaID, ...otherProps }) {
+function Header({ nebulaID, category, ...otherProps }) {
   
   return (
     <div {...otherProps}>
       <Nebula> nebulark / {nebulaID}</Nebula>
-      <Category>Setup</Category>
+      <Category>{category}</Category>
       <Divider />
     </div>
   );

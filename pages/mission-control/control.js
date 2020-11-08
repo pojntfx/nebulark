@@ -62,7 +62,7 @@ function Control() {
         <meta name="HandheldFriendly" content="true" />
       </Helmet>
       <Body>
-        <StyledHeader nebulaID={nebulaID} />
+        <StyledHeader nebulaID={nebulaID} category="Setup" />
 
         <Div>
           <StyledIonDashboard nebulaID={nebulaID} />
