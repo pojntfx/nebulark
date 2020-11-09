@@ -11,6 +11,9 @@ const Wrapper = styled.section`
     margin-bottom: 112px;
     margin-top: 30px;
     
+    @media (max-width: 840px) {
+      margin-bottom: 131px;
+    }
   }
   li {
     margin-right: 40px;

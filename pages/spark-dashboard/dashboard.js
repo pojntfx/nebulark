@@ -5,48 +5,39 @@ import NebulaStats from "../../components/nebulaStats";
 import SparkStats from "../../components/sparkStats";
 import styled from "styled-components";
 
-const Wrapper = styled.section`
-  * {
-    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-    position: relative;
-    color: #404240;
-  }
+const GridContainer = styled.div`
+    display: grid;
+    grid-template-columns: 260px 50px 510px;
+    grid-auto-rows: minmax(120px, auto);
+    grid-template-areas: "header header header";
+    justify-content: center;
+    
 
-  margin: 8px;
+    .header {
+      grid-area: header;
+    }
+
+    * {
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      position: relative;
+      color: #404240;
+    }
+
+    @media (max-width: 840px) {
+      grid-template: "header";
+      grid-template-columns: 1fr;
+    }
 `;
 
-const StyledVerticalLine = styled.span`
+const VerticalLine = styled.span`
   display: inline-block;
   border-left: 5px solid #404240;
   height: 500px;
   border-radius: 2px;
-  margin-left: 301px;
-  margin-top: -240px;
-
-  @media (max-width: 768px) {
+ 
+  @media (max-width: 840px) {
     display: none;
   }
-`;
-
-const Div = styled.div`
-  max-width: 900px;
-  margin: 50px auto;
-  padding: 0 0px 0px 0;
-  position: relative;
-  min-width: 768px;
-`;
-
-const StyledSparkStats= styled(SparkStats)`
-  margin-left: 375px;
-  margin-top: 11em;
-  
-  @media (max-width: 768px) {
-    margin-left: 0px;
-    margin-top: 400px;
-  }
-`;
-
-const StyledNebulaStats = styled(NebulaStats)`
 `;
 
 function SparkDashboard() {
@@ -63,17 +54,15 @@ function SparkDashboard() {
         <meta name="HandheldFriendly" content="true" />
       </Helmet>
 
-      <Wrapper>
-        <Header nebulaID={nebulaID} category="Setup"/>
+      <GridContainer>
+        <Header className="header" nebulaID={nebulaID} category="Setup" />
 
-        <Div>
-          <StyledNebulaStats />
+        <NebulaStats />
 
-          <StyledVerticalLine />
+        <VerticalLine />
 
-          <StyledSparkStats />
-        </Div>
-      </Wrapper>
+        <SparkStats />
+      </GridContainer>
     </>
   );
 }

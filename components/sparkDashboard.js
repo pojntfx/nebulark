@@ -11,9 +11,10 @@ const Button = styled.button`
   width: 80px;
   margin-left: 346px;
   margin-top: 12px;
+  
 
   @media (max-width: 360px) {
-    margin-left: 286px;
+    
   }
 `;
 
@@ -40,17 +41,15 @@ const InputJSON = styled.input`
 
 const H1 = styled.h1`
   margin-left: 0px;
-  margin-top: 50px;
   margin-bottom: 30px;
   font-size: 26px;
 `;
 
-const Div = styled.div`
-  margin-top: 0px;
+const Wrapper = styled.div`
 
   @media (max-width: 768px) {
-    margin-top: -161px;
-    margin-left: 13px;
+    
+
   }
 `;
 
@@ -106,7 +105,7 @@ function SparkDashboard({ ...otherProps }) {
   return (
     <>
       <div {...otherProps}>
-        <Div>
+        <Wrapper>
           <H1>Upload Binary</H1>
           <InputFile
             type="file"
@@ -126,7 +125,7 @@ function SparkDashboard({ ...otherProps }) {
           ></TextArea>
           <br />
           <Button onClick={handleExecute}>Execute</Button>
-        </Div>
+        </Wrapper>
       </div>
     </>
   );

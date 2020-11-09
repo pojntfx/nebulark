@@ -3,14 +3,9 @@ import RunningSpark from "./runningSpark";
 import styled from "styled-components";
 import RecentSpark from "./recentSpark";
 
-const Wrapper = styled.section`
-  margin-left: 390px;
-  margin-top: -528px;  
-
-  @media (max-width: 768px) {
-    margin-top: 32px;
-    margin-left: 14px;
-  }
+const Wrapper = styled.section` 
+  display: flex;
+  flex-direction: column;
 `;
 
 
