@@ -7,12 +7,12 @@ import styled from "styled-components";
 
 const GridContainer = styled.div`
     display: grid;
-    grid-template-columns: 310px 100px 400px;
+    grid-template-columns: 260px 50px 510px;
     grid-auto-rows: minmax(120px, auto);
-    grid-gap: 0px;
+    grid-gap: 20px;
     grid-template-areas: "header header header";
     justify-content: center;
-    align-items: stretch;
+    
 
     .header {
       grid-area: header;
@@ -24,7 +24,7 @@ const GridContainer = styled.div`
       color: #404240;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 840px) {
       grid-template: "header";
       grid-template-columns: 1fr;
     }
@@ -36,7 +36,7 @@ const VerticalLine = styled.span`
   height: 500px;
   border-radius: 2px;
  
-  @media (max-width: 768px) {
+  @media (max-width: 840px) {
     display: none;
   }
 `;
