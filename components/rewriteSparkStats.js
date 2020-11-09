@@ -4,7 +4,8 @@ import styled from "styled-components";
 import RecentSpark from "./recentSpark";
 
 const Wrapper = styled.section` 
-
+  display: flex;
+  flex-direction: column;
 `;
 
 
