@@ -9,8 +9,8 @@ const Wrapper = styled.section`
   flex-direction: column;
 `;
 
-const Div = styled.div`
-  margin-left: 1px;
+const StyledIon = styled(Ion)`
+  margin-top: 15.5px;
 `;
 
 function NebulaStats() {
@@ -19,10 +19,7 @@ function NebulaStats() {
       <Wrapper>
         <h1>NebulaStats</h1>
         <Stats />
-        <Div>
-        <Ion ionName="John's Phone" ionStatus={true} />
-        </Div>
-        
+        <StyledIon ionName="John's Phone" ionStatus={true} />
       </Wrapper>
     </>
   );

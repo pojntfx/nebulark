@@ -4,7 +4,7 @@ import Ion from "./ion";
 import QRCode from "qrcode.react";
 
 const Wrapper = styled.section`
-  margin-left: 15px;
+  
 `;
 const QRCodeCaption = styled.a`
   color: #404240;
@@ -16,7 +16,12 @@ const QRCodeStyled = styled(QRCode)`
 `;
 
 const StyledIon = styled(Ion)`
-  margin-top: 10px;
+  margin-top: 15.5px;
+`;
+
+const Div = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const qrCode =
@@ -26,14 +31,15 @@ function IonDashboard({ nebulaID, ...otherProps }) {
   return (
     <>
       <Wrapper>
-        <div {...otherProps}>
+        <Div {...otherProps}>
           <QRCodeStyled size={190} value={qrCode} />
           <br></br>
           <QRCodeCaption href="https://google.com">
             https://nebulark.spark/{nebulaID}
           </QRCodeCaption>
           <StyledIon ionName="John's Phone" ionStatus={true} />
-        </div>
+          <StyledIon ionName="John's Phone" ionStatus={true} />
+        </Div>
       </Wrapper>
     </>
   );

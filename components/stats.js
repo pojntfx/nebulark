@@ -8,8 +8,9 @@ const Wrapper = styled.section`
     list-style-type: none;
     margin: 0;
     padding: 0;
-    margin-bottom: 127.5px;
-    margin-top: 60px;
+    margin-bottom: 112px;
+    margin-top: 30px;
+    
   }
   li {
     margin-right: 40px;
