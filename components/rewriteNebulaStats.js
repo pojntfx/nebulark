@@ -5,6 +5,8 @@ import styled from "styled-components";
 
 const Wrapper = styled.section`
   position: relative;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Div = styled.div`

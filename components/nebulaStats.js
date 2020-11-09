@@ -11,6 +11,8 @@ const Wrapper = styled.section`
 
 const Div = styled.div`
   margin-left: 1px;
+  display: flex;
+  flex-direction: column;
 `;
 
 function NebulaStats() {
