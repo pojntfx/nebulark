@@ -5,47 +5,38 @@ import Header from "../../components/header";
 import SparkDashboard from "../../components/sparkDashboard";
 import { Helmet } from "react-helmet";
 
-const Body = styled.body`
+const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: 260px 50px 510px;
+  grid-auto-rows: minmax(120px, auto);
+  grid-template-areas: "header header header";
+  justify-content: center;
+
+  .header {
+    grid-area: header;
+  }
+
   * {
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-    color: #404240;
     position: relative;
+    color: #404240;
+  }
+
+  @media (max-width: 840px) {
+    grid-template: "header";
+    grid-template-columns: 1fr;
   }
 `;
 
-const StyledHeader = styled(Header)``;
-
-const StyledIonDashboard = styled(IonDashboard)``;
-
-const StyledSparkDashboard = styled(SparkDashboard)`
-  margin-left: 390px;
-  margin-top: -35em;
-
-  @media (max-width: 768px) {
-    margin-left: 0;
-    margin-top: 12em;
-  }
-`;
-
-const StyledVerticalLine = styled.span`
+const VerticalLine = styled.span`
   display: inline-block;
   border-left: 5px solid #404240;
   height: 500px;
   border-radius: 2px;
-  margin-left: 301px;
-  margin-top: -240px;
 
   @media (max-width: 768px) {
     display: none;
   }
-`;
-
-const Div = styled.div`
-  max-width: 900px;
-  margin: 50px auto;
-  padding: 0 0px 0px 0;
-  position: relative;
-  min-width: 768px;
 `;
 
 function Control() {
@@ -61,17 +52,16 @@ function Control() {
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta name="HandheldFriendly" content="true" />
       </Helmet>
-      <Body>
-        <StyledHeader nebulaID={nebulaID} category="Setup" />
 
-        <Div>
-          <StyledIonDashboard nebulaID={nebulaID} />
+      <GridContainer>
+        <Header className="header" nebulaID={nebulaID} category="Setup" />
 
-          <StyledVerticalLine />
+        <IonDashboard nebulaID={nebulaID} />
 
-          <StyledSparkDashboard />
-        </Div>
-      </Body>
+        <VerticalLine />
+
+        <SparkDashboard />
+      </GridContainer>
     </>
   );
 }
