@@ -9,7 +9,6 @@ const GridContainer = styled.div`
     display: grid;
     grid-template-columns: 260px 50px 510px;
     grid-auto-rows: minmax(120px, auto);
-    grid-gap: 20px;
     grid-template-areas: "header header header";
     justify-content: center;
     
