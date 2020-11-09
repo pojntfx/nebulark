@@ -20,7 +20,7 @@ function NebulaStats() {
         <h1>NebulaStats</h1>
         <Stats />
         <StyledIon ionName="John's Phone" ionStatus={true} />
-      </Wrapper>
+        fr;      </Wrapper>
     </>
   );
 }

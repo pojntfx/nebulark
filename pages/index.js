@@ -23,6 +23,9 @@ function Home() {
           <li>
             <Link href="/spark-dashboard/dashboard">Spark Dashboard</Link>
           </li> 
+          <li>
+            <Link href="/ion/ion">Ion</Link>
+          </li> 
         </ul>
       </nav>
     </>
