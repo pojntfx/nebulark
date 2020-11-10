@@ -43,7 +43,7 @@ function Ion() {
       <GridContainer>
         <img src="/nebulark-logo.png"></img>
         <button>New Nebula</button>
-        <form><input defaultValue="Got a key? Type it here!" type="text" value={string} onChange={(event) => setString(event.target.value)} /></form>
+        <form><input placeholder="Got a key? Type it here!" type="text" value={string} onChange={(event) => setString(event.target.value)} onSubmit={() => console.log("Hi")}/></form>
       </GridContainer>
     </>
   );
