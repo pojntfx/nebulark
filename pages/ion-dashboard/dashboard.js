@@ -21,9 +21,18 @@ const Storage = styled.div`
   margin: 10px;
 `;
 
-const Logs = styled.div`
+const Logs = styled.button`
+  border: none;
+  background-color: white;
+  font-size: 32px;
+  color: #404040;
   float: right;
   margin: 10px;
+
+  img {
+    height: 22px;
+    width: 22px;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -31,6 +40,11 @@ const Wrapper = styled.div`
     position: relative;
     font-size: 32px;
     font-family: Helvetica;
+    color: #404040;
+    background-image: url("/background.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
 `;
 
 function Dashboard() {
@@ -42,7 +56,7 @@ function Dashboard() {
     <>
       <Wrapper>
         <ID>Your ID: {id}</ID>
-        <Logs>logs</Logs>
+        <Logs><img src="/speisekarte.png"></img> logs</Logs>
         <Storage>Using {storage}MB of storage</Storage>
         
         <IonNumber>Connected to {ionNumber} peers</IonNumber>
