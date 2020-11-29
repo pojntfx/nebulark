@@ -26,6 +26,9 @@ function Home() {
           <li>
             <Link href="/ion/ion">Ion</Link>
           </li> 
+          <li>
+            <Link href="/examples/webTorrent">WebTorrent</Link>
+          </li>
         </ul>
       </nav>
     </>
