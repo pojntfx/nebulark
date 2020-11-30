@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import IonDashboard from "../../components/ionDashboard";
 import Header from "../../components/header";
-import SparkDashboard from "../../components/sparkDashboard";
+import SparkDashboard from "../../components/sparkDashboardWebTorrent";
 import { Helmet } from "react-helmet";
 
 const GridContainer = styled.div`
@@ -59,7 +59,7 @@ function Control() {
         <IonDashboard nebulaID={nebulaID} />
 
         <VerticalLine />
-
+        
         <SparkDashboard />
       </GridContainer>
     </>
