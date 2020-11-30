@@ -17,6 +17,18 @@ function Home() {
           <li>
             <Link href="/examples/discovery">Discovery Examples</Link>
           </li>
+          <li>
+            <Link href="/mission-control/control">Mission Control</Link>
+          </li>
+          <li>
+            <Link href="/spark-dashboard/dashboard">Spark Dashboard</Link>
+          </li> 
+          <li>
+            <Link href="/ion/ion">Ion</Link>
+          </li> 
+          <li>
+            <Link href="/examples/webTorrent">WebTorrent</Link>
+          </li>
         </ul>
       </nav>
     </>
