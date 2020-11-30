@@ -55,19 +55,23 @@ const Wrapper = styled.div`
 `;
 
 function SparkDashboard({ ...otherProps }) {
+
+  // this is the json
   const [string, setString] = React.useState("");
+
+  // this is the binary
   const [readerResult, setReaderResult] = React.useState();
 
   //var fileHash = null;
   //var fileHashJSON = null;
 
   var torrentId = null;
-  var torrentId3 = null;
+  var torrentId6 = null;
   // create webtorrent here!
   async function handleExecute() {
     //const node = await IPFS.create();
-    //var client = new WebTorrent();
-    var client3 = new WebTorrent();
+    var client = new WebTorrent();
+    var client6 = new WebTorrent();
     // Upload readeresult here
     // const file = await node.add({
     //   path: "hello.txt",
@@ -75,24 +79,21 @@ function SparkDashboard({ ...otherProps }) {
     // });
     
 
-    // var buf = new Buffer(readerResult)
-    // buf.name = 'Nebulark'
-    // client.seed(buf, function(torrent) {
-    //   console.log('Client is seeding: ', torrent.magnetURI)
-    //   torrentId = torrent.magnetURI
-    // })
-
-
-    var buf3 = new Buffer(readerResult)
-    buf3.name = 'Thisisafile'
-    client3.seed(buf3, function(torrent3) {
-      console.log('Client is seeding: ', torrent3.magnetURI)
-      torrentId3 = torrent3.magnetURI 
+    var buf = new Buffer(readerResult)
+    buf.name = 'Nebulark'
+    client.seed(buf, function(torrent) {
+      console.log('Client is seeding: ', torrent.magnetURI)
+      torrentId = torrent.magnetURI
     })
 
-    
 
-    
+    var buf6 = new Buffer(string)
+    buf6.name = 'Nebulark'
+    client6.seed(buf6, function(torrent6) {
+      console.log('Client is seeding: ', torrent6.magnetURI)
+      torrentId6 = torrent6.magnetURI 
+    })    
+
     //console.log(WebTorrent.WEBRTC_SUPPORT)
   
     // client.add(torrentId, function(torrent) {
@@ -114,8 +115,8 @@ function SparkDashboard({ ...otherProps }) {
     //fileHashJSON = fileJSON.cid.toString();
 
     //log both filehashes
-    //console.log(torrentId);
-    console.log(torrentId3);
+    console.log(torrentId);
+    console.log(torrentId6);
   }
 
   async function captureFile(event) {
