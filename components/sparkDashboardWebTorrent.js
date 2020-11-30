@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import IPFS from "ipfs";
 import WebTorrent from 'webtorrent';
 
 const Button = styled.button`
@@ -56,67 +55,29 @@ const Wrapper = styled.div`
 
 function SparkDashboard({ ...otherProps }) {
 
-  // this is the json
   const [string, setString] = React.useState("");
-
-  // this is the binary
   const [readerResult, setReaderResult] = React.useState();
-
-  //var fileHash = null;
-  //var fileHashJSON = null;
-
-  var torrentId = null;
-  var torrentId6 = null;
-  // create webtorrent here!
+  
   async function handleExecute() {
-    //const node = await IPFS.create();
-    var client = new WebTorrent();
-    var client6 = new WebTorrent();
-    // Upload readeresult here
-    // const file = await node.add({
-    //   path: "hello.txt",
-    //   content: new Uint8Array(readerResult),
-    // });
-    
 
-    var buf = new Buffer(readerResult)
+    var client = new WebTorrent();
+    var clientJSON = new WebTorrent();
+    
+    console.log(string)
+    console.log(readerResult)
+
+    var buf = Buffer.from(readerResult)
     buf.name = 'Nebulark'
     client.seed(buf, function(torrent) {
       console.log('Client is seeding: ', torrent.magnetURI)
-      torrentId = torrent.magnetURI
     })
 
-
-    var buf6 = new Buffer(string)
-    buf6.name = 'Nebulark'
-    client6.seed(buf6, function(torrent6) {
-      console.log('Client is seeding: ', torrent6.magnetURI)
-      torrentId6 = torrent6.magnetURI 
+    var bufJSON = Buffer.from(string)
+    bufJSON.name = 'Nebulark'
+    clientJSON.seed(bufJSON, function(torrentJSON) {
+      console.log('Client is seeding: ', torrentJSON.magnetURI)
     })    
 
-    //console.log(WebTorrent.WEBRTC_SUPPORT)
-  
-    // client.add(torrentId, function(torrent) {
-    //   var file = torrent.files.find(function (file) { 
-    //     return file.name.endsWith('')
-    //   })
-    // })
-
-    // filehash in create function above
-    //fileHash = file.cid.toString();
-
-    // add second file
-    //const fileJSON = await node.add({
-    //  path: "hello.txt",
-    //  content: new Uint8Array(new TextEncoder().encode(string)),
-    //});
-
-    // get id again
-    //fileHashJSON = fileJSON.cid.toString();
-
-    //log both filehashes
-    console.log(torrentId);
-    console.log(torrentId6);
   }
 
   async function captureFile(event) {
